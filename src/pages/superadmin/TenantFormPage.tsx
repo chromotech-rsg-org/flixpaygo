@@ -213,7 +213,15 @@ export default function TenantFormPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <InputField label="Slug" value={tenant.dominio.slug} onChange={handleSlugChange} required placeholder="meustreaming" />
-              {tenant.dominio.slug && <p className="text-xs text-muted-foreground mt-1">Preview: <span className="text-primary">{tenant.dominio.slug}.flixpay.app</span></p>}
+              {tenant.dominio.slug && (
+                <div className="mt-2 space-y-1">
+                  <p className="text-xs text-muted-foreground">Subdomínio: <span className="text-primary">{tenant.dominio.slug}.flixpay.app</span></p>
+                  <p className="text-xs text-muted-foreground">URL Admin provisória: <span className="text-primary font-medium">/{tenant.dominio.slug}/admin</span></p>
+                  <p className="text-xs text-muted-foreground">URL Login tenant: <span className="text-primary font-medium">/{tenant.dominio.slug}/login</span></p>
+                  <p className="text-xs text-muted-foreground">URL Minha Conta: <span className="text-primary font-medium">/{tenant.dominio.slug}/minha-conta</span></p>
+                  <p className="text-xs text-muted-foreground">Landing pública: <span className="text-primary font-medium">/landing/{tenant.dominio.slug}</span></p>
+                </div>
+              )}
             </div>
             <InputField label="Subdomínio" value={tenant.dominio.subdomain} onChange={(v: string) => update('dominio.subdomain', v)} readOnly />
             <InputField label="Domínio customizado (LP)" value={tenant.dominio.customDomain} onChange={(v: string) => update('dominio.customDomain', v)} placeholder="meuclient.com.br" />
