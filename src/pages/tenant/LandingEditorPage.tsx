@@ -42,7 +42,7 @@ export default function LandingEditorPage() {
           <p className="text-muted-foreground text-sm">Personalize a página do seu streaming</p>
         </div>
         <div className="flex gap-2">
-          <a href={`/landing/${tenant.dominio.slug}`} target="_blank" className="flex items-center gap-2 px-4 py-2 bg-secondary/50 border border-border rounded-lg text-sm hover:bg-secondary transition-colors">
+          <a href={`/${tenant.dominio.slug}`} target="_blank" className="flex items-center gap-2 px-4 py-2 bg-secondary/50 border border-border rounded-lg text-sm hover:bg-secondary transition-colors">
             <Eye size={14} /> Preview
           </a>
           <button onClick={handleSave} className="btn-brand flex items-center gap-2 text-sm">

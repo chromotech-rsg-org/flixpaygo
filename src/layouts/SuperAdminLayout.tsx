@@ -5,7 +5,7 @@ import {
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar,
 } from '@/components/ui/sidebar';
 import { NavLink } from '@/components/NavLink';
-import { LayoutDashboard, Building2, FileText, Users, BarChart3, Settings, LogOut, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, Building2, FileText, Users, BarChart3, Settings, LogOut, Sun, Moon, CreditCard, Shield, Users2 } from 'lucide-react';
 import { LOGO_FLIXPAY_ICON, LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
 
 const menuItems = [
@@ -13,7 +13,10 @@ const menuItems = [
   { title: 'Tenants', url: '/superadmin/tenants', icon: Building2 },
   { title: 'Propostas', url: '/superadmin/propostas', icon: FileText },
   { title: 'Assinaturas', url: '/superadmin/assinaturas', icon: Users },
+  { title: 'Planos', url: '/superadmin/planos', icon: CreditCard },
   { title: 'Relatórios', url: '/superadmin/relatorios', icon: BarChart3 },
+  { title: 'Perfis', url: '/superadmin/perfis', icon: Shield },
+  { title: 'Usuários', url: '/superadmin/usuarios', icon: Users2 },
   { title: 'Configurações', url: '/superadmin/configuracoes', icon: Settings },
 ];
 
@@ -57,7 +60,7 @@ function SidebarInner() {
 export default function SuperAdminLayout() {
   const { user, logout, theme, toggleTheme } = useAuth();
   const navigate = useNavigate();
-  const handleLogout = () => { logout(); navigate('/login'); };
+  const handleLogout = () => { logout({ type: 'superadmin' }); navigate('/login'); };
 
   return (
     <SidebarProvider>

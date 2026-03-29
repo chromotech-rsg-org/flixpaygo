@@ -12,6 +12,8 @@ export interface User {
   password: string;
   name: string;
   tenantId?: string;
+  profileId?: string;
+  photoUrl?: string;
 }
 
 export interface CurrentUser {
@@ -20,6 +22,7 @@ export interface CurrentUser {
   email: string;
   name: string;
   tenantId?: string;
+  profileId?: string;
 }
 
 export interface TenantAddress {
@@ -82,6 +85,25 @@ export interface TenantAsaas {
   status: string;
 }
 
+export interface HeroSlide {
+  image: string;
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  ctaLink: string;
+}
+
+export interface ContentCategory {
+  title: string;
+  items: Array<{ image: string; title: string }>;
+}
+
+export interface FeatureHighlight {
+  icon: string;
+  title: string;
+  description: string;
+}
+
 export interface TenantTheme {
   template: 'cinema-dark' | 'gradient-flow' | 'minimal-premium';
   mode: 'dark' | 'light';
@@ -91,6 +113,9 @@ export interface TenantTheme {
   heroSubtitle: string;
   heroImage: string;
   heroCtaText: string;
+  heroSlides?: HeroSlide[];
+  contentCategories?: ContentCategory[];
+  featureHighlights?: FeatureHighlight[];
 }
 
 export interface Tenant {
@@ -143,6 +168,10 @@ export interface Subscriber {
   subscriptionId: string;
   nextBillingDate: string;
   createdAt: string;
+  password?: string;
+  photoUrl?: string;
+  paymentMethod?: PaymentMethod;
+  cardLast4?: string;
 }
 
 export interface Invoice {
@@ -188,7 +217,6 @@ export interface Proposal {
   updatedAt: string;
 }
 
-// API Logs
 export interface ApiLog {
   id: string;
   tenantId: string;
@@ -200,7 +228,6 @@ export interface ApiLog {
   timestamp: string;
 }
 
-// Coupons
 export interface Coupon {
   id: string;
   tenantId: string;
@@ -211,5 +238,34 @@ export interface Coupon {
   usedCount: number;
   validFrom: string;
   validUntil: string;
+  active: boolean;
+}
+
+// Permissions & Profiles
+export interface Permission {
+  page: string;
+  view: boolean;
+  create: boolean;
+  edit: boolean;
+  delete: boolean;
+}
+
+export interface Profile {
+  id: string;
+  name: string;
+  scope: 'superadmin' | 'tenant';
+  tenantId?: string;
+  permissions: Permission[];
+}
+
+// Commercial Plans (SuperAdmin)
+export interface CommercialPlan {
+  id: string;
+  name: string;
+  type: PlanType;
+  implantacao: number;
+  mensal: number;
+  description: string;
+  features: string[];
   active: boolean;
 }

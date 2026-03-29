@@ -5,8 +5,9 @@ import {
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar,
 } from '@/components/ui/sidebar';
 import { NavLink } from '@/components/NavLink';
-import { LayoutDashboard, Users, FileText, CreditCard, Palette, Settings, LogOut, Sun, Moon, ExternalLink } from 'lucide-react';
-import { getTenant, getTenants } from '@/lib/storage';
+import { LayoutDashboard, Users, FileText, CreditCard, Palette, Settings, LogOut, Sun, Moon, ExternalLink, Shield, Users2 } from 'lucide-react';
+import { getTenantBySlug, getTenant } from '@/lib/storage';
+import { useTenantMeta } from '@/hooks/useTenantMeta';
 import { LOGO_FLIXPAY } from '@/lib/constants';
 
 function SidebarInner() {
@@ -15,12 +16,7 @@ function SidebarInner() {
   const { slug } = useParams();
   const { user } = useAuth();
 
-  // Resolve tenant from slug first, fallback to user.tenantId
-  const tenants = getTenants();
-  const tenant = slug
-    ? tenants.find(t => t.dominio.slug === slug)
-    : (user?.tenantId ? getTenant(user.tenantId) : null);
-
+  const tenant = slug ? getTenantBySlug(slug) : (user?.tenantId ? getTenant(user.tenantId) : null);
   const basePath = slug ? `/${slug}/admin` : '/admin';
 
   const menuItems = [
@@ -29,6 +25,8 @@ function SidebarInner() {
     { title: 'Faturas', url: `${basePath}/faturas`, icon: FileText },
     { title: 'Planos', url: `${basePath}/planos`, icon: CreditCard },
     { title: 'Landing Page', url: `${basePath}/landing`, icon: Palette },
+    { title: 'Perfis', url: `${basePath}/perfis`, icon: Shield },
+    { title: 'Usuários', url: `${basePath}/usuarios`, icon: Users2 },
     { title: 'Configurações', url: `${basePath}/configuracoes`, icon: Settings },
   ];
 
@@ -72,13 +70,11 @@ export default function TenantAdminLayout() {
   const navigate = useNavigate();
   const { slug } = useParams();
 
-  const tenants = getTenants();
-  const tenant = slug
-    ? tenants.find(t => t.dominio.slug === slug)
-    : (user?.tenantId ? getTenant(user.tenantId) : null);
+  const tenant = slug ? getTenantBySlug(slug) : (user?.tenantId ? getTenant(user.tenantId) : null);
+  useTenantMeta(tenant, 'Admin');
 
   const handleLogout = () => {
-    logout();
+    logout({ type: 'tenant', slug });
     navigate(slug ? `/${slug}/login` : '/login');
   };
 

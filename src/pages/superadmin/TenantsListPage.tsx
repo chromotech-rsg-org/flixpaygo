@@ -53,7 +53,9 @@ export default function TenantsListPage() {
 
   const handleImpersonate = (tid: string) => {
     impersonate(tid);
-    navigate('/admin');
+    const tenant = tenants.find(t => t.id === tid);
+    const slug = tenant?.dominio?.slug || tid;
+    navigate(`/${slug}/admin`);
   };
 
   const statusBadge = (s: LicenseStatus) => {

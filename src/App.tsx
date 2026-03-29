@@ -17,6 +17,9 @@ import ProposalFormPage from "./pages/superadmin/ProposalFormPage";
 import GlobalSubscriptionsPage from "./pages/superadmin/GlobalSubscriptionsPage";
 import ReportsPage from "./pages/superadmin/ReportsPage";
 import SettingsPage from "./pages/superadmin/SettingsPage";
+import CommercialPlansPage from "./pages/superadmin/CommercialPlansPage";
+import ProfilesPage from "./pages/superadmin/ProfilesPage";
+import UsersPage from "./pages/superadmin/UsersPage";
 import PublicProposalPage from "./pages/PublicProposalPage";
 import PlansPage from "./pages/PlansPage";
 import TenantDashboardPage from "./pages/tenant/TenantDashboardPage";
@@ -25,7 +28,10 @@ import InvoicesPage from "./pages/tenant/InvoicesPage";
 import PlansManagePage from "./pages/tenant/PlansManagePage";
 import LandingEditorPage from "./pages/tenant/LandingEditorPage";
 import TenantSettingsPage from "./pages/tenant/TenantSettingsPage";
+import TenantProfilesPage from "./pages/tenant/TenantProfilesPage";
+import TenantUsersPage from "./pages/tenant/TenantUsersPage";
 import MinhaContaPage from "./pages/subscriber/MinhaContaPage";
+import SignupPage from "./pages/subscriber/SignupPage";
 import LandingPage from "./pages/landing/LandingPage";
 import FlixPayLandingPage from "./pages/FlixPayLandingPage";
 import NotFound from "./pages/NotFound";
@@ -44,7 +50,6 @@ const App = () => (
             <Route path="/login" element={<LoginPage />} />
             <Route path="/planos" element={<PlansPage />} />
             <Route path="/proposta/:id" element={<PublicProposalPage />} />
-            <Route path="/landing/:slug" element={<LandingPage />} />
 
             {/* SuperAdmin */}
             <Route path="/superadmin" element={<ProtectedRoute allowedRoles={['superadmin']}><SuperAdminLayout /></ProtectedRoute>}>
@@ -56,10 +61,16 @@ const App = () => (
               <Route path="assinaturas" element={<GlobalSubscriptionsPage />} />
               <Route path="relatorios" element={<ReportsPage />} />
               <Route path="configuracoes" element={<SettingsPage />} />
+              <Route path="planos" element={<CommercialPlansPage />} />
+              <Route path="perfis" element={<ProfilesPage />} />
+              <Route path="usuarios" element={<UsersPage />} />
             </Route>
 
             {/* Tenant Login */}
             <Route path="/:slug/login" element={<TenantLoginPage />} />
+            
+            {/* Tenant Signup */}
+            <Route path="/:slug/assinar" element={<SignupPage />} />
 
             {/* Tenant Admin (slug-based) */}
             <Route path="/:slug/admin" element={<ProtectedRoute allowedRoles={['tenant_admin', 'superadmin']}><TenantAdminLayout /></ProtectedRoute>}>
@@ -69,6 +80,8 @@ const App = () => (
               <Route path="planos" element={<PlansManagePage />} />
               <Route path="landing" element={<LandingEditorPage />} />
               <Route path="configuracoes" element={<TenantSettingsPage />} />
+              <Route path="perfis" element={<TenantProfilesPage />} />
+              <Route path="usuarios" element={<TenantUsersPage />} />
             </Route>
 
             {/* Subscriber (slug-based) */}
@@ -77,6 +90,9 @@ const App = () => (
             {/* Legacy routes redirect */}
             <Route path="/admin" element={<Navigate to="/login" replace />} />
             <Route path="/minha-conta" element={<Navigate to="/login" replace />} />
+
+            {/* Tenant Landing — MUST be last before catch-all */}
+            <Route path="/:slug" element={<LandingPage />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

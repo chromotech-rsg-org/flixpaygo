@@ -219,7 +219,7 @@ export default function TenantFormPage() {
                   <p className="text-xs text-muted-foreground">URL Admin provisória: <span className="text-primary font-medium">/{tenant.dominio.slug}/admin</span></p>
                   <p className="text-xs text-muted-foreground">URL Login tenant: <span className="text-primary font-medium">/{tenant.dominio.slug}/login</span></p>
                   <p className="text-xs text-muted-foreground">URL Minha Conta: <span className="text-primary font-medium">/{tenant.dominio.slug}/minha-conta</span></p>
-                  <p className="text-xs text-muted-foreground">Landing pública: <span className="text-primary font-medium">/landing/{tenant.dominio.slug}</span></p>
+                  <p className="text-xs text-muted-foreground">Landing pública: <span className="text-primary font-medium">/{tenant.dominio.slug}</span></p>
                 </div>
               )}
             </div>
