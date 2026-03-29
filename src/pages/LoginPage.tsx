@@ -18,10 +18,7 @@ export default function LoginPage() {
     setError('');
     const res = login(email, password);
     if (!res.success) { setError(res.error || 'Erro'); return; }
-    const user = JSON.parse(localStorage.getItem('flixpay:currentUser') || '{}');
-    if (user.role === 'superadmin') navigate('/superadmin');
-    else if (user.role === 'tenant_admin') navigate('/admin');
-    else navigate('/minha-conta');
+    navigate(res.redirectTo || '/superadmin');
   };
 
   return (
@@ -33,7 +30,7 @@ export default function LoginPage() {
         <div className="glass-card p-8 rounded-2xl">
           <div className="text-center mb-8">
             <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-12 mx-auto mb-4" />
-            <p className="text-muted-foreground text-sm">Acesse sua conta</p>
+            <p className="text-muted-foreground text-sm">Painel SuperAdmin</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -55,7 +52,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {error && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-red-400 text-center">{error}</motion.p>}
+            {error && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-destructive text-center">{error}</motion.p>}
 
             <button type="submit" className="btn-brand w-full flex items-center justify-center gap-2 text-sm font-bold uppercase tracking-wider">
               <LogIn size={18} /> Entrar

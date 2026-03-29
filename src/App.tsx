@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
+import TenantLoginPage from "./pages/TenantLoginPage";
 import SuperAdminLayout from "./layouts/SuperAdminLayout";
 import TenantAdminLayout from "./layouts/TenantAdminLayout";
 import DashboardPage from "./pages/superadmin/DashboardPage";
@@ -26,6 +27,7 @@ import LandingEditorPage from "./pages/tenant/LandingEditorPage";
 import TenantSettingsPage from "./pages/tenant/TenantSettingsPage";
 import MinhaContaPage from "./pages/subscriber/MinhaContaPage";
 import LandingPage from "./pages/landing/LandingPage";
+import FlixPayLandingPage from "./pages/FlixPayLandingPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,7 +40,7 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<FlixPayLandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/planos" element={<PlansPage />} />
             <Route path="/proposta/:id" element={<PublicProposalPage />} />
@@ -56,8 +58,11 @@ const App = () => (
               <Route path="configuracoes" element={<SettingsPage />} />
             </Route>
 
-            {/* Tenant Admin */}
-            <Route path="/admin" element={<ProtectedRoute allowedRoles={['tenant_admin', 'superadmin']}><TenantAdminLayout /></ProtectedRoute>}>
+            {/* Tenant Login */}
+            <Route path="/:slug/login" element={<TenantLoginPage />} />
+
+            {/* Tenant Admin (slug-based) */}
+            <Route path="/:slug/admin" element={<ProtectedRoute allowedRoles={['tenant_admin', 'superadmin']}><TenantAdminLayout /></ProtectedRoute>}>
               <Route index element={<TenantDashboardPage />} />
               <Route path="assinantes" element={<SubscribersPage />} />
               <Route path="faturas" element={<InvoicesPage />} />
@@ -66,8 +71,12 @@ const App = () => (
               <Route path="configuracoes" element={<TenantSettingsPage />} />
             </Route>
 
-            {/* Subscriber */}
-            <Route path="/minha-conta" element={<ProtectedRoute allowedRoles={['subscriber']}><MinhaContaPage /></ProtectedRoute>} />
+            {/* Subscriber (slug-based) */}
+            <Route path="/:slug/minha-conta" element={<ProtectedRoute allowedRoles={['subscriber']}><MinhaContaPage /></ProtectedRoute>} />
+
+            {/* Legacy routes redirect */}
+            <Route path="/admin" element={<Navigate to="/login" replace />} />
+            <Route path="/minha-conta" element={<Navigate to="/login" replace />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

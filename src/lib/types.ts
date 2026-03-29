@@ -187,3 +187,29 @@ export interface Proposal {
   createdAt: string;
   updatedAt: string;
 }
+
+// API Logs
+export interface ApiLog {
+  id: string;
+  tenantId: string;
+  endpoint: string;
+  method: string;
+  statusCode: number;
+  requestBody: string;
+  responseBody: string;
+  timestamp: string;
+}
+
+// Coupons
+export interface Coupon {
+  id: string;
+  tenantId: string;
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  maxUses: number;
+  usedCount: number;
+  validFrom: string;
+  validUntil: string;
+  active: boolean;
+}

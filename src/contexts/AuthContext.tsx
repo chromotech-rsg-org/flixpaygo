@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { CurrentUser, UserRole } from '@/lib/types';
-import { getCurrentUser, setCurrentUser, getUsers, getTheme, setTheme } from '@/lib/storage';
+import { getCurrentUser, setCurrentUser, getUsers, getTheme, setTheme, getTenants } from '@/lib/storage';
 import { seedData } from '@/lib/seed';
 
 interface AuthContextType {
   user: CurrentUser | null;
-  login: (email: string, password: string) => { success: boolean; error?: string };
+  login: (email: string, password: string) => { success: boolean; error?: string; redirectTo?: string };
   logout: () => void;
   theme: 'dark' | 'light';
   toggleTheme: () => void;
@@ -34,7 +34,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const cu: CurrentUser = { id: found.id, role: found.role, email: found.email, name: found.name, tenantId: found.tenantId };
     setUser(cu);
     setCurrentUser(cu);
-    return { success: true };
+
+    // Determine redirect based on role and tenant slug
+    let redirectTo = '/superadmin';
+    if (found.role === 'tenant_admin' && found.tenantId) {
+      const tenants = getTenants();
+      const tenant = tenants.find(t => t.id === found.tenantId);
+      const slug = tenant?.dominio?.slug || found.tenantId;
+      redirectTo = `/${slug}/admin`;
+    } else if (found.role === 'subscriber' && found.tenantId) {
+      const tenants = getTenants();
+      const tenant = tenants.find(t => t.id === found.tenantId);
+      const slug = tenant?.dominio?.slug || found.tenantId;
+      redirectTo = `/${slug}/minha-conta`;
+    }
+
+    return { success: true, redirectTo };
   };
 
   const logout = () => {

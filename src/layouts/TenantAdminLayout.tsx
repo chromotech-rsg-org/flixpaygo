@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -6,23 +6,31 @@ import {
 } from '@/components/ui/sidebar';
 import { NavLink } from '@/components/NavLink';
 import { LayoutDashboard, Users, FileText, CreditCard, Palette, Settings, LogOut, Sun, Moon, ExternalLink } from 'lucide-react';
-import { getTenant } from '@/lib/storage';
+import { getTenant, getTenants } from '@/lib/storage';
 import { LOGO_FLIXPAY } from '@/lib/constants';
-
-const menuItems = [
-  { title: 'Dashboard', url: '/admin', icon: LayoutDashboard },
-  { title: 'Assinantes', url: '/admin/assinantes', icon: Users },
-  { title: 'Faturas', url: '/admin/faturas', icon: FileText },
-  { title: 'Planos', url: '/admin/planos', icon: CreditCard },
-  { title: 'Landing Page', url: '/admin/landing', icon: Palette },
-  { title: 'Configurações', url: '/admin/configuracoes', icon: Settings },
-];
 
 function SidebarInner() {
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
+  const { slug } = useParams();
   const { user } = useAuth();
-  const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
+
+  // Resolve tenant from slug first, fallback to user.tenantId
+  const tenants = getTenants();
+  const tenant = slug
+    ? tenants.find(t => t.dominio.slug === slug)
+    : (user?.tenantId ? getTenant(user.tenantId) : null);
+
+  const basePath = slug ? `/${slug}/admin` : '/admin';
+
+  const menuItems = [
+    { title: 'Dashboard', url: basePath, icon: LayoutDashboard },
+    { title: 'Assinantes', url: `${basePath}/assinantes`, icon: Users },
+    { title: 'Faturas', url: `${basePath}/faturas`, icon: FileText },
+    { title: 'Planos', url: `${basePath}/planos`, icon: CreditCard },
+    { title: 'Landing Page', url: `${basePath}/landing`, icon: Palette },
+    { title: 'Configurações', url: `${basePath}/configuracoes`, icon: Settings },
+  ];
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
@@ -42,7 +50,7 @@ function SidebarInner() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} end={item.url === '/admin'}
+                    <NavLink to={item.url} end={item.url === basePath}
                       className="hover:bg-sidebar-accent/50 transition-colors"
                       activeClassName="bg-primary/10 text-primary font-semibold border-l-2 border-primary">
                       <item.icon className="mr-2 h-4 w-4 shrink-0" />
@@ -62,8 +70,17 @@ function SidebarInner() {
 export default function TenantAdminLayout() {
   const { user, logout, theme, toggleTheme } = useAuth();
   const navigate = useNavigate();
-  const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
-  const handleLogout = () => { logout(); navigate('/login'); };
+  const { slug } = useParams();
+
+  const tenants = getTenants();
+  const tenant = slug
+    ? tenants.find(t => t.dominio.slug === slug)
+    : (user?.tenantId ? getTenant(user.tenantId) : null);
+
+  const handleLogout = () => {
+    logout();
+    navigate(slug ? `/${slug}/login` : '/login');
+  };
 
   return (
     <SidebarProvider>

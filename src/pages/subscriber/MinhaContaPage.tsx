@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { getTenant, getSubscribers, getInvoices, getPlans } from '@/lib/storage';
+import { getTenant, getSubscribers, getInvoices, getPlans, getTenants } from '@/lib/storage';
 import { PLAN_FEATURES } from '@/lib/plan-features';
 import { PlanType } from '@/lib/types';
 import { motion } from 'framer-motion';
@@ -10,7 +11,14 @@ import { LOGO_FLIXPAY } from '@/lib/constants';
 
 export default function MinhaContaPage() {
   const { user, logout, theme, toggleTheme } = useAuth();
-  const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
+  const { slug } = useParams();
+
+  // Resolve tenant from slug or user.tenantId
+  const tenants = getTenants();
+  const tenant = slug
+    ? tenants.find(t => t.dominio.slug === slug)
+    : (user?.tenantId ? getTenant(user.tenantId) : null);
+
   if (!tenant) return <p className="text-muted-foreground p-8">Tenant não encontrado.</p>;
 
   const plan = tenant.plano as PlanType;
@@ -27,15 +35,20 @@ export default function MinhaContaPage() {
     active: 'Ativo', inactive: 'Inativo', overdue: 'Inadimplente', cancelled: 'Cancelado',
   };
   const statusColor: Record<string, string> = {
-    active: 'bg-green-500/20 text-green-400', inactive: 'bg-gray-500/20 text-gray-400',
-    overdue: 'bg-red-500/20 text-red-400', cancelled: 'bg-red-500/20 text-red-400',
+    active: 'bg-green-500/20 text-green-600 dark:text-green-400', inactive: 'bg-gray-500/20 text-gray-600 dark:text-gray-400',
+    overdue: 'bg-red-500/20 text-red-600 dark:text-red-400', cancelled: 'bg-red-500/20 text-red-600 dark:text-red-400',
   };
   const invStatusLabel: Record<string, string> = {
     paid: 'Pago', pending: 'Pendente', overdue: 'Vencido', cancelled: 'Cancelado', refunded: 'Estornado',
   };
   const invStatusColor: Record<string, string> = {
-    paid: 'bg-green-500/20 text-green-400', pending: 'bg-yellow-500/20 text-yellow-400',
-    overdue: 'bg-red-500/20 text-red-400', cancelled: 'bg-gray-500/20 text-gray-400', refunded: 'bg-purple-500/20 text-purple-400',
+    paid: 'bg-green-500/20 text-green-600 dark:text-green-400', pending: 'bg-yellow-500/20 text-yellow-600 dark:text-yellow-400',
+    overdue: 'bg-red-500/20 text-red-600 dark:text-red-400', cancelled: 'bg-gray-500/20 text-gray-600 dark:text-gray-400', refunded: 'bg-purple-500/20 text-purple-600 dark:text-purple-400',
+  };
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = slug ? `/${slug}/login` : '/login';
   };
 
   return (
@@ -59,7 +72,7 @@ export default function MinhaContaPage() {
           <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-accent transition-colors text-muted-foreground">
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button onClick={logout} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
+          <button onClick={handleLogout} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
             <LogOut size={18} />
           </button>
         </div>
@@ -146,7 +159,7 @@ export default function MinhaContaPage() {
               <input readOnly value={`https://${tenant.dominio.subdomain}/ref/${subscriber.id.slice(0, 8)}`}
                 className="flex-1 px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm" />
               <button onClick={() => { navigator.clipboard.writeText(`https://${tenant.dominio.subdomain}/ref/${subscriber.id.slice(0, 8)}`); }}
-                className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold">Copiar</button>
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-semibold">Copiar</button>
             </div>
           </motion.div>
         ) : plan !== 'ultra' ? (

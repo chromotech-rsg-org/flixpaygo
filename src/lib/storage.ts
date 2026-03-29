@@ -1,4 +1,4 @@
-import { User, Tenant, Subscriber, Invoice, SubscriptionPlan, Proposal } from './types';
+import { User, Tenant, Subscriber, Invoice, SubscriptionPlan, Proposal, ApiLog, Coupon } from './types';
 
 const KEYS = {
   theme: 'flixpay:theme',
@@ -9,6 +9,8 @@ const KEYS = {
   plans: (tid: string) => `flixpay:plans:${tid}`,
   subscribers: (tid: string) => `flixpay:subscribers:${tid}`,
   invoices: (tid: string) => `flixpay:invoices:${tid}`,
+  apiLogs: (tid: string) => `flixpay:apilogs:${tid}`,
+  coupons: (tid: string) => `flixpay:coupons:${tid}`,
   seeded: 'flixpay:seeded',
 };
 
@@ -66,6 +68,14 @@ export function getAllSubscribers(): Subscriber[] {
 // Invoices
 export function getInvoices(tid: string): Invoice[] { return get(KEYS.invoices(tid), []); }
 export function setInvoices(tid: string, inv: Invoice[]) { set(KEYS.invoices(tid), inv); }
+
+// API Logs
+export function getApiLogs(tid: string): ApiLog[] { return get(KEYS.apiLogs(tid), []); }
+export function setApiLogs(tid: string, logs: ApiLog[]) { set(KEYS.apiLogs(tid), logs); }
+
+// Coupons
+export function getCoupons(tid: string): Coupon[] { return get(KEYS.coupons(tid), []); }
+export function setCoupons(tid: string, c: Coupon[]) { set(KEYS.coupons(tid), c); }
 
 // Proposals
 export function getProposals(): Proposal[] { return get(KEYS.proposals, []); }
