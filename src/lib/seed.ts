@@ -1,0 +1,179 @@
+import { User, Tenant, Subscriber, Invoice, SubscriptionPlan } from './types';
+import { setUsers, setTenants, setPlans, setSubscribers, setInvoices, markSeeded, isSeeded, setProposals } from './storage';
+
+const uid = () => crypto.randomUUID();
+
+function randomDate(monthsBack: number) {
+  const d = new Date();
+  d.setMonth(d.getMonth() - Math.floor(Math.random() * monthsBack));
+  d.setDate(Math.floor(Math.random() * 28) + 1);
+  return d.toISOString();
+}
+
+function futureDate(daysAhead: number) {
+  const d = new Date();
+  d.setDate(d.getDate() + daysAhead);
+  return d.toISOString().split('T')[0];
+}
+
+export function seedData() {
+  if (isSeeded()) return;
+
+  // Users
+  const users: User[] = [
+    { id: '1', role: 'superadmin', email: 'admin@flixpay.app', password: 'flixpay2024', name: 'SuperAdmin FlixPay' },
+    { id: '2', role: 'tenant_admin', email: 'admin@darkflix.com.br', password: 'darkflix123', name: 'Admin Darkflix', tenantId: 'darkflix' },
+    { id: '3', role: 'subscriber', email: 'joao@email.com', password: '123456', name: 'João Silva', tenantId: 'darkflix' },
+  ];
+  setUsers(users);
+
+  const tenants: Tenant[] = [
+    {
+      id: 'darkflix',
+      name: 'Darkflix',
+      razaoSocial: 'Darkflix Entretenimento LTDA',
+      cpfCnpj: '12.345.678/0001-90',
+      logoUrl: '',
+      faviconUrl: '',
+      address: { cep: '01310-100', street: 'Av. Paulista', number: '1000', complement: 'Sala 501', neighborhood: 'Bela Vista', city: 'São Paulo', state: 'SP' },
+      email: 'contato@darkflix.com.br',
+      phone: '(11) 99999-9999',
+      website: 'https://darkflix.com.br',
+      responsavel: { nome: 'Carlos Mendes', cpf: '123.456.789-00', email: 'admin@darkflix.com.br', phone: '(11) 99999-9999', cargo: 'CEO' },
+      financeiro: { implantacaoValor: 2900, licencaValorMensal: 380, licencaVencimentoDia: 10, licencaStatus: 'ativo', contratoInicio: '2024-01-15', observacoes: '' },
+      dominio: { slug: 'darkflix', subdomain: 'darkflix.flixpay.app', customDomain: 'darkflix.com.br', minhaConta: 'conta.darkflix.com.br', dnsStatus: 'ativo', streamingPortalUrl: 'https://play.darkflix.com.br' },
+      streamingApi: { baseUrl: 'https://api.darkflix.com.br', authType: 'bearer', credential: 'tok_darkflix_xxx', endpoints: { createUser: { method: 'POST', path: '/api/users' }, enablePlan: { method: 'PUT', path: '/api/users/{id}/plan' }, disablePlan: { method: 'DELETE', path: '/api/users/{id}/plan' }, checkStatus: { method: 'GET', path: '/api/users/{id}' } } },
+      asaas: { apiKey: 'aak_darkflix_xxx', environment: 'production', webhookUrl: 'https://api.flixpay.app/webhooks/asaas/darkflix', status: 'conectado' },
+      plano: 'pro',
+      theme: { template: 'cinema-dark', mode: 'dark', primaryColor: '#E50914', accentColor: '#FF4D4D', heroTitle: 'Entretenimento sem limites', heroSubtitle: 'Filmes, séries e muito mais — quando e onde quiser.', heroImage: '', heroCtaText: 'Assine agora' },
+      createdAt: '2024-01-15T10:00:00Z',
+      updatedAt: '2024-06-01T14:32:00Z',
+    },
+    {
+      id: 'cinemaflix',
+      name: 'CinemaFlix',
+      razaoSocial: 'CinemaFlix Digital LTDA',
+      cpfCnpj: '98.765.432/0001-10',
+      logoUrl: '',
+      faviconUrl: '',
+      address: { cep: '22041-080', street: 'Rua Barata Ribeiro', number: '500', complement: '', neighborhood: 'Copacabana', city: 'Rio de Janeiro', state: 'RJ' },
+      email: 'contato@cinemaflix.com.br',
+      phone: '(21) 98888-7777',
+      website: 'https://cinemaflix.com.br',
+      responsavel: { nome: 'Ana Oliveira', cpf: '987.654.321-00', email: 'ana@cinemaflix.com.br', phone: '(21) 98888-7777', cargo: 'Diretora' },
+      financeiro: { implantacaoValor: 4900, licencaValorMensal: 580, licencaVencimentoDia: 5, licencaStatus: 'ativo', contratoInicio: '2023-08-01', observacoes: 'Cliente premium' },
+      dominio: { slug: 'cinemaflix', subdomain: 'cinemaflix.flixpay.app', customDomain: 'cinemaflix.com.br', minhaConta: 'conta.cinemaflix.com.br', dnsStatus: 'ativo', streamingPortalUrl: 'https://play.cinemaflix.com.br' },
+      streamingApi: { baseUrl: 'https://api.cinemaflix.com.br', authType: 'bearer', credential: 'tok_cinema_xxx', endpoints: { createUser: { method: 'POST', path: '/api/users' }, enablePlan: { method: 'PUT', path: '/api/users/{id}/plan' }, disablePlan: { method: 'DELETE', path: '/api/users/{id}/plan' }, checkStatus: { method: 'GET', path: '/api/users/{id}' } } },
+      asaas: { apiKey: 'aak_cinema_xxx', environment: 'production', webhookUrl: 'https://api.flixpay.app/webhooks/asaas/cinemaflix', status: 'conectado' },
+      plano: 'ultra',
+      theme: { template: 'gradient-flow', mode: 'dark', primaryColor: '#8B5CF6', accentColor: '#F59E0B', heroTitle: 'O melhor do cinema na sua tela', heroSubtitle: 'Blockbusters, clássicos e exclusivos.', heroImage: '', heroCtaText: 'Comece agora' },
+      createdAt: '2023-08-01T08:00:00Z',
+      updatedAt: '2024-05-20T11:15:00Z',
+    },
+    {
+      id: 'seriesplay',
+      name: 'SeriesPlay',
+      razaoSocial: 'SeriesPlay Mídia ME',
+      cpfCnpj: '55.666.777/0001-30',
+      logoUrl: '',
+      faviconUrl: '',
+      address: { cep: '30130-000', street: 'Rua da Bahia', number: '200', complement: 'Sala 3', neighborhood: 'Centro', city: 'Belo Horizonte', state: 'MG' },
+      email: 'contato@seriesplay.com.br',
+      phone: '(31) 97777-6666',
+      website: 'https://seriesplay.com.br',
+      responsavel: { nome: 'Pedro Santos', cpf: '555.666.777-00', email: 'pedro@seriesplay.com.br', phone: '(31) 97777-6666', cargo: 'Fundador' },
+      financeiro: { implantacaoValor: 1500, licencaValorMensal: 220, licencaVencimentoDia: 15, licencaStatus: 'ativo', contratoInicio: '2024-06-01', observacoes: '' },
+      dominio: { slug: 'seriesplay', subdomain: 'seriesplay.flixpay.app', customDomain: '', minhaConta: '', dnsStatus: 'pendente', streamingPortalUrl: 'https://play.seriesplay.com.br' },
+      streamingApi: { baseUrl: 'https://api.seriesplay.com.br', authType: 'apikey', credential: 'key_series_xxx', endpoints: { createUser: { method: 'POST', path: '/api/users' }, enablePlan: { method: 'PUT', path: '/api/users/{id}/plan' }, disablePlan: { method: 'DELETE', path: '/api/users/{id}/plan' }, checkStatus: { method: 'GET', path: '/api/users/{id}' } } },
+      asaas: { apiKey: 'aak_series_xxx', environment: 'sandbox', webhookUrl: 'https://api.flixpay.app/webhooks/asaas/seriesplay', status: 'conectado' },
+      plano: 'start',
+      theme: { template: 'minimal-premium', mode: 'light', primaryColor: '#3B82F6', accentColor: '#06B6D4', heroTitle: 'Suas séries favoritas', heroSubtitle: 'Assista onde quiser, quando quiser.', heroImage: '', heroCtaText: 'Assinar' },
+      createdAt: '2024-06-01T09:00:00Z',
+      updatedAt: '2024-06-01T09:00:00Z',
+    },
+  ];
+  setTenants(tenants);
+
+  // Plans & subscribers for each tenant
+  const planNames = ['Básico', 'Padrão', 'Premium'];
+  const planPrices = [29.90, 49.90, 79.90];
+  const planFeatures = [
+    ['Catálogo completo', 'Qualidade SD', '1 tela'],
+    ['Catálogo completo', 'Qualidade HD', '2 telas', 'Download offline'],
+    ['Catálogo completo', 'Qualidade 4K', '4 telas', 'Download offline', 'Conteúdo exclusivo'],
+  ];
+
+  const firstNames = ['João', 'Maria', 'Pedro', 'Ana', 'Lucas', 'Carla', 'Rafael', 'Julia', 'Bruno', 'Fernanda'];
+  const lastNames = ['Silva', 'Santos', 'Oliveira', 'Costa', 'Pereira', 'Souza', 'Ferreira', 'Almeida', 'Lima', 'Rocha'];
+  const statuses: Array<'active' | 'inactive' | 'overdue' | 'cancelled'> = ['active', 'active', 'active', 'active', 'active', 'active', 'inactive', 'overdue', 'cancelled', 'active'];
+  const invoiceStatuses: Array<'paid' | 'pending' | 'overdue' | 'cancelled'> = ['paid', 'paid', 'paid', 'paid', 'paid', 'pending', 'overdue', 'paid', 'paid', 'cancelled'];
+  const payMethods: Array<'credit_card' | 'boleto' | 'pix'> = ['credit_card', 'boleto', 'pix', 'credit_card', 'credit_card'];
+
+  const subscriberCounts: Record<string, number> = { darkflix: 8, cinemaflix: 10, seriesplay: 5 };
+
+  tenants.forEach(tenant => {
+    const plans: SubscriptionPlan[] = planNames.map((name, i) => ({
+      id: `${tenant.id}-plan-${i}`,
+      tenantId: tenant.id,
+      name,
+      description: `Plano ${name}`,
+      price: planPrices[i],
+      interval: 'monthly',
+      asaasPlanId: `sub_${tenant.id}_${i}`,
+      streamingPlanId: `plan_${tenant.id}_${i}`,
+      active: true,
+      highlight: i === 1,
+      features: planFeatures[i],
+    }));
+    setPlans(tenant.id, plans);
+
+    const count = subscriberCounts[tenant.id] || 5;
+    const subs: Subscriber[] = [];
+    const invs: Invoice[] = [];
+
+    for (let i = 0; i < count; i++) {
+      const subId = uid();
+      const plan = plans[i % plans.length];
+      const created = randomDate(12);
+      subs.push({
+        id: subId,
+        tenantId: tenant.id,
+        name: `${firstNames[i % firstNames.length]} ${lastNames[i % lastNames.length]}`,
+        email: `${firstNames[i % firstNames.length].toLowerCase()}${i}@email.com`,
+        cpf: `${String(100+i).slice(-3)}.${String(200+i).slice(-3)}.${String(300+i).slice(-3)}-${String(10+i).slice(-2)}`,
+        phone: `(11) 9${String(8000+i*111).slice(-4)}-${String(1000+i*222).slice(-4)}`,
+        asaasCustomerId: `cus_${uid().slice(0,8)}`,
+        streamingUserId: `user_${uid().slice(0,8)}`,
+        planId: plan.id,
+        subscriptionStatus: statuses[i % statuses.length],
+        subscriptionId: uid(),
+        nextBillingDate: futureDate(Math.floor(Math.random() * 30) + 1),
+        createdAt: created,
+      });
+
+      // 3 invoices per subscriber
+      for (let j = 0; j < 3; j++) {
+        const dueD = new Date();
+        dueD.setMonth(dueD.getMonth() - j);
+        dueD.setDate(10);
+        const invStatus = j === 0 ? invoiceStatuses[i % invoiceStatuses.length] : 'paid';
+        invs.push({
+          id: uid(),
+          subscriberId: subId,
+          tenantId: tenant.id,
+          amount: plan.price,
+          status: invStatus,
+          dueDate: dueD.toISOString().split('T')[0],
+          paidAt: invStatus === 'paid' ? dueD.toISOString() : null,
+          asaasPaymentId: `pay_${uid().slice(0,8)}`,
+          paymentMethod: payMethods[Math.floor(Math.random() * payMethods.length)],
+        });
+      }
+    }
+    setSubscribers(tenant.id, subs);
+    setInvoices(tenant.id, invs);
+  });
+
+  setProposals([]);
+  markSeeded();
+}
