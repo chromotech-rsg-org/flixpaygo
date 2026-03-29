@@ -1,176 +1,110 @@
 
 
-# Plan: Tenant Portals, Auth Isolation, Profiles/Permissions, Landing Redesign, Subscriber Signup Flow
+# Plan: Darkflix Landing Template + Split Login + Image Remove Button
 
-This is a large set of features. Due to scope, this plan covers everything requested but implementation will be split across multiple steps.
+## 1. Darkflix-Style Landing Page Template ("darkflix-editorial")
 
----
+Based on the Figma screenshots and CSS, create a new landing template that matches the Darkflix design exactly. This becomes a **reusable template** any tenant can select.
 
-## 1. Tenant Landing Page Route: `/:slug` instead of `/landing/:slug`
+### Design Sections (from Figma):
+1. **Hero**: Full-screen dark bg with overlay image (clown/horror), tenant logo top-left, bold headline with gradient text (`linear-gradient(90deg, #E4E4E4, #7E7E7E)`), subtle subtitle, ghost CTA button with red border, quote text. Font: Space Grotesk.
+2. **Content carousel**: Tilted movie poster cards (Evil Dead, Vittra, etc.) with titles below, next to editorial text block ("você não chegou aqui por acaso...") and red-bordered CTA link.
+3. **Manifesto section**: Large gradient heading "A Darkflix não é um streaming tradicional" left, "EXPRESSIONISMO" art piece right with demon logo overlay. Description text below.
+4. **Experience section**: Full-width zombie image with giant gradient text "UMA EXPERIÊNCIA DIFERENTE", centered description paragraphs, italic quote.
+5. **Film types section**: Rounded image card with gradient overlay, large bold heading "TIPOS DE FILMES QUE VOCÊ ENCONTRA", bullet list (terror psicológico, cults europeus, horror asiático, etc.).
+6. **Why hard to find**: Demon logo + clown image composition with heading "POR QUE VOCÊ NÃO ENCONTRA ESSES FILMES FACILMENTE", quote at bottom.
+7. **Moving catalog**: Rounded image with stairs/silhouette, heading "UM CATÁLOGO EM MOVIMENTO", split text columns.
+8. **For whom**: Editorial text "PARA QUEM FAZ SENTIDO" left, red accent text right ("talvez não seja para você...").
+9. **Annual plan card**: "PLANO ANUAL" in JetBrains Mono gradient text, glassmorphism card with price (R$ 99,90), crossed original price, feature list with red check icons, CTA button, italic "side effects" list below.
+10. **Footer**: Darkflix logo centered.
 
-- **`src/App.tsx`**: Change `/landing/:slug` to `/:slug` route — place it LAST before the catch-all `*` to avoid conflicting with `/login`, `/planos`, `/superadmin`, etc.
-- Update all internal links that reference `/landing/` to use `/:slug` directly.
+### Technical approach:
+- Add `'darkflix-editorial'` to `TenantTheme.template` union type.
+- Extend `TenantTheme` with new fields for editorial sections:
+  - `editorialSections?: Array<{ type: 'manifesto'|'experience'|'filmTypes'|'catalog'|'audience'; heading: string; body: string; image: string; quote?: string; bulletPoints?: string[] }>`
+  - `loginSideImage?: string` (for split login)
+- Create the template as a conditional branch inside `LandingPage.tsx` or a separate component `DarkflixEditorialTemplate.tsx`.
+- All text/images/quotes are populated from `TenantTheme` so any tenant can use this template with their own content.
+- Copy uploaded images (clown, zombie, expressionism art, stairs, etc.) from the ZIP to `src/assets/darkflix/` as default sample images for this template.
 
-## 2. Dynamic SEO & Favicon per Tenant
+### Files:
+- **New**: `src/components/landing/DarkflixEditorialTemplate.tsx`
+- **Edit**: `src/lib/types.ts` (extend TenantTheme)
+- **Edit**: `src/pages/landing/LandingPage.tsx` (render new template when selected)
+- **Edit**: `src/pages/tenant/LandingEditorPage.tsx` (add editors for editorial sections)
+- **Edit**: `src/lib/seed.ts` (set Darkflix tenant to use `darkflix-editorial` template with sample content)
 
-- Create a `useTenantMeta` hook that updates `document.title` and the favicon `<link>` element dynamically based on the current tenant (resolved from URL slug).
-- Apply in `TenantAdminLayout`, `TenantLoginPage`, `MinhaContaPage`, and `LandingPage`.
-- When on tenant pages, title = `{Tenant Name} - Admin/Login/Minha Conta`, favicon = `tenant.faviconUrl` (fallback to FlixPay icon).
+## 2. Split-Screen Login (Image Left, Form Right)
 
-## 3. Independent Login Sessions (No Cross-Logout)
+Both SuperAdmin login (`LoginPage.tsx`) and tenant login (`TenantLoginPage.tsx`) get a split layout:
+- **Left 50%**: Full-height background image with dark overlay and gradient. For SuperAdmin: a default FlixPay brand image. For tenants: uses `tenant.theme.loginSideImage` (editable).
+- **Right 50%**: Current login form (logo, fields, button).
+- On mobile: image hides, form goes full-width.
 
-Currently there's a single `flixpay:currentUser` key — logging in as one user logs out the other.
+### Files:
+- **Edit**: `src/pages/LoginPage.tsx` (split layout)
+- **Edit**: `src/pages/TenantLoginPage.tsx` (split layout with tenant image)
+- **Edit**: `src/lib/types.ts` (add `loginSideImage` to TenantTheme)
 
-- **Change storage keys** to be role/context-scoped:
-  - `flixpay:session:superadmin` — SuperAdmin session
-  - `flixpay:session:tenant:{slug}` — Tenant admin session for that slug
-  - `flixpay:session:subscriber:{slug}` — Subscriber session for that slug
-- **`AuthContext`**: Determine which session key to use based on current URL path. On `/superadmin/*` read superadmin session; on `/:slug/admin/*` read tenant session; on `/:slug/minha-conta` read subscriber session.
-- `login()` writes to the appropriate session key. `logout()` only clears the current context's key.
+## 3. Image Remove Button on All Upload Fields
 
-## 4. SuperAdmin: Change Tenant Passwords
+Any component that has image upload (TenantFormPage, LandingEditorPage, MinhaContaPage profile photo, etc.) needs an "X" remove button that clears the image back to empty string.
 
-- **`src/pages/superadmin/TenantsListPage.tsx`** or **`TenantFormPage.tsx`**: Add a "Alterar Senha" action that lets superadmin set a new password for any tenant_admin user.
-- Simple modal with new password field, updates the user in `getUsers()`/`setUsers()`.
+Pattern: When an image URL exists, show a small red "✕" button overlaid on the image preview. Clicking it sets the field to `''`.
 
-## 5. SuperAdmin: Plans CRUD
-
-- **New page `src/pages/superadmin/PlansManagePage.tsx`**: CRUD for the 3 FlixPay commercial plans (Start/Pro/Ultra).
-- Edit plan names, prices (implantação + mensal), feature checklist, descriptions.
-- Stored in localStorage under `flixpay:commercialPlans` (separate from tenant subscription plans).
-- **`SuperAdminLayout`**: Add "Planos" menu item.
-- **`App.tsx`**: Add route `/superadmin/planos`.
-
-## 6. Profiles & Users Module with Granular Permissions
-
-### Types (`src/lib/types.ts`)
-```typescript
-interface Permission {
-  page: string; // e.g. 'dashboard', 'subscribers', 'invoices'
-  view: boolean;
-  create: boolean;
-  edit: boolean;
-  delete: boolean;
-}
-
-interface Profile {
-  id: string;
-  name: string;
-  scope: 'superadmin' | 'tenant';
-  tenantId?: string;
-  permissions: Permission[];
-}
-```
-
-### Storage
-- `flixpay:profiles` — SuperAdmin profiles
-- `flixpay:profiles:{tenantId}` — Tenant-specific profiles
-
-### Pages
-- **SuperAdmin**: `src/pages/superadmin/ProfilesPage.tsx` — CRUD profiles with permission matrix (checkboxes for view/create/edit/delete per page: Dashboard, Tenants, Propostas, Assinaturas, Relatórios, Configurações, Planos).
-- **SuperAdmin**: `src/pages/superadmin/UsersPage.tsx` — CRUD users, assign profiles.
-- **Tenant**: `src/pages/tenant/ProfilesPage.tsx` — Same but for tenant pages (Dashboard, Assinantes, Faturas, Planos, Landing, Configurações).
-- **Tenant**: `src/pages/tenant/UsersPage.tsx` — CRUD tenant users, assign tenant profiles.
-- Add menu items "Perfis" and "Usuários" to both layouts.
-- Add routes in `App.tsx`.
-
-### Isolation
-- SuperAdmin profiles/users only manage superadmin-scope pages.
-- Tenant profiles/users only manage that tenant's pages. No cross-tenant access.
-
-## 7. Redesign Tenant Landing Pages (Streaming Preview Style)
-
-Inspired by agroplustv.com and agromercado.tv.br:
-
-- **Hero carousel/slider** with large background images, overlay text, CTA buttons (Assine Agora, Nossos Canais/Acessar Streaming).
-- **Live/Preview section**: Embedded video player placeholder or thumbnail grid showing "content preview" (editable images).
-- **Content categories**: Horizontal scroll cards with thumbnails (like Netflix/streaming catalogs).
-- **Feature highlights**: Icons + text cards (similar to "Portal de Leilões" section).
-- **Plans section** with the current pricing cards.
-- **All text and images must be editable** via the tenant's Landing Editor page — extend `TenantTheme` type with:
-  - `heroSlides: Array<{image, title, subtitle, ctaText, ctaLink}>`
-  - `contentCategories: Array<{title, items: Array<{image, title}>}>`
-  - `featureHighlights: Array<{icon, title, description}>`
-- Update `LandingEditorPage.tsx` to include editors for these new sections.
-
-## 8. Multi-Step Subscriber Signup Flow
-
-New page: `src/pages/subscriber/SignupPage.tsx` at route `/:slug/assinar`.
-
-### Step 1 — Dados Pessoais
-- Name, CPF (validated with algorithm, unique check against storage), Email (validated format, unique check — real-time as user types), Phone.
-- Real-time validation: if CPF/email already exists, show error immediately and disable "Continuar".
-
-### Step 2 — Login e Senha
-- Email (pre-filled from step 1, read-only — this is the login).
-- Password with strength requirements shown as checklist that updates during typing:
-  - Minimum 8 chars
-  - At least 1 uppercase
-  - At least 1 lowercase
-  - At least 1 number
-  - At least 1 special character
-- Confirm password field.
-- Eye icon toggle on both password fields.
-- "Continuar" disabled until all checks pass AND passwords match.
-
-### Step 3 — Escolha do Plano
-- Show tenant's active plans as cards (similar to landing page).
-- Select one to proceed.
-
-### Step 4 — Pagamento
-- Transparent Asaas checkout simulation (since no real backend):
-  - Credit card form (number, expiry, CVV, holder name) styled as embedded checkout.
-  - Show selected plan summary and price.
-- On "Finalizar": create subscriber in storage, create invoice, auto-login and redirect to `/:slug/minha-conta`.
-
-### Route
-- `/:slug/assinar` — public, no auth required.
-- Landing page "Assinar" buttons link here.
-
-## 9. Enhanced Subscriber Account (`MinhaContaPage`)
-
-Add to existing page:
-- **Cancel plan**: Button that marks status as `cancelled` but keeps access (shows "Cancelamento solicitado" message).
-- **Upgrade/Downgrade**: Already partially exists — make it functional (update subscriber's planId in storage).
-- **Edit profile**: Name, phone, CPF (read-only), email (read-only) — save to storage.
-- **Change password**: Current password verification + new password with same strength rules as signup.
-- **Profile photo**: FileReader → base64, stored on subscriber object.
-- **Change card**: Simulated form to "update" payment method.
+### Files to audit and update:
+- `src/pages/superadmin/TenantFormPage.tsx` (logo, favicon uploads)
+- `src/pages/tenant/LandingEditorPage.tsx` (hero images, section images)
+- `src/pages/subscriber/MinhaContaPage.tsx` (profile photo)
+- Any other form with image fields
 
 ---
 
 ## Technical Details
 
-### New Files
-1. `src/hooks/useTenantMeta.ts` — Dynamic SEO/favicon
-2. `src/pages/superadmin/PlansManagePage.tsx` — Commercial plans CRUD
-3. `src/pages/superadmin/ProfilesPage.tsx` — SuperAdmin profiles
-4. `src/pages/superadmin/UsersPage.tsx` — SuperAdmin users
-5. `src/pages/tenant/ProfilesPage.tsx` — Tenant profiles
-6. `src/pages/tenant/UsersPage.tsx` — Tenant users
-7. `src/pages/subscriber/SignupPage.tsx` — Multi-step signup
+### New types in `TenantTheme`:
+```typescript
+type TemplateType = 'cinema-dark' | 'gradient-flow' | 'minimal-premium' | 'darkflix-editorial';
 
-### Edited Files
-1. `src/App.tsx` — Routes (/:slug, signup, profiles, users, plans)
-2. `src/lib/types.ts` — Profile, Permission, TenantTheme extensions, Subscriber photo/password fields
-3. `src/lib/storage.ts` — Session keys per context, profiles storage, commercial plans storage
-4. `src/contexts/AuthContext.tsx` — Multi-session support
-5. `src/layouts/SuperAdminLayout.tsx` — Menu items (Planos, Perfis, Usuários)
-6. `src/layouts/TenantAdminLayout.tsx` — Menu items (Perfis, Usuários) + useTenantMeta
-7. `src/pages/landing/LandingPage.tsx` — Full redesign with streaming preview style
-8. `src/pages/tenant/LandingEditorPage.tsx` — Editors for new landing sections
-9. `src/pages/subscriber/MinhaContaPage.tsx` — Profile edit, password change, photo, cancel, card
-10. `src/pages/superadmin/TenantFormPage.tsx` — Change password action
-11. `src/pages/superadmin/TenantsListPage.tsx` — Change password action
-12. `src/pages/TenantLoginPage.tsx` — useTenantMeta
-13. `src/components/ProtectedRoute.tsx` — Permission-aware (check profile permissions)
+interface EditorialSection {
+  type: 'manifesto' | 'experience' | 'filmTypes' | 'catalog' | 'audience' | 'whyRare';
+  heading: string;
+  body: string;
+  image: string;
+  quote?: string;
+  bulletPoints?: string[];
+}
+
+// Add to TenantTheme:
+editorialSections?: EditorialSection[];
+loginSideImage?: string;
+```
+
+### Fonts
+Add Google Fonts `Space Grotesk`, `JetBrains Mono`, and `Source Serif Pro` to `index.html` for the editorial template.
 
 ### Execution Order
-1. Independent sessions + route changes (/:slug)
-2. Dynamic SEO/favicon hook
-3. SuperAdmin: password change, plans CRUD
-4. Profiles & Users module (both scopes)
-5. Landing page redesign
-6. Multi-step subscriber signup
-7. Enhanced MinhaContaPage
+1. Extend types + add fonts
+2. Copy Darkflix images to assets
+3. Build `DarkflixEditorialTemplate.tsx` matching all 10 Figma sections
+4. Wire template selection in `LandingPage.tsx`
+5. Update seed data for Darkflix
+6. Implement split-screen login for both pages
+7. Add image remove buttons across all upload fields
+8. Update `LandingEditorPage.tsx` with editorial section editors
+
+### New Files
+- `src/components/landing/DarkflixEditorialTemplate.tsx`
+- Darkflix images in `src/assets/darkflix/`
+
+### Edited Files
+- `src/lib/types.ts`
+- `src/pages/landing/LandingPage.tsx`
+- `src/pages/LoginPage.tsx`
+- `src/pages/TenantLoginPage.tsx`
+- `src/pages/tenant/LandingEditorPage.tsx`
+- `src/pages/superadmin/TenantFormPage.tsx`
+- `src/pages/subscriber/MinhaContaPage.tsx`
+- `src/lib/seed.ts`
+- `index.html` (Google Fonts)
 
