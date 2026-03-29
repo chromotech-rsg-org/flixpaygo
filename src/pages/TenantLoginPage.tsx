@@ -1,21 +1,22 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { getTenants } from '@/lib/storage';
+import { getTenantBySlug } from '@/lib/storage';
+import { useTenantMeta } from '@/hooks/useTenantMeta';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { LOGO_FLIXPAY } from '@/lib/constants';
 
 export default function TenantLoginPage() {
   const { slug } = useParams();
-  const tenants = getTenants();
-  const tenant = tenants.find(t => t.dominio.slug === slug);
+  const tenant = slug ? getTenantBySlug(slug) : null;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  useTenantMeta(tenant, 'Login');
 
   if (!tenant) {
     return (
@@ -33,12 +34,9 @@ export default function TenantLoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    const res = login(email, password);
+    const res = login(email, password, { type: 'tenant', slug });
     if (!res.success) { setError(res.error || 'Erro'); return; }
-    const user = JSON.parse(localStorage.getItem('flixpay:currentUser') || '{}');
-    if (user.role === 'tenant_admin') navigate(`/${slug}/admin`);
-    else if (user.role === 'subscriber') navigate(`/${slug}/minha-conta`);
-    else navigate('/superadmin');
+    navigate(res.redirectTo || `/${slug}/admin`);
   };
 
   return (
