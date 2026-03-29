@@ -33,21 +33,23 @@ export default function MinhaContaPage() {
   const [confirmPw, setConfirmPw] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [currentPwInput, setCurrentPwInput] = useState('');
+  const [editName, setEditName] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+
+  const plan = tenant?.plano as PlanType | undefined;
+  const features = plan ? PLAN_FEATURES[plan] : null;
+  const subscribers = tenant ? getSubscribers(tenant.id) : [];
+  const subscriber = subscribers.find(s => s.email === user?.email) || subscribers[0];
+  const invoices = tenant && subscriber ? getInvoices(tenant.id).filter(i => i.subscriberId === subscriber.id) : [];
+  const plans = tenant ? getPlans(tenant.id) : [];
+  const currentPlan = subscriber ? plans.find(p => p.id === subscriber.planId) : null;
+
+  // Sync edit fields when subscriber loads
+  useState(() => { if (subscriber) { setEditName(subscriber.name); setEditPhone(subscriber.phone); } });
 
   if (!tenant) return <p className="text-muted-foreground p-8">Tenant não encontrado.</p>;
-
-  const plan = tenant.plano as PlanType;
-  const features = PLAN_FEATURES[plan];
-  const subscribers = getSubscribers(tenant.id);
-  const subscriber = subscribers.find(s => s.email === user?.email) || subscribers[0];
   if (!subscriber) return <p className="text-muted-foreground p-8">Assinante não encontrado.</p>;
-
-  const invoices = getInvoices(tenant.id).filter(i => i.subscriberId === subscriber.id);
-  const plans = getPlans(tenant.id);
-  const currentPlan = plans.find(p => p.id === subscriber.planId);
-
-  const [editName, setEditName] = useState(subscriber.name);
-  const [editPhone, setEditPhone] = useState(subscriber.phone);
+  if (!features || !plan) return <p className="text-muted-foreground p-8">Erro ao carregar.</p>;
 
   const statusLabel: Record<string, string> = { active: 'Ativo', inactive: 'Inativo', overdue: 'Inadimplente', cancelled: 'Cancelado' };
   const statusColor: Record<string, string> = {
