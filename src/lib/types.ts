@@ -1,0 +1,189 @@
+export type UserRole = 'superadmin' | 'tenant_admin' | 'subscriber';
+export type PlanType = 'start' | 'pro' | 'ultra';
+export type LicenseStatus = 'ativo' | 'inadimplente' | 'suspenso' | 'trial';
+export type SubscriptionStatus = 'active' | 'inactive' | 'overdue' | 'cancelled';
+export type InvoiceStatus = 'paid' | 'pending' | 'overdue' | 'cancelled' | 'refunded';
+export type PaymentMethod = 'credit_card' | 'boleto' | 'pix';
+
+export interface User {
+  id: string;
+  role: UserRole;
+  email: string;
+  password: string;
+  name: string;
+  tenantId?: string;
+}
+
+export interface CurrentUser {
+  id: string;
+  role: UserRole;
+  email: string;
+  name: string;
+  tenantId?: string;
+}
+
+export interface TenantAddress {
+  cep: string;
+  street: string;
+  number: string;
+  complement: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+}
+
+export interface TenantResponsavel {
+  nome: string;
+  cpf: string;
+  email: string;
+  phone: string;
+  cargo: string;
+}
+
+export interface TenantFinanceiro {
+  implantacaoValor: number;
+  licencaValorMensal: number;
+  licencaVencimentoDia: number;
+  licencaStatus: LicenseStatus;
+  contratoInicio: string;
+  observacoes: string;
+}
+
+export interface TenantDominio {
+  slug: string;
+  subdomain: string;
+  customDomain: string;
+  minhaConta: string;
+  dnsStatus: 'pendente' | 'ativo' | 'erro';
+  streamingPortalUrl: string;
+}
+
+export interface StreamingEndpoint {
+  method: string;
+  path: string;
+}
+
+export interface TenantStreamingApi {
+  baseUrl: string;
+  authType: 'bearer' | 'apikey' | 'basic';
+  credential: string;
+  endpoints: {
+    createUser: StreamingEndpoint;
+    enablePlan: StreamingEndpoint;
+    disablePlan: StreamingEndpoint;
+    checkStatus: StreamingEndpoint;
+  };
+}
+
+export interface TenantAsaas {
+  apiKey: string;
+  environment: 'sandbox' | 'production';
+  webhookUrl: string;
+  status: string;
+}
+
+export interface TenantTheme {
+  template: 'cinema-dark' | 'gradient-flow' | 'minimal-premium';
+  mode: 'dark' | 'light';
+  primaryColor: string;
+  accentColor: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImage: string;
+  heroCtaText: string;
+}
+
+export interface Tenant {
+  id: string;
+  name: string;
+  razaoSocial: string;
+  cpfCnpj: string;
+  logoUrl: string;
+  faviconUrl: string;
+  address: TenantAddress;
+  email: string;
+  phone: string;
+  website: string;
+  responsavel: TenantResponsavel;
+  financeiro: TenantFinanceiro;
+  dominio: TenantDominio;
+  streamingApi: TenantStreamingApi;
+  asaas: TenantAsaas;
+  plano: PlanType;
+  theme: TenantTheme;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SubscriptionPlan {
+  id: string;
+  tenantId: string;
+  name: string;
+  description: string;
+  price: number;
+  interval: 'monthly' | 'quarterly' | 'yearly';
+  asaasPlanId: string;
+  streamingPlanId: string;
+  active: boolean;
+  highlight: boolean;
+  features: string[];
+}
+
+export interface Subscriber {
+  id: string;
+  tenantId: string;
+  name: string;
+  email: string;
+  cpf: string;
+  phone: string;
+  asaasCustomerId: string;
+  streamingUserId: string;
+  planId: string;
+  subscriptionStatus: SubscriptionStatus;
+  subscriptionId: string;
+  nextBillingDate: string;
+  createdAt: string;
+}
+
+export interface Invoice {
+  id: string;
+  subscriberId: string;
+  tenantId: string;
+  amount: number;
+  status: InvoiceStatus;
+  dueDate: string;
+  paidAt: string | null;
+  asaasPaymentId: string;
+  paymentMethod: PaymentMethod;
+}
+
+export interface ProposalItem {
+  id: string;
+  description: string;
+  included: boolean;
+  category: string;
+}
+
+export interface ProposalExtraItem {
+  id: string;
+  description: string;
+  value: number;
+}
+
+export interface Proposal {
+  id: string;
+  tenantId?: string;
+  clientName: string;
+  clientRazaoSocial: string;
+  clientEmail: string;
+  plano: PlanType;
+  implantacaoValor: number;
+  mensalidadeValor: number;
+  items: ProposalItem[];
+  extraItems: ProposalExtraItem[];
+  totalImplantacao: number;
+  totalMensal: number;
+  status: 'rascunho' | 'enviada' | 'aprovada' | 'recusada';
+  createdAt: string;
+  updatedAt: string;
+}
