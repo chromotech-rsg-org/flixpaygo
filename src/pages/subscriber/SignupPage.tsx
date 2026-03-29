@@ -157,7 +157,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-10 blur-[120px]" style={{ background: pc }} />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-10 blur-[120px] pointer-events-none" style={{ background: pc }} />
 
       {/* Header */}
       <header className="border-b border-border px-6 py-4 flex items-center justify-between bg-card/50 backdrop-blur-sm">
