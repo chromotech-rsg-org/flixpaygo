@@ -13,6 +13,7 @@ export default function LandingPage() {
   const tenants = getTenants();
   const tenant = tenants.find(t => t.dominio.slug === slug);
   const [isDarkLocal, setIsDarkLocal] = useState<boolean | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   if (!tenant) {
     return (
