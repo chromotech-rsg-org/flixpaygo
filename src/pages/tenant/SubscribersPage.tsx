@@ -1,33 +1,29 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { getSubscribers, getPlans, setSubscribers as saveSubscribers, getInvoices } from '@/lib/storage';
-import { getTenant } from '@/lib/storage';
+import { getSubscribers, getPlans, setSubscribers as saveSubscribers, getTenant } from '@/lib/storage';
 import { PLAN_FEATURES } from '@/lib/plan-features';
 import { Subscriber, SubscriptionStatus, PlanType } from '@/lib/types';
 import { motion } from 'framer-motion';
-import { Search, Download, UserPlus, Eye, Power, CreditCard, Mail } from 'lucide-react';
+import { Search, Download, Power } from 'lucide-react';
 import { toast } from 'sonner';
 import { UpsellLock } from '@/components/UpsellLock';
 
 export default function SubscribersPage() {
   const { user } = useAuth();
   const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
-  if (!tenant) return null;
-
-  const plan = tenant.plano as PlanType;
+  const plan = (tenant?.plano || 'start') as PlanType;
   const features = PLAN_FEATURES[plan];
 
-  const [subscribers, setSubscribers] = useState(getSubscribers(tenant.id));
+  const [subscribers, setSubscribers] = useState(() => tenant ? getSubscribers(tenant.id) : []);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<SubscriptionStatus | ''>('');
-  const plans = getPlans(tenant.id);
+  const plans = tenant ? getPlans(tenant.id) : [];
+
+  if (!tenant) return <p className="text-muted-foreground p-8">Tenant não encontrado.</p>;
 
   const filtered = subscribers.filter(s => {
     if (statusFilter && s.subscriptionStatus !== statusFilter) return false;
-    if (features.adminExportCSV && search) {
-      return s.name.toLowerCase().includes(search.toLowerCase()) || s.email.toLowerCase().includes(search.toLowerCase());
-    }
-    if (search) return s.name.toLowerCase().includes(search.toLowerCase());
+    if (search) return s.name.toLowerCase().includes(search.toLowerCase()) || (features.adminExportCSV && s.email.toLowerCase().includes(search.toLowerCase()));
     return true;
   });
 
@@ -55,19 +51,14 @@ export default function SubscribersPage() {
 
   const statusBadge = (s: SubscriptionStatus) => {
     const map: Record<SubscriptionStatus, string> = {
-      active: 'bg-green-500/20 text-green-400',
-      inactive: 'bg-gray-500/20 text-gray-400',
-      overdue: 'bg-red-500/20 text-red-400',
-      cancelled: 'bg-red-500/20 text-red-400',
+      active: 'bg-green-500/20 text-green-400', inactive: 'bg-gray-500/20 text-gray-400',
+      overdue: 'bg-red-500/20 text-red-400', cancelled: 'bg-red-500/20 text-red-400',
     };
     return map[s] || '';
   };
 
   const statusLabel: Record<SubscriptionStatus, string> = {
-    active: 'Ativo',
-    inactive: 'Inativo',
-    overdue: 'Inadimplente',
-    cancelled: 'Cancelado',
+    active: 'Ativo', inactive: 'Inativo', overdue: 'Inadimplente', cancelled: 'Cancelado',
   };
 
   return (

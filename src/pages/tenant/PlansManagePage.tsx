@@ -9,10 +9,11 @@ import { toast } from 'sonner';
 export default function PlansManagePage() {
   const { user } = useAuth();
   const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
-  if (!tenant) return null;
 
-  const [plans, setPlansState] = useState(getPlans(tenant.id));
+  const [plans, setPlansState] = useState(() => tenant ? getPlans(tenant.id) : []);
   const [editing, setEditing] = useState<SubscriptionPlan | null>(null);
+
+  if (!tenant) return <p className="text-muted-foreground p-8">Tenant não encontrado.</p>;
 
   const save = (plan: SubscriptionPlan) => {
     const updated = plans.some(p => p.id === plan.id)
@@ -33,17 +34,8 @@ export default function PlansManagePage() {
   };
 
   const newPlan = (): SubscriptionPlan => ({
-    id: crypto.randomUUID(),
-    tenantId: tenant.id,
-    name: '',
-    description: '',
-    price: 0,
-    interval: 'monthly',
-    asaasPlanId: '',
-    streamingPlanId: '',
-    active: true,
-    highlight: false,
-    features: [''],
+    id: crypto.randomUUID(), tenantId: tenant.id, name: '', description: '', price: 0,
+    interval: 'monthly', asaasPlanId: '', streamingPlanId: '', active: true, highlight: false, features: [''],
   });
 
   return (
@@ -76,12 +68,10 @@ export default function PlansManagePage() {
                 {plan.active ? 'Ativo' : 'Inativo'}
               </span>
             </div>
-
             <p className="text-3xl font-black text-primary mb-1">
               R$ {plan.price.toFixed(2)}
               <span className="text-sm text-muted-foreground font-normal">/{plan.interval === 'monthly' ? 'mês' : plan.interval === 'quarterly' ? 'trim' : 'ano'}</span>
             </p>
-
             <div className="mt-4 space-y-1.5">
               {plan.features.map((f, fi) => (
                 <div key={fi} className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -90,7 +80,6 @@ export default function PlansManagePage() {
                 </div>
               ))}
             </div>
-
             <div className="mt-4 flex gap-2">
               <button onClick={() => setEditing({ ...plan })} className="flex-1 py-2 text-xs font-semibold bg-secondary/50 rounded-lg hover:bg-secondary transition-colors">
                 <Edit size={12} className="inline mr-1" /> Editar
@@ -103,7 +92,6 @@ export default function PlansManagePage() {
         ))}
       </div>
 
-      {/* Edit Modal */}
       {editing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setEditing(null)}>
           <div className="bg-card border border-border rounded-2xl p-6 max-w-md w-full mx-4 space-y-4" onClick={e => e.stopPropagation()}>
@@ -127,18 +115,10 @@ export default function PlansManagePage() {
                 className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm min-h-[80px]" />
             </div>
             <div className="flex items-center gap-4">
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={editing.active} onChange={e => setEditing({ ...editing, active: e.target.checked })} />
-                Ativo
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={editing.highlight} onChange={e => setEditing({ ...editing, highlight: e.target.checked })} />
-                Destaque
-              </label>
+              <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={editing.active} onChange={e => setEditing({ ...editing, active: e.target.checked })} /> Ativo</label>
+              <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={editing.highlight} onChange={e => setEditing({ ...editing, highlight: e.target.checked })} /> Destaque</label>
             </div>
-            <button onClick={() => save(editing)} className="btn-brand w-full flex items-center justify-center gap-2 text-sm">
-              <Save size={16} /> Salvar
-            </button>
+            <button onClick={() => save(editing)} className="btn-brand w-full flex items-center justify-center gap-2 text-sm"><Save size={16} /> Salvar</button>
           </div>
         </div>
       )}

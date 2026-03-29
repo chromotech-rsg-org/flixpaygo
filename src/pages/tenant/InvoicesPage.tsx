@@ -5,19 +5,18 @@ import { Invoice, InvoiceStatus, PlanType } from '@/lib/types';
 import { PLAN_FEATURES } from '@/lib/plan-features';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { UpsellLock } from '@/components/UpsellLock';
 
 export default function InvoicesPage() {
   const { user } = useAuth();
   const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
-  if (!tenant) return null;
-
-  const plan = tenant.plano as PlanType;
+  const plan = (tenant?.plano || 'start') as PlanType;
   const features = PLAN_FEATURES[plan];
 
-  const [invoices, setInvoices] = useState(getInvoices(tenant.id));
-  const subscribers = getSubscribers(tenant.id);
+  const [invoices, setInvoices] = useState(() => tenant ? getInvoices(tenant.id) : []);
+  const subscribers = tenant ? getSubscribers(tenant.id) : [];
   const [statusFilter, setStatusFilter] = useState<InvoiceStatus | ''>('');
+
+  if (!tenant) return <p className="text-muted-foreground p-8">Tenant não encontrado.</p>;
 
   const filtered = invoices.filter(i => !statusFilter || i.status === statusFilter)
     .sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime());
