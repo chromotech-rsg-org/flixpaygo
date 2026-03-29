@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -7,6 +7,7 @@ import {
 import { NavLink } from '@/components/NavLink';
 import { LayoutDashboard, Users, FileText, CreditCard, Palette, Settings, LogOut, Sun, Moon, ExternalLink } from 'lucide-react';
 import { getTenant } from '@/lib/storage';
+import { LOGO_FLIXPAY } from '@/lib/constants';
 
 const menuItems = [
   { title: 'Dashboard', url: '/admin', icon: LayoutDashboard },
@@ -41,12 +42,9 @@ function SidebarInner() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end={item.url === '/admin'}
+                    <NavLink to={item.url} end={item.url === '/admin'}
                       className="hover:bg-sidebar-accent/50 transition-colors"
-                      activeClassName="bg-primary/10 text-primary font-semibold border-l-2 border-primary"
-                    >
+                      activeClassName="bg-primary/10 text-primary font-semibold border-l-2 border-primary">
                       <item.icon className="mr-2 h-4 w-4 shrink-0" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
@@ -65,7 +63,6 @@ export default function TenantAdminLayout() {
   const { user, logout, theme, toggleTheme } = useAuth();
   const navigate = useNavigate();
   const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
-
   const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
@@ -94,12 +91,10 @@ export default function TenantAdminLayout() {
               </button>
             </div>
           </header>
-          <main className="flex-1 p-4 md:p-6 overflow-auto">
-            <Outlet />
-          </main>
+          <main className="flex-1 p-4 md:p-6 overflow-auto"><Outlet /></main>
           <footer className="border-t border-border py-3 px-6 flex items-center justify-center gap-2 opacity-40">
             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Powered by</span>
-            <img src="https://chromotech.com.br/wp-content/uploads/2026/03/Logo-Flixpay-1080-x-300-px.png" alt="FlixPay" className="h-4" />
+            <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-4" />
           </footer>
         </div>
       </div>

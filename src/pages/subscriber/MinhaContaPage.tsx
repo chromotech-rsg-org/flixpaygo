@@ -6,6 +6,7 @@ import { PlanType } from '@/lib/types';
 import { motion } from 'framer-motion';
 import { ExternalLink, CreditCard, FileText, Calendar, ArrowUpRight, LogOut, Sun, Moon } from 'lucide-react';
 import { UpsellLock } from '@/components/UpsellLock';
+import { LOGO_FLIXPAY } from '@/lib/constants';
 
 export default function MinhaContaPage() {
   const { user, logout, theme, toggleTheme } = useAuth();
@@ -163,7 +164,7 @@ export default function MinhaContaPage() {
       {/* Footer */}
       <footer className="border-t border-border py-4 text-center opacity-40">
         <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Powered by </span>
-        <img src="https://chromotech.com.br/wp-content/uploads/2026/03/Logo-Flixpay-1080-x-300-px.png" alt="FlixPay" className="h-3 inline" />
+        <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3 inline" />
       </footer>
     </div>
   );

@@ -13,6 +13,9 @@ import TenantsListPage from "./pages/superadmin/TenantsListPage";
 import TenantFormPage from "./pages/superadmin/TenantFormPage";
 import ProposalsListPage from "./pages/superadmin/ProposalsListPage";
 import ProposalFormPage from "./pages/superadmin/ProposalFormPage";
+import GlobalSubscriptionsPage from "./pages/superadmin/GlobalSubscriptionsPage";
+import ReportsPage from "./pages/superadmin/ReportsPage";
+import SettingsPage from "./pages/superadmin/SettingsPage";
 import PublicProposalPage from "./pages/PublicProposalPage";
 import PlansPage from "./pages/PlansPage";
 import TenantDashboardPage from "./pages/tenant/TenantDashboardPage";
@@ -20,20 +23,12 @@ import SubscribersPage from "./pages/tenant/SubscribersPage";
 import InvoicesPage from "./pages/tenant/InvoicesPage";
 import PlansManagePage from "./pages/tenant/PlansManagePage";
 import LandingEditorPage from "./pages/tenant/LandingEditorPage";
+import TenantSettingsPage from "./pages/tenant/TenantSettingsPage";
 import MinhaContaPage from "./pages/subscriber/MinhaContaPage";
 import LandingPage from "./pages/landing/LandingPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
-const PlaceholderPage = ({ title }: { title: string }) => (
-  <div className="flex items-center justify-center min-h-[60vh]">
-    <div className="text-center glass-card p-12 rounded-2xl">
-      <h1 className="text-2xl font-black uppercase tracking-tight">{title}</h1>
-      <p className="text-muted-foreground mt-2">Em desenvolvimento</p>
-    </div>
-  </div>
-);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -56,9 +51,9 @@ const App = () => (
               <Route path="tenants/:id" element={<TenantFormPage />} />
               <Route path="propostas" element={<ProposalsListPage />} />
               <Route path="propostas/:id" element={<ProposalFormPage />} />
-              <Route path="assinaturas" element={<PlaceholderPage title="Assinaturas Global" />} />
-              <Route path="relatorios" element={<PlaceholderPage title="Relatórios" />} />
-              <Route path="configuracoes" element={<PlaceholderPage title="Configurações" />} />
+              <Route path="assinaturas" element={<GlobalSubscriptionsPage />} />
+              <Route path="relatorios" element={<ReportsPage />} />
+              <Route path="configuracoes" element={<SettingsPage />} />
             </Route>
 
             {/* Tenant Admin */}
@@ -68,7 +63,7 @@ const App = () => (
               <Route path="faturas" element={<InvoicesPage />} />
               <Route path="planos" element={<PlansManagePage />} />
               <Route path="landing" element={<LandingEditorPage />} />
-              <Route path="configuracoes" element={<PlaceholderPage title="Configurações do Tenant" />} />
+              <Route path="configuracoes" element={<TenantSettingsPage />} />
             </Route>
 
             {/* Subscriber */}
