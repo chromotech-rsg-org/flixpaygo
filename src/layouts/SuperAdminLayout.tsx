@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/sidebar';
 import { NavLink } from '@/components/NavLink';
 import { LayoutDashboard, Building2, FileText, Users, BarChart3, Settings, LogOut, Sun, Moon } from 'lucide-react';
+import { LOGO_FLIXPAY_ICON, LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
 
 const menuItems = [
   { title: 'Dashboard', url: '/superadmin', icon: LayoutDashboard },
@@ -19,15 +20,14 @@ const menuItems = [
 function SidebarInner() {
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
-  const location = useLocation();
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
       <div className="p-4 flex items-center justify-center">
         {collapsed ? (
-          <img src="https://chromotech.com.br/wp-content/uploads/2026/03/Logo-Flixpay.png" alt="FlixPay" className="h-8 w-8 object-contain" />
+          <img src={LOGO_FLIXPAY_ICON} alt="FlixPay" className="h-8 w-8 object-contain" />
         ) : (
-          <img src="https://chromotech.com.br/wp-content/uploads/2026/03/Logo-Flixpay-1080-x-300-px.png" alt="FlixPay" className="h-8 object-contain" />
+          <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-8 object-contain" />
         )}
       </div>
       <SidebarContent>
@@ -37,12 +37,9 @@ function SidebarInner() {
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end={item.url === '/superadmin'}
+                    <NavLink to={item.url} end={item.url === '/superadmin'}
                       className="hover:bg-sidebar-accent/50 transition-colors"
-                      activeClassName="bg-primary/10 text-primary font-semibold border-l-2 border-primary"
-                    >
+                      activeClassName="bg-primary/10 text-primary font-semibold border-l-2 border-primary">
                       <item.icon className="mr-2 h-4 w-4 shrink-0" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
@@ -60,7 +57,6 @@ function SidebarInner() {
 export default function SuperAdminLayout() {
   const { user, logout, theme, toggleTheme } = useAuth();
   const navigate = useNavigate();
-
   const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
@@ -68,7 +64,6 @@ export default function SuperAdminLayout() {
       <div className="min-h-screen flex w-full">
         <SidebarInner />
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Header */}
           <header className="h-14 border-b border-border flex items-center justify-between px-4 bg-card/50 backdrop-blur-sm sticky top-0 z-20">
             <div className="flex items-center gap-3">
               <SidebarTrigger />
@@ -84,18 +79,12 @@ export default function SuperAdminLayout() {
               </button>
             </div>
           </header>
-
-          {/* Main */}
-          <main className="flex-1 p-4 md:p-6 overflow-auto">
-            <Outlet />
-          </main>
-
-          {/* Footer */}
+          <main className="flex-1 p-4 md:p-6 overflow-auto"><Outlet /></main>
           <footer className="border-t border-border py-4 px-6 flex flex-col md:flex-row items-center justify-center gap-3">
             <div className="flex items-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
-              <img src="https://rsggroup.com.br/wp-content/uploads/2024/02/L06-3-1.png" alt="RSG Group" className="h-5 grayscale hover:grayscale-0 transition-all" />
+              <img src={LOGO_RSG} alt="RSG Group" className="h-5 grayscale hover:grayscale-0 transition-all" />
               <span className="text-muted-foreground text-xs">×</span>
-              <img src="https://chromotech.com.br/wp-content/uploads/2024/08/Logo-Chromotech-Registrado-Cinza-2.png" alt="Chromotech" className="h-5 grayscale hover:grayscale-0 transition-all" />
+              <img src={LOGO_CHROMOTECH} alt="Chromotech" className="h-5 grayscale hover:grayscale-0 transition-all" />
             </div>
             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">FlixPay é uma tecnologia provida por RSG Group & Chromotech</span>
           </footer>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -25,61 +26,36 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
-      {/* Glow effects */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-[120px]" style={{ background: 'hsl(var(--primary))' }} />
       <div className="absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full opacity-10 blur-[100px]" style={{ background: 'hsl(var(--primary))' }} />
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-md mx-4"
-      >
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="w-full max-w-md mx-4">
         <div className="glass-card p-8 rounded-2xl">
-          {/* Logo */}
           <div className="text-center mb-8">
-            <img
-              src="https://chromotech.com.br/wp-content/uploads/2026/03/Logo-Flixpay-1080-x-300-px.png"
-              alt="FlixPay"
-              className="h-12 mx-auto mb-4"
-            />
+            <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-12 mx-auto mb-4" />
             <p className="text-muted-foreground text-sm">Acesse sua conta</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2 block">E-mail</label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                placeholder="seu@email.com"
-                required
-              />
+                placeholder="seu@email.com" required />
             </div>
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2 block">Senha</label>
               <div className="relative">
-                <input
-                  type={showPw ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
+                <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
                   className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all pr-12"
-                  placeholder="••••••••"
-                  required
-                />
+                  placeholder="••••••••" required />
                 <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                   {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            {error && (
-              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-red-400 text-center">
-                {error}
-              </motion.p>
-            )}
+            {error && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-red-400 text-center">{error}</motion.p>}
 
             <button type="submit" className="btn-brand w-full flex items-center justify-center gap-2 text-sm font-bold uppercase tracking-wider">
               <LogIn size={18} /> Entrar
@@ -96,11 +72,10 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="mt-6 flex items-center justify-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
-          <img src="https://rsggroup.com.br/wp-content/uploads/2024/02/L06-3-1.png" alt="RSG Group" className="h-6 grayscale hover:grayscale-0 transition-all" />
+          <img src={LOGO_RSG} alt="RSG Group" className="h-6 grayscale hover:grayscale-0 transition-all" />
           <span className="text-muted-foreground text-xs">×</span>
-          <img src="https://chromotech.com.br/wp-content/uploads/2024/08/Logo-Chromotech-Registrado-Cinza-2.png" alt="Chromotech" className="h-6 grayscale hover:grayscale-0 transition-all" />
+          <img src={LOGO_CHROMOTECH} alt="Chromotech" className="h-6 grayscale hover:grayscale-0 transition-all" />
         </div>
       </motion.div>
     </div>

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Check, X, MessageCircle } from 'lucide-react';
 import { PLAN_NAMES, PLAN_PRICES, ALL_PLAN_FEATURES, PLAN_BADGES, PLAN_DESCRIPTIONS } from '@/lib/plan-features';
 import { PlanType } from '@/lib/types';
+import { LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
 
 export default function PlansPage() {
   const plans: PlanType[] = ['start', 'pro', 'ultra'];
@@ -15,7 +16,7 @@ export default function PlansPage() {
 
       {/* Header */}
       <header className="py-6 px-8 flex items-center justify-between border-b border-white/5">
-        <img src="https://chromotech.com.br/wp-content/uploads/2026/03/Logo-Flixpay-1080-x-300-px.png" alt="FlixPay" className="h-8" />
+        <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-8" />
         <a href="/login" className="text-sm text-white/40 hover:text-white transition-colors">Login →</a>
       </header>
 
@@ -111,9 +112,9 @@ export default function PlansPage() {
       {/* Footer */}
       <footer className="py-8 border-t border-white/5 text-center space-y-4">
         <div className="flex items-center justify-center gap-4 opacity-50">
-          <img src="https://rsggroup.com.br/wp-content/uploads/2024/02/L06-3-1.png" alt="RSG Group" className="h-6 brightness-200" />
+          <img src={LOGO_RSG} alt="RSG Group" className="h-6 brightness-200" />
           <span className="text-white/30">×</span>
-          <img src="https://chromotech.com.br/wp-content/uploads/2024/08/Logo-Chromotech-Registrado-Cinza-2.png" alt="Chromotech" className="h-6 brightness-200" />
+          <img src={LOGO_CHROMOTECH} alt="Chromotech" className="h-6 brightness-200" />
         </div>
         <p className="text-[10px] uppercase tracking-[.3em] text-white/20">FlixPay é uma tecnologia provida por RSG Group & Chromotech</p>
       </footer>
