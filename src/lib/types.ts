@@ -104,8 +104,17 @@ export interface FeatureHighlight {
   description: string;
 }
 
+export interface EditorialSection {
+  type: 'manifesto' | 'experience' | 'filmTypes' | 'catalog' | 'audience' | 'whyRare';
+  heading: string;
+  body: string;
+  image: string;
+  quote?: string;
+  bulletPoints?: string[];
+}
+
 export interface TenantTheme {
-  template: 'cinema-dark' | 'gradient-flow' | 'minimal-premium';
+  template: 'cinema-dark' | 'gradient-flow' | 'minimal-premium' | 'darkflix-editorial';
   mode: 'dark' | 'light';
   primaryColor: string;
   accentColor: string;
@@ -116,6 +125,8 @@ export interface TenantTheme {
   heroSlides?: HeroSlide[];
   contentCategories?: ContentCategory[];
   featureHighlights?: FeatureHighlight[];
+  editorialSections?: EditorialSection[];
+  loginSideImage?: string;
 }
 
 export interface Tenant {

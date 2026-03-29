@@ -30,6 +30,7 @@ export default function LandingEditorPage() {
     { id: 'cinema-dark' as const, name: 'Cinema Dark', desc: 'Hero fullscreen, glassmorphism, carrossel' },
     { id: 'gradient-flow' as const, name: 'Gradient Flow', desc: 'Gradientes fluidos, split hero' },
     { id: 'minimal-premium' as const, name: 'Minimal Premium', desc: 'Clean, tipografia bold, tabela' },
+    { id: 'darkflix-editorial' as const, name: 'Darkflix Editorial', desc: 'Editorial dark, tipografia premium, seções imersivas' },
   ];
 
   const availableTemplates = templates.slice(0, features.landingTemplates);

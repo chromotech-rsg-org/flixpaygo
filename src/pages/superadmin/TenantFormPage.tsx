@@ -5,7 +5,7 @@ import { Tenant, PlanType, LicenseStatus } from '@/lib/types';
 import { PLAN_PRICES, PLAN_NAMES } from '@/lib/plan-features';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { ArrowLeft, Save, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Save, Eye, EyeOff, CheckCircle, XCircle, X } from 'lucide-react';
 
 const emptyTenant = (): Tenant => ({
   id: crypto.randomUUID(),
@@ -138,12 +138,22 @@ export default function TenantFormPage() {
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Logo</label>
               <input type="file" accept="image/*" onChange={handleImageUpload('logoUrl')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
-              {tenant.logoUrl && <img src={tenant.logoUrl} alt="Logo" className="h-12 mt-2 rounded" />}
+              {tenant.logoUrl && (
+                <div className="relative inline-block mt-2">
+                  <img src={tenant.logoUrl} alt="Logo" className="h-12 rounded" />
+                  <button type="button" onClick={() => update('logoUrl', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+                </div>
+              )}
             </div>
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Favicon</label>
               <input type="file" accept="image/*" onChange={handleImageUpload('faviconUrl')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
-              {tenant.faviconUrl && <img src={tenant.faviconUrl} alt="Favicon" className="h-8 mt-2 rounded" />}
+              {tenant.faviconUrl && (
+                <div className="relative inline-block mt-2">
+                  <img src={tenant.faviconUrl} alt="Favicon" className="h-8 rounded" />
+                  <button type="button" onClick={() => update('faviconUrl', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -348,6 +358,7 @@ export default function TenantFormPage() {
                 { id: 'cinema-dark' as const, name: 'Cinema Dark', desc: 'Hero fullscreen, glassmorphism, carrossel' },
                 { id: 'gradient-flow' as const, name: 'Gradient Flow', desc: 'Gradientes fluidos, split hero, toggle mensal/anual' },
                 { id: 'minimal-premium' as const, name: 'Minimal Premium', desc: 'Tipografia bold, tabela comparativa, clean' },
+                { id: 'darkflix-editorial' as const, name: 'Darkflix Editorial', desc: 'Editorial dark, tipografia premium, seções imersivas' },
               ].map(tmpl => (
                 <button key={tmpl.id} onClick={() => update('theme.template', tmpl.id)}
                   className={`p-4 rounded-xl border-2 text-left transition-all ${tenant.theme.template === tmpl.id ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/30'}`}>
@@ -388,7 +399,22 @@ export default function TenantFormPage() {
           <div>
             <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Imagem Hero</label>
             <input type="file" accept="image/*" onChange={handleImageUpload('theme.heroImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
-            {tenant.theme.heroImage && <img src={tenant.theme.heroImage} alt="Hero" className="h-32 mt-2 rounded-lg object-cover" />}
+            {tenant.theme.heroImage && (
+              <div className="relative inline-block mt-2">
+                <img src={tenant.theme.heroImage} alt="Hero" className="h-32 rounded-lg object-cover" />
+                <button type="button" onClick={() => update('theme.heroImage', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Imagem Login (lado esquerdo)</label>
+            <input type="file" accept="image/*" onChange={handleImageUpload('theme.loginSideImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
+            {tenant.theme.loginSideImage && (
+              <div className="relative inline-block mt-2">
+                <img src={tenant.theme.loginSideImage} alt="Login Side" className="h-32 rounded-lg object-cover" />
+                <button type="button" onClick={() => update('theme.loginSideImage', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+              </div>
+            )}
           </div>
         </TabsContent>
       </Tabs>
