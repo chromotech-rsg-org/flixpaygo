@@ -52,7 +52,6 @@ export default function LandingPage() {
     { q: 'Como acesso o conteúdo?', a: 'Após a assinatura, você recebe acesso imediato à plataforma de streaming com login e senha.' },
   ];
 
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const testimonials = [
     { name: 'Maria S.', text: 'Melhor plataforma de streaming que já usei! Conteúdo incrível e interface fácil de usar.', rating: 5 },
