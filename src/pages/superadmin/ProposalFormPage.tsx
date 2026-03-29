@@ -109,7 +109,6 @@ export default function ProposalFormPage() {
   };
 
   const handleSave = () => {
-    if (!proposal.clientName) { toast.error('Informe o nome do cliente'); return; }
     proposal.updatedAt = new Date().toISOString();
     saveProposal(proposal);
     toast.success('Proposta salva!');

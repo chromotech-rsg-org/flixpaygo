@@ -8,31 +8,31 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-    --card: 0 0% 98%;
+    --card: 0 0% 97%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 358 86% 47%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 4.8% 95.9%;
+    --secondary: 240 5% 92%;
     --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
+    --muted: 240 5% 92%;
+    --muted-foreground: 240 4% 36%;
+    --accent: 240 5% 92%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
+    --border: 240 6% 82%;
+    --input: 240 6% 82%;
     --ring: 358 86% 47%;
     --radius: 0.75rem;
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 97%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 358 86% 47%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 240 5% 92%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 220 13% 85%;
     --sidebar-ring: 358 86% 47%;
 
     --brand-main: 358 86% 47%;
@@ -88,23 +88,26 @@
 @layer components {
   .glass-card {
     @apply rounded-xl border transition-all duration-400;
+  }
+  .dark .glass-card {
     background: linear-gradient(145deg, rgba(30,30,30,.6), rgba(15,15,15,.9));
     border-color: rgba(229,9,20,.1);
     box-shadow: 0 15px 35px -10px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.05);
   }
-  .glass-card:hover {
+  .dark .glass-card:hover {
     transform: translateY(-4px);
     border-color: rgba(229,9,20,.4);
     box-shadow: 0 25px 50px -12px #000, 0 0 30px rgba(229,9,20,.2);
   }
-  .light .glass-card {
-    background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(250,250,250,.95));
-    border-color: rgba(0,0,0,.08);
-    box-shadow: 0 4px 20px -4px rgba(0,0,0,.08);
+  :root:not(.dark) .glass-card {
+    background: linear-gradient(145deg, hsl(0 0% 100%), hsl(0 0% 97%));
+    border-color: hsl(240 6% 82%);
+    box-shadow: 0 4px 20px -4px rgba(0,0,0,.06);
   }
-  .light .glass-card:hover {
+  :root:not(.dark) .glass-card:hover {
+    transform: translateY(-2px);
     border-color: rgba(229,9,20,.3);
-    box-shadow: 0 8px 30px -8px rgba(0,0,0,.12), 0 0 20px rgba(229,9,20,.1);
+    box-shadow: 0 8px 30px -8px rgba(0,0,0,.1), 0 0 20px rgba(229,9,20,.08);
   }
   .text-glow-brand {
     text-shadow: 0 0 25px rgba(229,9,20,.6);

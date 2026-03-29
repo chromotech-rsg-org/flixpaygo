@@ -1,12 +1,19 @@
 import { useParams } from 'react-router-dom';
 import { getTenants, getPlans } from '@/lib/storage';
+import { PLAN_FEATURES } from '@/lib/plan-features';
+import { PlanType } from '@/lib/types';
 import { motion } from 'framer-motion';
-import { Check, Play, Star, MessageCircle } from 'lucide-react';
+import { Check, Play, Star, MessageCircle, ChevronDown, ChevronUp, Sun, Moon } from 'lucide-react';
+import { useState } from 'react';
+
+const fadeUp = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } };
 
 export default function LandingPage() {
   const { slug } = useParams();
   const tenants = getTenants();
   const tenant = tenants.find(t => t.dominio.slug === slug);
+  const [isDarkLocal, setIsDarkLocal] = useState<boolean | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   if (!tenant) {
     return (
@@ -19,10 +26,12 @@ export default function LandingPage() {
     );
   }
 
+  const plan = tenant.plano as PlanType;
+  const features = PLAN_FEATURES[plan];
   const plans = getPlans(tenant.id).filter(p => p.active);
   const pc = tenant.theme.primaryColor;
   const ac = tenant.theme.accentColor;
-  const isDark = tenant.theme.mode === 'dark';
+  const isDark = isDarkLocal !== null ? isDarkLocal : tenant.theme.mode === 'dark';
   const bg = isDark ? '#050505' : '#ffffff';
   const fg = isDark ? '#ffffff' : '#09090b';
   const muted = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
@@ -30,6 +39,32 @@ export default function LandingPage() {
   const borderC = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
 
   const template = tenant.theme.template;
+  const canToggle = features.landingDarkLightToggle;
+  const hasAdvanced = features.landingAdvancedSections;
+
+  const whatsappLink = `https://api.whatsapp.com/send?phone=5511969169869&text=${encodeURIComponent(`Olá! Tenho interesse no ${tenant.name}.`)}`;
+
+  // FAQ data
+  const faqs = [
+    { q: 'Como funciona o pagamento?', a: 'Aceitamos cartão de crédito, boleto bancário e PIX. A cobrança é automática e recorrente.' },
+    { q: 'Posso cancelar a qualquer momento?', a: 'Sim! Você pode cancelar sua assinatura quando quiser, sem multas ou taxas adicionais.' },
+    { q: 'Em quantos dispositivos posso assistir?', a: 'Depende do seu plano. Consulte os detalhes de cada plano para saber o número de telas simultâneas.' },
+    { q: 'Como acesso o conteúdo?', a: 'Após a assinatura, você recebe acesso imediato à plataforma de streaming com login e senha.' },
+  ];
+
+
+  const testimonials = [
+    { name: 'Maria S.', text: 'Melhor plataforma de streaming que já usei! Conteúdo incrível e interface fácil de usar.', rating: 5 },
+    { name: 'Carlos R.', text: 'O suporte é excelente e a qualidade do streaming é impecável. Recomendo!', rating: 5 },
+    { name: 'Ana P.', text: 'Variedade de conteúdo surpreendente. Vale muito a pena cada centavo investido.', rating: 5 },
+  ];
+
+  const benefits = [
+    { title: 'Conteúdo Exclusivo', desc: 'Acesso a títulos que você não encontra em nenhuma outra plataforma.' },
+    { title: 'Qualidade Premium', desc: 'Streaming em alta definição com tecnologia de última geração.' },
+    { title: 'Multi-Dispositivo', desc: 'Assista no celular, tablet, smart TV ou computador.' },
+    { title: 'Sem Anúncios', desc: 'Experiência limpa e ininterrupta, sem propagandas.' },
+  ];
 
   return (
     <div style={{ background: bg, color: fg, fontFamily: 'Inter, sans-serif' }} className="min-h-screen">
@@ -44,10 +79,17 @@ export default function LandingPage() {
         </div>
         <div className="flex items-center gap-4">
           <a href="#planos" className="text-sm font-semibold" style={{ color: muted }}>Planos</a>
+          {hasAdvanced && <a href="#beneficios" className="text-sm font-semibold hidden md:inline" style={{ color: muted }}>Benefícios</a>}
+          {hasAdvanced && <a href="#faq" className="text-sm font-semibold hidden md:inline" style={{ color: muted }}>FAQ</a>}
           {tenant.dominio.streamingPortalUrl && (
             <a href={tenant.dominio.streamingPortalUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold" style={{ color: muted }}>Acessar</a>
           )}
-          <a href="/login" className="px-4 py-2 rounded-lg text-sm font-bold text-white" style={{ background: pc }}>Login</a>
+          {canToggle && (
+            <button onClick={() => setIsDarkLocal(!isDark)} className="p-2 rounded-lg transition-colors" style={{ color: muted }}>
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          )}
+          <a href={slug ? `/${slug}/login` : '/login'} className="px-4 py-2 rounded-lg text-sm font-bold text-white" style={{ background: pc }}>Login</a>
         </div>
       </nav>
 
@@ -121,18 +163,42 @@ export default function LandingPage() {
         </section>
       )}
 
+      {/* Benefits Section (Pro+) */}
+      {hasAdvanced && (
+        <section id="beneficios" className="px-6 py-20 border-t" style={{ borderColor: borderC }}>
+          <div className="max-w-5xl mx-auto">
+            <motion.div {...fadeUp} className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight">Por que nos escolher?</h2>
+              <p className="mt-3" style={{ color: muted }}>Vantagens exclusivas para nossos assinantes</p>
+            </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {benefits.map((b, i) => (
+                <motion.div key={i} {...fadeUp} transition={{ delay: i * 0.1 }}
+                  className="p-6 rounded-2xl border text-center" style={{ borderColor: borderC, background: cardBg }}>
+                  <div className="h-12 w-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${pc}15` }}>
+                    <Check size={20} style={{ color: pc }} />
+                  </div>
+                  <h3 className="font-bold mb-2">{b.title}</h3>
+                  <p className="text-sm" style={{ color: muted }}>{b.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Plans Section */}
-      <section id="planos" className="px-6 py-20">
+      <section id="planos" className="px-6 py-20 border-t" style={{ borderColor: borderC }}>
         <div className="max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
+          <motion.div {...fadeUp} className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight">Escolha seu Plano</h2>
             <p className="mt-3" style={{ color: muted }}>Comece a assistir agora mesmo</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {plans.map((plan, i) => (
-              <motion.div key={plan.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className={`rounded-2xl border p-6 flex flex-col relative ${plan.highlight ? '' : ''}`}
+              <motion.div key={plan.id} {...fadeUp} transition={{ delay: i * 0.1 }}
+                className={`rounded-2xl border p-6 flex flex-col relative`}
                 style={{
                   borderColor: plan.highlight ? `${pc}60` : borderC,
                   background: plan.highlight ? `${pc}08` : cardBg,
@@ -172,11 +238,73 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Testimonials Section (Pro+) */}
+      {hasAdvanced && (
+        <section className="px-6 py-20 border-t" style={{ borderColor: borderC }}>
+          <div className="max-w-5xl mx-auto">
+            <motion.div {...fadeUp} className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight">O que dizem nossos assinantes</h2>
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {testimonials.map((t, i) => (
+                <motion.div key={i} {...fadeUp} transition={{ delay: i * 0.1 }}
+                  className="p-6 rounded-2xl border" style={{ borderColor: borderC, background: cardBg }}>
+                  <div className="flex gap-1 mb-3">
+                    {Array.from({ length: t.rating }).map((_, j) => (
+                      <Star key={j} size={14} fill={pc} style={{ color: pc }} />
+                    ))}
+                  </div>
+                  <p className="text-sm mb-4 leading-relaxed" style={{ color: muted }}>"{t.text}"</p>
+                  <p className="font-bold text-sm">{t.name}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ Section (Pro+) */}
+      {hasAdvanced && (
+        <section id="faq" className="px-6 py-20 border-t" style={{ borderColor: borderC }}>
+          <div className="max-w-3xl mx-auto">
+            <motion.div {...fadeUp} className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight">Perguntas Frequentes</h2>
+            </motion.div>
+            <div className="space-y-3">
+              {faqs.map((faq, i) => (
+                <motion.div key={i} {...fadeUp} transition={{ delay: i * 0.05 }}
+                  className="rounded-xl border overflow-hidden" style={{ borderColor: borderC, background: cardBg }}>
+                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full p-5 flex items-center justify-between text-left font-semibold text-sm">
+                    {faq.q}
+                    {openFaq === i ? <ChevronUp size={16} style={{ color: muted }} /> : <ChevronDown size={16} style={{ color: muted }} />}
+                  </button>
+                  {openFaq === i && (
+                    <div className="px-5 pb-5">
+                      <p className="text-sm leading-relaxed" style={{ color: muted }}>{faq.a}</p>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Footer */}
       <footer className="py-8 px-6 border-t text-center space-y-3" style={{ borderColor: borderC }}>
         <p className="text-sm font-semibold">{tenant.name}</p>
         <p className="text-[10px] uppercase tracking-widest" style={{ color: muted }}>Powered by FlixPay — RSG Group & Chromotech</p>
       </footer>
+
+      {/* WhatsApp Float (Pro+) */}
+      {hasAdvanced && (
+        <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          title="Fale conosco no WhatsApp">
+          <MessageCircle size={24} />
+        </a>
+      )}
     </div>
   );
 }

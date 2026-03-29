@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { getTenants } from '@/lib/storage';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
-import { LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
+import { LOGO_FLIXPAY } from '@/lib/constants';
 
-export default function LoginPage() {
+export default function TenantLoginPage() {
+  const { slug } = useParams();
+  const tenants = getTenants();
+  const tenant = tenants.find(t => t.dominio.slug === slug);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
@@ -13,24 +17,44 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  if (!tenant) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <h1 className="text-2xl font-black text-foreground">Portal não encontrado</h1>
+          <p className="text-muted-foreground mt-2">Verifique o endereço e tente novamente.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const pc = tenant.theme.primaryColor;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     const res = login(email, password);
     if (!res.success) { setError(res.error || 'Erro'); return; }
-    navigate(res.redirectTo || '/superadmin');
+    const user = JSON.parse(localStorage.getItem('flixpay:currentUser') || '{}');
+    if (user.role === 'tenant_admin') navigate(`/${slug}/admin`);
+    else if (user.role === 'subscriber') navigate(`/${slug}/minha-conta`);
+    else navigate('/superadmin');
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-[120px]" style={{ background: 'hsl(var(--primary))' }} />
-      <div className="absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full opacity-10 blur-[100px]" style={{ background: 'hsl(var(--primary))' }} />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-15 blur-[120px]" style={{ background: pc }} />
+      <div className="absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full opacity-10 blur-[100px]" style={{ background: pc }} />
 
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="w-full max-w-md mx-4">
         <div className="glass-card p-8 rounded-2xl">
           <div className="text-center mb-8">
-            <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-12 mx-auto mb-4" />
-            <p className="text-muted-foreground text-sm">Painel SuperAdmin</p>
+            {tenant.logoUrl ? (
+              <img src={tenant.logoUrl} alt={tenant.name} className="h-14 mx-auto mb-4 object-contain" />
+            ) : (
+              <h1 className="text-3xl font-black mb-4" style={{ color: pc }}>{tenant.name}</h1>
+            )}
+            <p className="text-muted-foreground text-sm">Acesse sua conta</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -54,25 +78,16 @@ export default function LoginPage() {
 
             {error && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-destructive text-center">{error}</motion.p>}
 
-            <button type="submit" className="btn-brand w-full flex items-center justify-center gap-2 text-sm font-bold uppercase tracking-wider">
+            <button type="submit" className="w-full px-6 py-3 rounded-lg font-bold text-white transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+              style={{ background: pc, boxShadow: `0 0 20px ${pc}40` }}>
               <LogIn size={18} /> Entrar
             </button>
           </form>
-
-          <div className="mt-6 pt-6 border-t border-border">
-            <p className="text-xs text-muted-foreground text-center mb-3">Contas de demonstração:</p>
-            <div className="space-y-1.5 text-xs text-muted-foreground">
-              <div className="flex justify-between"><span className="font-medium text-foreground">SuperAdmin</span><span>admin@flixpay.app / flixpay2024</span></div>
-              <div className="flex justify-between"><span className="font-medium text-foreground">Tenant Admin</span><span>admin@darkflix.com.br / darkflix123</span></div>
-              <div className="flex justify-between"><span className="font-medium text-foreground">Assinante</span><span>joao@email.com / 123456</span></div>
-            </div>
-          </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
-          <img src={LOGO_RSG} alt="RSG Group" className="h-6 grayscale hover:grayscale-0 transition-all" />
-          <span className="text-muted-foreground text-xs">×</span>
-          <img src={LOGO_CHROMOTECH} alt="Chromotech" className="h-6 grayscale hover:grayscale-0 transition-all" />
+        <div className="mt-6 text-center opacity-40">
+          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Powered by </span>
+          <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3.5 inline ml-1" />
         </div>
       </motion.div>
     </div>
