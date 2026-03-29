@@ -1,74 +1,103 @@
 
 
-# FlixPay — Fase 1: Login + SuperAdmin Dashboard + Propostas
+# Plan: Proposta Genérica + Layout Premium + Light Theme + Tenant URLs + Missing Features
 
-## Identidade Visual
-- Tema dark premium com paleta FlixPay (#E50914 vermelho, #050505 fundo, #121212 cards)
-- Efeitos glassmorphism, hover 3D, glow vermelho nos cards e botões
-- Fonte Inter (300-900), toggle dark/light persistido em localStorage
-- Logos FlixPay, RSG Group e Chromotech nos locais indicados
+## 1. Proposta Genérica (sem tenant)
 
-## Autenticação (localStorage)
-- Página `/login` com design premium FlixPay (glassmorphism card, logo, campos estilizados)
-- Usuários pré-cadastrados (superadmin, tenant_admin, subscriber) inicializados no primeiro acesso
-- Redirecionamento por role: superadmin → `/superadmin`, tenant_admin → `/admin`, subscriber → `/minha-conta`
-- Guard de rotas protegidas por role
+The proposal form already supports creating without a tenant (the dropdown has "Proposta independente"). The issue is the public proposal page needs to work well without a client name. Minor adjustment: if `clientName` is empty, show "Proposta Genérica FlixPay" as title.
 
-## Dados de Demonstração
-- Auto-seed no primeiro acesso: 3 tenants (Darkflix/Pro, CinemaFlix/Ultra, SeriesPlay/Start)
-- 5-10 assinantes por tenant com faturas variadas nos últimos 12 meses
-- Feature flags por plano (start/pro/ultra) controlando recursos disponíveis
+**Files:** `src/pages/PublicProposalPage.tsx`, `src/pages/superadmin/ProposalFormPage.tsx`
 
-## SuperAdmin Dashboard — Layout
-- Sidebar fixa com logo FlixPay, menu: Dashboard, Tenants, Propostas, Assinaturas (global), Relatórios, Configurações
-- Header com badge "SuperAdmin", nome do usuário, toggle dark/light
-- Footer com logos RSG Group × Chromotech (grayscale → color no hover)
+## 2. Redesign Public Proposal Page to Match HTML Template
 
-## SuperAdmin — Dashboard Global
-- 4 cards de métricas: tenants ativos, receita FlixPay/mês, total assinantes global, tenants inadimplentes
-- Gráfico de receita FlixPay (12 meses) usando Recharts
-- Tabela de tenants com licença vencendo em 7 dias
-- Lista dos últimos 5 tenants cadastrados
+The uploaded HTML has a rich, multi-section layout that the current `PublicProposalPage.tsx` doesn't replicate. Will rebuild it to match:
 
-## SuperAdmin — Gestão de Tenants (CRUD)
-- Listagem com logo, nome, plano (badge), status licença, qtd assinantes, vencimento, ações
-- Filtros por plano, status, data de cadastro
-- Formulário completo em 6 abas: Empresa/Responsável, Plano/Financeiro, Domínio/Streaming, API Streaming, Asaas, Personalização Visual
-- Ações: editar, duplicar (copia config, zera dados pessoais), excluir, "Acessar como tenant" (impersonation)
-- Upload de logo/favicon via FileReader → base64 em localStorage
+- **Sticky header**: FlixPay logo + "Proposta / Apresentação" badge + client name subtitle
+- **Hero section**: 4 glassmorphism feature cards (Landing Page, Gestão, Pagamentos, Streaming) with SVG icons and hover animations
+- **"O que Oferecemos"**: Split layout — bullet list left, dashboard image right with parallax offset
+- **"Como funciona a Plataforma"**: 3 cards with images (Dashboard, Asaas, Streaming) — use placeholder images or external URLs from the HTML
+- **"Processo de Implantação"**: 4 step cards with giant step numbers and colored icons
+- **"O que compõe este projeto?"**: Dynamic sections — implantação padrão + recorrente + each extra item rendered as an "Add-on" card with red gradient
+- **"Resumo de Investimento"**: Financial summary table with all line items, total implantação highlighted big, monthly below
+- **CTA**: WhatsApp button "Aprovar Escopo e Iniciar Projeto"
+- **Footer**: RSG × Chromotech logos with grayscale→color hover
 
-## SuperAdmin — Propostas Comerciais
-- Menu dedicado "Propostas" na sidebar
-- Criar proposta independente OU vinculada a um tenant existente
-- Ao cadastrar tenant, aba "Proposta" permite gerar proposta com dados pré-preenchidos
-- Editor de proposta:
-  - Selecionar plano base (Start/Pro/Ultra) com valores pré-preenchidos editáveis
-  - Checklist de todos os itens/features — marcar o que está incluso ou não
-  - Adicionar itens extras personalizados (LP customizada, APIs adicionais, etc.) com valores
-  - Nome/razão social do cliente na proposta
-  - Valor total calculado automaticamente
-- Gerar proposta visual (página pública estilizada no padrão FlixPay dark/premium, baseada no HTML anexado)
-- Link compartilhável `/proposta/:id` com a proposta formatada
-- Listar, editar, duplicar e excluir propostas
+All sections use the `dark-glass-card` styling, step-number effects, and brand colors from the HTML. Dynamic data from the proposal (plan, items, extras, values, client name) populates the relevant sections.
 
-## Página Pública — Comparativo de Planos (`/planos`)
-- Acessível sem login, identidade visual FlixPay completa
-- 3 planos lado a lado com todos os recursos listados e checkmarks
-- Preços de implantação e mensalidade
-- Badge "Mais Popular" no Pro
-- Botão "Contratar" → WhatsApp
+**File:** `src/pages/PublicProposalPage.tsx` (full rewrite)
 
-## Rotas
-- `/login` — Autenticação
-- `/superadmin` — Dashboard global
-- `/superadmin/tenants` — Listagem de tenants
-- `/superadmin/tenants/novo` — Cadastro de tenant
-- `/superadmin/tenants/:id` — Edição de tenant (com aba Proposta)
-- `/superadmin/propostas` — Listagem de propostas
-- `/superadmin/propostas/nova` — Criar proposta
-- `/superadmin/propostas/:id` — Editar proposta
-- `/proposta/:id` — Proposta pública compartilhável
-- `/planos` — Comparativo público de planos
-- `/admin` — Placeholder para Tenant Admin (fase 2)
-- `/minha-conta` — Placeholder para Área do Assinante (fase 3)
+## 3. Fix Light Theme
+
+Current `.glass-card` light variant uses `.light` selector but the app uses class `dark` on `<html>` — when dark is removed, there's no `.light` class added. Fix:
+
+- Change `.light .glass-card` to `:root:not(.dark) .glass-card`
+- Improve light mode CSS variables: increase contrast for borders, card backgrounds, muted text
+- Ensure `toggleTheme` in AuthContext adds/removes `dark` class properly (it does via `classList.toggle`)
+
+**File:** `src/index.css`
+
+## 4. Per-Tenant Portal URLs
+
+Restructure routing so each tenant gets `/:slug/admin/*`, `/:slug/minha-conta`, `/:slug/login`:
+
+- **New `TenantLoginPage.tsx`**: Resolves tenant by slug, shows tenant's logo/branding
+- **Update `App.tsx`**: Add `/:slug/login`, `/:slug/admin/*`, `/:slug/minha-conta` routes
+- **Update `AuthContext.tsx`**: Redirect tenant_admin to `/{slug}/admin`, subscriber to `/{slug}/minha-conta`
+- **Update `TenantAdminLayout.tsx`**: Read tenant from URL slug param
+- **Update `TenantFormPage.tsx`**: Show provisional URL field based on slug
+
+**Files:** New `src/pages/TenantLoginPage.tsx`, edit `src/App.tsx`, `src/contexts/AuthContext.tsx`, `src/layouts/TenantAdminLayout.tsx`
+
+## 5. FlixPay Commercial Landing Page (`/`)
+
+Create a premium landing page for FlixPay itself at `/` instead of redirect to login:
+- Hero with FlixPay logo, headline, CTA
+- Features showcase, 3 plans comparison, WhatsApp CTA, footer
+
+**File:** New `src/pages/FlixPayLandingPage.tsx`, update route in `App.tsx`
+
+## 6. Enhanced Tenant Landing Pages
+
+Add missing sections to `LandingPage.tsx` gated by plan features:
+- Testimonials, FAQ, Benefits (Pro+)
+- WhatsApp floating button (Pro+)
+- Dark/Light toggle for Pro+ tenants
+
+**File:** `src/pages/landing/LandingPage.tsx`
+
+## 7. Missing Data Types
+
+Add `ApiLog` and `Coupon` interfaces to types and storage helpers.
+
+**Files:** `src/lib/types.ts`, `src/lib/storage.ts`
+
+---
+
+## Technical Details
+
+### Execution Order
+1. Fix `index.css` light theme
+2. Rewrite `PublicProposalPage.tsx` to match HTML template
+3. Minor tweak to `ProposalFormPage.tsx` for generic proposals
+4. Create `TenantLoginPage.tsx` + update routing in `App.tsx`
+5. Update `AuthContext.tsx` for slug-aware redirects
+6. Update `TenantAdminLayout.tsx` to resolve tenant from slug
+7. Create `FlixPayLandingPage.tsx`
+8. Enhance `LandingPage.tsx` with missing sections
+9. Add `ApiLog`/`Coupon` to types and storage
+
+### New Files
+- `src/pages/FlixPayLandingPage.tsx`
+- `src/pages/TenantLoginPage.tsx`
+
+### Edited Files
+- `src/index.css`
+- `src/pages/PublicProposalPage.tsx`
+- `src/pages/superadmin/ProposalFormPage.tsx`
+- `src/App.tsx`
+- `src/contexts/AuthContext.tsx`
+- `src/layouts/TenantAdminLayout.tsx`
+- `src/pages/landing/LandingPage.tsx`
+- `src/lib/types.ts`
+- `src/lib/storage.ts`
 
