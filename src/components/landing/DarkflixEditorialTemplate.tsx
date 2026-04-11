@@ -114,14 +114,14 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
       </section>
 
       {/* ===== "NÃO É TRADICIONAL" BIG TEXT SECTION ===== */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <motion.div {...fadeUp} className="space-y-6">
+            <motion.div {...fadeUp} className="space-y-8">
               <p className="text-sm italic" style={{ fontFamily: "'Source Serif 4', serif", color: '#fff' }}>
                 "se parecer desconfortável, está funcionando."
               </p>
-              <h2 className="text-3xl md:text-[42px] font-bold leading-[1.05]"
+              <h2 className="text-3xl md:text-[40px] font-bold leading-tight"
                 style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 {experience?.heading || 'A Darkflix não é um streaming tradicional.'}
               </h2>
@@ -131,9 +131,9 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
             </motion.div>
             <motion.div {...fadeUp} className="relative">
               {experience?.image ? (
-                <img src={experience.image} alt="" className="w-full rounded-lg object-contain" />
+                <img src={experience.image} alt="" className="w-full rounded-lg" />
               ) : (
-                <img src="/darkflix/expressionism.png" alt="" className="w-full object-contain" />
+                <img src="/darkflix/content-block.png" alt="" className="w-full" />
               )}
             </motion.div>
           </div>
