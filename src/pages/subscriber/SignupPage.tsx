@@ -163,7 +163,7 @@ export default function SignupPage() {
       <header className="border-b border-border px-6 py-4 flex items-center justify-between bg-card/50 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <Link to={`/${slug}`}>
-            {tenant.logoUrl ? <img src={tenant.logoUrl} alt={tenant.name} className="h-8" /> : <span className="font-black text-xl" style={{ color: pc }}>{tenant.name}</span>}
+            {(tenant.logoSystemUrl || tenant.logoUrl) ? <img src={tenant.logoSystemUrl || tenant.logoUrl} alt={tenant.name} className="h-8" /> : <span className="font-black text-xl" style={{ color: pc }}>{tenant.name}</span>}
           </Link>
         </div>
         <div className="flex items-center gap-4">

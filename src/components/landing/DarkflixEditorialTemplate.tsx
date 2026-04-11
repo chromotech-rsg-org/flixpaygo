@@ -33,14 +33,14 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
           {tenant.theme.heroImage && (
             <img src={tenant.theme.heroImage} alt="" className="w-full h-full object-cover" />
           )}
-          <div className="absolute inset-0 bg-[rgba(2,2,2,0.55)]" />
+          <div className="absolute inset-0 bg-[rgba(2,2,2,0.35)]" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(2,2,2,0) 40%, #020202 100%)' }} />
         </div>
 
         {/* Logo */}
         <div className="absolute top-6 left-8 md:left-24 z-10">
-          {tenant.logoUrl ? (
-            <img src={tenant.logoHomeUrl || tenant.logoUrl} alt={tenant.name} className="h-10 md:h-12 object-contain" />
+          {(tenant.logoHomeUrl || tenant.logoUrl) ? (
+            <img src={tenant.logoHomeUrl || tenant.logoUrl} alt={tenant.name} className="h-14 md:h-16 object-contain" />
           ) : (
             <span className="text-2xl font-bold" style={{ color: pc }}>{tenant.name}</span>
           )}
@@ -354,8 +354,8 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
 
       {/* ===== FOOTER ===== */}
       <footer className="py-12 flex justify-center">
-        {tenant.logoUrl ? (
-          <img src={tenant.logoUrl} alt={tenant.name} className="h-20 object-contain opacity-80" />
+        {(tenant.logoFooterUrl || tenant.logoUrl) ? (
+          <img src={tenant.logoFooterUrl || tenant.logoUrl} alt={tenant.name} className="h-20 object-contain opacity-80" />
         ) : (
           <span className="text-3xl font-bold" style={{ color: pc }}>{tenant.name}</span>
         )}
