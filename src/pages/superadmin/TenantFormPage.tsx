@@ -9,7 +9,7 @@ import { ArrowLeft, Save, Eye, EyeOff, CheckCircle, XCircle, X } from 'lucide-re
 
 const emptyTenant = (): Tenant => ({
   id: crypto.randomUUID(),
-  name: '', razaoSocial: '', cpfCnpj: '', logoUrl: '', faviconUrl: '',
+  name: '', razaoSocial: '', cpfCnpj: '', logoUrl: '', faviconUrl: '', logoHomeUrl: '', logoFooterUrl: '', logoLoginUrl: '', logoSystemUrl: '',
   address: { cep: '', street: '', number: '', complement: '', neighborhood: '', city: '', state: '' },
   email: '', phone: '', website: '',
   responsavel: { nome: '', cpf: '', email: '', phone: '', cargo: '' },
@@ -141,27 +141,26 @@ export default function TenantFormPage() {
             <label htmlFor="showOnHomepage" className="text-sm font-semibold">Exibir na página inicial do FlixPay</label>
             <span className="text-xs text-muted-foreground">(Logo/nome aparecerá na seção de clientes)</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Logo</label>
-              <input type="file" accept="image/*" onChange={handleImageUpload('logoUrl')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
-              {tenant.logoUrl && (
-                <div className="relative inline-block mt-2">
-                  <img src={tenant.logoUrl} alt="Logo" className="h-12 rounded" />
-                  <button type="button" onClick={() => update('logoUrl', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
-                </div>
-              )}
-            </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Favicon</label>
-              <input type="file" accept="image/*" onChange={handleImageUpload('faviconUrl')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
-              {tenant.faviconUrl && (
-                <div className="relative inline-block mt-2">
-                  <img src={tenant.faviconUrl} alt="Favicon" className="h-8 rounded" />
-                  <button type="button" onClick={() => update('faviconUrl', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
-                </div>
-              )}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { field: 'logoUrl', label: 'Logo Principal', height: 'h-12' },
+              { field: 'faviconUrl', label: 'Favicon', height: 'h-8' },
+              { field: 'logoHomeUrl', label: 'Logo Home (Topo)', height: 'h-12' },
+              { field: 'logoFooterUrl', label: 'Logo Rodapé', height: 'h-12' },
+              { field: 'logoLoginUrl', label: 'Logo Tela de Login', height: 'h-12' },
+              { field: 'logoSystemUrl', label: 'Logo do Sistema (Painel)', height: 'h-10' },
+            ].map(logo => (
+              <div key={logo.field}>
+                <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">{logo.label}</label>
+                <input type="file" accept="image/*" onChange={handleImageUpload(logo.field)} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
+                {(tenant as any)[logo.field] && (
+                  <div className="relative inline-block mt-2">
+                    <img src={(tenant as any)[logo.field]} alt={logo.label} className={`${logo.height} rounded`} />
+                    <button type="button" onClick={() => update(logo.field, '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
 
           <h2 className="text-lg font-bold pt-4">Endereço</h2>
