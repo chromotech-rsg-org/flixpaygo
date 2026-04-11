@@ -167,7 +167,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       </section>
 
       {/* ===== SECTION 4: "UMA EXPERIÊNCIA DIFERENTE" with zombie ===== */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-visible">
         {/* Background image - city ruins, aligned with zombie */}
         <div className="absolute inset-0">
           <img src={tenant.theme.section4BgImage || '/darkflix/city-ruins-bg.png'} alt="" className="w-full h-full object-cover object-top" />
