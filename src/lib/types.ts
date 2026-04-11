@@ -138,6 +138,7 @@ export interface TenantTheme {
   loginSideImage?: string;
   section2BgImage?: string;
   section3BgImage?: string;
+  section4BgImage?: string;
 }
 
 export interface Tenant {
