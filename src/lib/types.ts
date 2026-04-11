@@ -137,7 +137,7 @@ export interface TenantTheme {
   editorialSections?: EditorialSection[];
   loginSideImage?: string;
   section2BgImage?: string;
-  section3BgImage?: string;
+  section3Image?: string;
   section4BgImage?: string;
 }
 

@@ -142,9 +142,9 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
 
       {/* ===== ZOMBIE / EXPERIENCE SECTION ===== */}
       <section className="relative py-20 overflow-hidden">
-        {tenant.theme.section3BgImage && (
+        {tenant.theme.section4BgImage && (
           <div className="absolute inset-0">
-            <img src={tenant.theme.section3BgImage} alt="" className="w-full h-full object-cover" />
+            <img src={tenant.theme.section4BgImage} alt="" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-[rgba(2,2,2,0.6)]" />
           </div>
         )}

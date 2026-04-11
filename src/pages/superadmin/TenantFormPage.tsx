@@ -488,17 +488,17 @@ export default function TenantFormPage() {
             )}
           </div>
           <div>
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Seção 3 — "Não é streaming tradicional"</label>
-            <input type="file" accept="image/*" onChange={handleImageUpload('theme.section3BgImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
-            {tenant.theme.section3BgImage && (
+            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Imagem Seção 3 — "Não é streaming tradicional"</label>
+            <input type="file" accept="image/*" onChange={handleImageUpload('theme.section3Image')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
+            {tenant.theme.section3Image && (
               <div className="relative inline-block mt-2">
-                <img src={tenant.theme.section3BgImage} alt="Seção 3" className="h-32 rounded-lg object-cover" />
-                <button type="button" onClick={() => update('theme.section3BgImage', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+                <img src={tenant.theme.section3Image} alt="Seção 3" className="h-32 rounded-lg object-cover" />
+                <button type="button" onClick={() => update('theme.section3Image', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
               </div>
             )}
           </div>
           <div>
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Seção 4 — "Experiência Diferente"</label>
+            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Fundo Seção 4 — "Experiência Diferente"</label>
             <input type="file" accept="image/*" onChange={handleImageUpload('theme.section4BgImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
             {tenant.theme.section4BgImage && (
               <div className="relative inline-block mt-2">
