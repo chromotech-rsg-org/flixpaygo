@@ -454,6 +454,26 @@ export default function TenantFormPage() {
               </div>
             )}
           </div>
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Fundo Seção 2 (Manifesto)</label>
+            <input type="file" accept="image/*" onChange={handleImageUpload('theme.section2BgImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
+            {tenant.theme.section2BgImage && (
+              <div className="relative inline-block mt-2">
+                <img src={tenant.theme.section2BgImage} alt="Seção 2" className="h-32 rounded-lg object-cover" />
+                <button type="button" onClick={() => update('theme.section2BgImage', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Fundo Seção 3 (Experiência)</label>
+            <input type="file" accept="image/*" onChange={handleImageUpload('theme.section3BgImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
+            {tenant.theme.section3BgImage && (
+              <div className="relative inline-block mt-2">
+                <img src={tenant.theme.section3BgImage} alt="Seção 3" className="h-32 rounded-lg object-cover" />
+                <button type="button" onClick={() => update('theme.section3BgImage', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+              </div>
+            )}
+          </div>
         </TabsContent>
       </Tabs>
 
