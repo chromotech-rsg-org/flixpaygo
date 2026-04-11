@@ -33,8 +33,8 @@ function SidebarInner() {
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
       <div className="p-4 flex items-center justify-center">
-        {tenant?.logoUrl ? (
-          <img src={tenant.logoUrl} alt={tenant.name} className={collapsed ? 'h-8 w-8 object-contain' : 'h-8 object-contain'} />
+        {(tenant?.logoSystemUrl || tenant?.logoUrl) ? (
+          <img src={tenant.logoSystemUrl || tenant.logoUrl} alt={tenant?.name} className={collapsed ? 'h-8 w-8 object-contain' : 'h-8 object-contain'} />
         ) : (
           <div className={`font-black text-primary ${collapsed ? 'text-lg' : 'text-xl'}`}>
             {collapsed ? (tenant?.name?.charAt(0) || 'T') : (tenant?.name || 'Tenant')}

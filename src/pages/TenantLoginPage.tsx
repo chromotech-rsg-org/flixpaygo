@@ -58,8 +58,8 @@ export default function TenantLoginPage() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="w-full max-w-md mx-4">
           <div className="glass-card p-8 rounded-2xl">
             <div className="text-center mb-8">
-              {tenant.logoUrl ? (
-                <img src={tenant.logoUrl} alt={tenant.name} className="h-14 mx-auto mb-4 object-contain" />
+              {(tenant.logoLoginUrl || tenant.logoUrl) ? (
+                <img src={tenant.logoLoginUrl || tenant.logoUrl} alt={tenant.name} className="h-14 mx-auto mb-4 object-contain" />
               ) : (
                 <h1 className="text-3xl font-black mb-4" style={{ color: pc }}>{tenant.name}</h1>
               )}
