@@ -4,8 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
-
-const DEFAULT_LOGIN_IMAGE = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&h=1600&fit=crop&q=80';
+import loginBg from '@/assets/flixpay-login-bg.jpg';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -27,7 +26,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex bg-background">
       {/* Left — Image */}
       <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
-        <img src={DEFAULT_LOGIN_IMAGE} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={loginBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         <div className="absolute bottom-12 left-12 z-10">
