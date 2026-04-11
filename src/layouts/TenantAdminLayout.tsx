@@ -75,7 +75,7 @@ export default function TenantAdminLayout() {
 
   const handleLogout = () => {
     logout({ type: 'tenant', slug });
-    navigate(slug ? `/${slug}/login` : '/login');
+    navigate(slug ? `/${slug}` : '/');
   };
 
   return (
@@ -105,9 +105,9 @@ export default function TenantAdminLayout() {
             </div>
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto"><Outlet /></main>
-          <footer className="border-t border-border py-3 px-6 flex items-center justify-center gap-2 opacity-40">
+          <footer className="border-t border-border py-3 px-6 flex items-center justify-center gap-2 opacity-40 hover:opacity-70 transition-opacity">
             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Powered by</span>
-            <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-4" />
+            <a href="/" onClick={e => { e.preventDefault(); navigate('/'); }}><img src={LOGO_FLIXPAY} alt="FlixPay" className="h-4" /></a>
           </footer>
         </div>
       </div>

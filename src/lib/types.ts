@@ -155,6 +155,7 @@ export interface Tenant {
   asaas: TenantAsaas;
   plano: PlanType;
   theme: TenantTheme;
+  showOnHomepage?: boolean;
   createdAt: string;
   updatedAt: string;
 }

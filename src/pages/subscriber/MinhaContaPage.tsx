@@ -64,7 +64,7 @@ export default function MinhaContaPage() {
 
   const handleLogout = () => {
     logout({ type: 'subscriber', slug });
-    window.location.href = slug ? `/${slug}/login` : '/login';
+    window.location.href = slug ? `/${slug}` : '/';
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -368,9 +368,9 @@ export default function MinhaContaPage() {
         )}
       </div>
 
-      <footer className="border-t border-border py-4 text-center opacity-40">
+      <footer className="border-t border-border py-4 text-center opacity-40 hover:opacity-70 transition-opacity">
         <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Powered by </span>
-        <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3 inline" />
+        <a href="/"><img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3 inline" /></a>
       </footer>
     </div>
   );
