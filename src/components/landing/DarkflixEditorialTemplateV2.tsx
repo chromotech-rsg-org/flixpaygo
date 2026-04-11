@@ -91,23 +91,23 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
         {/* Background image */}
         {tenant.theme.section2BgImage && (
           <div className="absolute inset-0">
-            <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[rgba(5,5,5,0.75)]" />
+            <img src={tenant.theme.section2BgImage} alt="" className="h-full w-auto object-contain object-left opacity-50" />
+            <div className="absolute inset-0 bg-[rgba(5,5,5,0.4)]" />
           </div>
         )}
         <div className="relative max-w-7xl mx-auto px-8 md:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             {/* Left: numbered movie cards */}
-            <motion.div {...fadeUp}>
+            <motion.div {...fadeUp} className="md:-ml-16 md:-my-8 relative z-0">
               {manifesto?.image ? (
-                <img src={manifesto.image} alt="" className="w-full max-w-[540px] object-contain" />
+                <img src={manifesto.image} alt="" className="w-[160%] max-w-none object-contain" />
               ) : (
-                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-full max-w-[540px] object-contain" />
+                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-[160%] max-w-none object-contain" />
               )}
             </motion.div>
 
             {/* Right: text block */}
-            <motion.div {...fadeUp} className="space-y-6">
+            <motion.div {...fadeUp} className="space-y-6 relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold leading-tight text-white">
                 {manifesto?.heading || 'você não chegou aqui por acaso.\na maioria das pessoas passa direto'}
               </h2>
