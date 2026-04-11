@@ -171,9 +171,10 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
       {/* ===== FILM TYPES ===== */}
       <section className="relative overflow-visible" style={{ minHeight: '520px' }}>
         {/* Background image with gradient fade to black */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-visible">
           <img src={filmTypes?.image || '/darkflix/film-types.png'} alt=""
-            className="w-full h-full object-cover" />
+            className="w-full h-full object-cover scale-125"
+            style={{ objectPosition: '25% center' }} />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,1) 100%)' }} />
         </div>
 
