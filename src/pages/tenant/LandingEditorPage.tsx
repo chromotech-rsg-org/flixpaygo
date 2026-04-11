@@ -121,6 +121,23 @@ export default function LandingEditorPage() {
         </div>
       </div>
 
+      {/* Section Background Images */}
+      <div className="glass-card p-6 space-y-4">
+        <h2 className="text-lg font-bold">Imagens de Fundo das Seções</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Fundo Seção 2 (Manifesto)</label>
+            <input value={theme.section2BgImage || ''} onChange={e => update('section2BgImage', e.target.value)} placeholder="URL da imagem de fundo" className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary" />
+            {theme.section2BgImage && <img src={theme.section2BgImage} alt="" className="mt-2 h-20 rounded object-cover" />}
+          </div>
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Fundo Seção 3 (Experiência)</label>
+            <input value={theme.section3BgImage || ''} onChange={e => update('section3BgImage', e.target.value)} placeholder="URL da imagem de fundo" className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary" />
+            {theme.section3BgImage && <img src={theme.section3BgImage} alt="" className="mt-2 h-20 rounded object-cover" />}
+          </div>
+        </div>
+      </div>
+
       {!features.landingAdvancedSections && (
         <UpsellLock featureName="Seções avançadas (FAQ, Depoimentos, Benefícios)" requiredPlan="pro" currentPlan={plan} />
       )}

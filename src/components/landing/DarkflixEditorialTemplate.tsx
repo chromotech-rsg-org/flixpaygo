@@ -33,14 +33,14 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
           {tenant.theme.heroImage && (
             <img src={tenant.theme.heroImage} alt="" className="w-full h-full object-cover" />
           )}
-          <div className="absolute inset-0 bg-[rgba(2,2,2,0.35)]" />
+          <div className="absolute inset-0 bg-[rgba(2,2,2,0.2)]" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(2,2,2,0) 40%, #020202 100%)' }} />
         </div>
 
         {/* Logo */}
         <div className="absolute top-6 left-8 md:left-24 z-10">
           {(tenant.logoHomeUrl || tenant.logoUrl) ? (
-            <img src={tenant.logoHomeUrl || tenant.logoUrl} alt={tenant.name} className="h-14 md:h-16 object-contain" />
+            <img src={tenant.logoHomeUrl || tenant.logoUrl} alt={tenant.name} className="h-20 md:h-24 object-contain" />
           ) : (
             <span className="text-2xl font-bold" style={{ color: pc }}>{tenant.name}</span>
           )}
@@ -74,7 +74,13 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
 
       {/* ===== MANIFESTO / CONTENT SECTION ===== */}
       <section className="relative py-20 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8 md:px-16">
+        {tenant.theme.section2BgImage && (
+          <div className="absolute inset-0">
+            <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-[rgba(2,2,2,0.7)]" />
+          </div>
+        )}
+        <div className="relative max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <motion.div {...fadeUp} className="order-2 md:order-1">
               {manifesto?.image && (
@@ -136,6 +142,12 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
 
       {/* ===== ZOMBIE / EXPERIENCE SECTION ===== */}
       <section className="relative py-20 overflow-hidden">
+        {tenant.theme.section3BgImage && (
+          <div className="absolute inset-0">
+            <img src={tenant.theme.section3BgImage} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-[rgba(2,2,2,0.6)]" />
+          </div>
+        )}
         <div className="relative max-w-7xl mx-auto px-8 text-center">
           <motion.div {...fadeUp} className="relative">
             <img src={whyRare?.image || '/darkflix/zombie-full.png'} alt="" className="mx-auto max-h-[700px] object-contain relative z-10" />

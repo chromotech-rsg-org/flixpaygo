@@ -136,6 +136,8 @@ export interface TenantTheme {
   featureHighlights?: FeatureHighlight[];
   editorialSections?: EditorialSection[];
   loginSideImage?: string;
+  section2BgImage?: string;
+  section3BgImage?: string;
 }
 
 export interface Tenant {
