@@ -16,7 +16,7 @@ const emptyTenant = (): Tenant => ({
   financeiro: { implantacaoValor: 1500, licencaValorMensal: 220, licencaVencimentoDia: 10, licencaStatus: 'ativo', contratoInicio: new Date().toISOString().split('T')[0], observacoes: '' },
   dominio: { slug: '', subdomain: '', customDomain: '', minhaConta: '', dnsStatus: 'pendente', streamingPortalUrl: '' },
   streamingApi: { baseUrl: '', authType: 'bearer', credential: '', endpoints: { createUser: { method: 'POST', path: '/api/users' }, enablePlan: { method: 'PUT', path: '/api/users/{id}/plan' }, disablePlan: { method: 'DELETE', path: '/api/users/{id}/plan' }, checkStatus: { method: 'GET', path: '/api/users/{id}' } } },
-  asaas: { apiKey: '', environment: 'sandbox', webhookUrl: '', status: 'pendente' },
+  asaas: { apiKey: '', environment: 'sandbox', webhookUrl: '', webhookToken: '', status: 'pendente' },
   plano: 'start',
   theme: { template: 'cinema-dark', mode: 'dark', primaryColor: '#E50914', accentColor: '#FF4D4D', heroTitle: '', heroSubtitle: '', heroImage: '', heroCtaText: 'Assine agora' },
   createdAt: new Date().toISOString(),
@@ -338,6 +338,19 @@ export default function TenantFormPage() {
                 <button onClick={() => { navigator.clipboard.writeText(tenant.asaas.webhookUrl); toast.success('Copiado!'); }}
                   className="px-3 py-2 bg-secondary/50 border border-border rounded-lg text-xs hover:bg-secondary transition-colors">Copiar</button>
               </div>
+            </div>
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Webhook Token (Autenticação)</label>
+              <div className="relative">
+                <input type={showApiKey ? 'text' : 'password'} value={tenant.asaas.webhookToken || ''}
+                  onChange={e => update('asaas.webhookToken', e.target.value)}
+                  placeholder="Token para validar webhooks recebidos"
+                  className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary pr-10" />
+                <button type="button" onClick={() => setShowApiKey(!showApiKey)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  {showApiKey ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-1">Configure no painel Asaas → Webhooks → Token de autenticação</p>
             </div>
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Status</label>
