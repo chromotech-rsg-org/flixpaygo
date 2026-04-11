@@ -129,14 +129,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       </section>
 
       {/* ===== SECTION 3: MANIFESTO - "NÃO É UM STREAMING TRADICIONAL" ===== */}
-      <section className="relative py-28 overflow-hidden">
-        {/* Background image */}
-        {tenant.theme.section3BgImage && (
-          <div className="absolute inset-0">
-            <img src={tenant.theme.section3BgImage} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[rgba(5,5,5,0.7)]" />
-          </div>
-        )}
+      <section className="relative py-28 overflow-hidden bg-[#050505]">
         <div className="relative max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             {/* Left: text block */}
@@ -163,13 +156,9 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
               </p>
             </motion.div>
 
-            {/* Right: EXPRESSIONISMO image */}
+            {/* Right: section 3 image (customizable) */}
             <motion.div {...fadeUp} className="relative">
-              {experience?.image ? (
-                <img src={experience.image} alt="" className="w-full rounded-lg" />
-              ) : (
-                <img src="/darkflix/dark-reaper.png" alt="" className="w-full rounded-lg" />
-              )}
+              <img src={tenant.theme.section3Image || '/darkflix/dark-reaper.png'} alt="" className="w-full rounded-lg" />
             </motion.div>
           </div>
         </div>
