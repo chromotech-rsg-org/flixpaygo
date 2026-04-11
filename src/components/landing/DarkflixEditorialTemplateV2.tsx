@@ -176,15 +176,15 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
         </div>
 
         <div className="relative z-10 -mt-20 md:-mt-32">
-          {/* Zombie image - slightly above background */}
+          {/* Zombie image - slightly above background, z-50 to be in front of all */}
           <motion.div {...fadeUp} className="relative flex justify-center">
             <img src={whyRare?.image || '/darkflix/zombie-full.png'} alt=""
-              className="w-full max-w-6xl h-auto relative z-10 object-contain" />
-            <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent z-20" />
+              className="w-full max-w-6xl h-auto relative z-50 object-contain" />
+            <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent z-[60]" />
           </motion.div>
 
-          {/* Quote + heading overlaying bottom of zombie */}
-          <motion.div {...fadeUp} className="relative z-30 -mt-48 md:-mt-64 text-center space-y-4 px-8">
+          {/* Quote + heading overlaying bottom of zombie - raised higher */}
+          <motion.div {...fadeUp} className="relative z-[70] -mt-56 md:-mt-72 text-center space-y-4 px-8">
             <p className="text-sm italic text-white/50" style={{ fontFamily: "'Georgia', serif" }}>
               {whyRare?.quote || '"não recomendamos assistir sozinho. nem acompanhado."'}
             </p>
