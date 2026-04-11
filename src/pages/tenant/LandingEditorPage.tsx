@@ -4,7 +4,7 @@ import { getTenant, saveTenant } from '@/lib/storage';
 import { PLAN_FEATURES } from '@/lib/plan-features';
 import { PlanType, TenantTheme } from '@/lib/types';
 import { toast } from 'sonner';
-import { Save, Eye } from 'lucide-react';
+import { Save, Eye, X } from 'lucide-react';
 import { UpsellLock } from '@/components/UpsellLock';
 
 export default function LandingEditorPage() {
@@ -18,6 +18,16 @@ export default function LandingEditorPage() {
 
   const update = (field: keyof TenantTheme, value: any) => {
     setTheme(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleImageUpload = (field: keyof TenantTheme) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result) update(field, reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSave = () => {
@@ -127,13 +137,23 @@ export default function LandingEditorPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Fundo Seção 2 (Manifesto)</label>
-            <input value={theme.section2BgImage || ''} onChange={e => update('section2BgImage', e.target.value)} placeholder="URL da imagem de fundo" className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary" />
-            {theme.section2BgImage && <img src={theme.section2BgImage} alt="" className="mt-2 h-20 rounded object-cover" />}
+            <input type="file" accept="image/*" onChange={handleImageUpload('section2BgImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
+            {theme.section2BgImage && (
+              <div className="relative inline-block mt-2">
+                <img src={theme.section2BgImage} alt="" className="h-20 rounded object-cover" />
+                <button type="button" onClick={() => update('section2BgImage', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+              </div>
+            )}
           </div>
           <div>
             <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Fundo Seção 3 (Experiência)</label>
-            <input value={theme.section3BgImage || ''} onChange={e => update('section3BgImage', e.target.value)} placeholder="URL da imagem de fundo" className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary" />
-            {theme.section3BgImage && <img src={theme.section3BgImage} alt="" className="mt-2 h-20 rounded object-cover" />}
+            <input type="file" accept="image/*" onChange={handleImageUpload('section3BgImage')} className="text-sm file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/10 file:text-primary file:font-semibold file:cursor-pointer" />
+            {theme.section3BgImage && (
+              <div className="relative inline-block mt-2">
+                <img src={theme.section3BgImage} alt="" className="h-20 rounded object-cover" />
+                <button type="button" onClick={() => update('section3BgImage', '')} className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center hover:bg-destructive/80"><X size={12} /></button>
+              </div>
+            )}
           </div>
         </div>
       </div>
