@@ -144,6 +144,10 @@ export interface Tenant {
   cpfCnpj: string;
   logoUrl: string;
   faviconUrl: string;
+  logoHomeUrl?: string;
+  logoFooterUrl?: string;
+  logoLoginUrl?: string;
+  logoSystemUrl?: string;
   address: TenantAddress;
   email: string;
   phone: string;
