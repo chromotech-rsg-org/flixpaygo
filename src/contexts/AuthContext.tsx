@@ -64,11 +64,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const found = users.find(u => u.email === email && u.password === password);
     if (!found) return { success: false, error: 'E-mail ou senha inválidos' };
 
+    const ctx = context || detectContext();
+
+    // Enforce login isolation per context
+    if (ctx.type === 'superadmin' && found.role !== 'superadmin') {
+      return { success: false, error: 'Usuário não autorizado para este painel' };
+    }
+    if (ctx.type === 'tenant') {
+      if (found.role === 'superadmin') {
+        // superadmin can impersonate tenant login — allow
+      } else if (found.role !== 'tenant_admin' && found.role !== 'subscriber') {
+        return { success: false, error: 'Usuário não autorizado para este portal' };
+      } else {
+        // Check tenant membership
+        const tenants = getTenants();
+        const tenant = tenants.find(t => t.dominio?.slug === ctx.slug || t.id === ctx.slug);
+        if (!tenant || found.tenantId !== tenant.id) {
+          return { success: false, error: 'Usuário não pertence a este portal' };
+        }
+      }
+    }
+    if (ctx.type === 'subscriber') {
+      if (found.role !== 'subscriber') {
+        return { success: false, error: 'Usuário não autorizado' };
+      }
+      const tenants = getTenants();
+      const tenant = tenants.find(t => t.dominio?.slug === ctx.slug || t.id === ctx.slug);
+      if (!tenant || found.tenantId !== tenant.id) {
+        return { success: false, error: 'Usuário não pertence a este portal' };
+      }
+    }
+
     const cu: CurrentUser = { id: found.id, role: found.role, email: found.email, name: found.name, tenantId: found.tenantId, profileId: found.profileId };
 
-    // Determine context and redirect
+    // Determine redirect
     let redirectTo = '/superadmin';
-    const ctx = context || detectContext();
 
     if (found.role === 'superadmin') {
       setSession('superadmin', cu);
