@@ -39,21 +39,19 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(5,5,5,0) 50%, #050505 100%)' }} />
         </div>
 
-        {/* DARKFLIX text behind character */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 z-[1] pointer-events-none select-none">
-          <span className="text-[200px] md:text-[300px] font-black tracking-tight text-white/[0.04] leading-none"
-            style={{ fontFamily: "'Inter', sans-serif" }}>
+        {/* DARKFLIX text behind character - very subtle */}
+        <div className="absolute right-[5%] top-1/2 -translate-y-1/2 z-[1] pointer-events-none select-none overflow-hidden">
+          <span className="text-[180px] md:text-[260px] font-black tracking-tight leading-none block"
+            style={{ fontFamily: "'Inter', sans-serif", color: 'rgba(255,255,255,0.03)' }}>
             DARK<br />FLIX
           </span>
         </div>
 
         {/* Character image (clown) on right side */}
-        {(whyRare?.image || catalog?.image) && (
-          <div className="absolute right-0 bottom-0 z-[2] h-[90%] w-[50%] flex items-end justify-end">
-            <img src={whyRare?.image || catalog?.image || ''} alt=""
-              className="h-full w-auto object-contain object-right-bottom" />
-          </div>
-        )}
+        <div className="absolute right-0 bottom-0 z-[2] h-[85%] w-[45%] flex items-end justify-end">
+          <img src={catalog?.image || whyRare?.image || '/darkflix/clown-logo.png'} alt=""
+            className="h-full w-auto object-contain object-right-bottom" />
+        </div>
 
         {/* Logo */}
         <div className="absolute top-8 left-8 md:left-16 z-10">
