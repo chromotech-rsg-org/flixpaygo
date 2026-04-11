@@ -169,37 +169,45 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
       </section>
 
       {/* ===== FILM TYPES ===== */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8 md:px-16">
-          <div className="relative rounded-[27px] overflow-hidden">
-            <img src={filmTypes?.image || '/darkflix/film-types.png'} alt=""
-              className="w-full h-[500px] object-cover blur-[2px]" />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.95) 70%)' }} />
-            <div className="absolute inset-0 flex flex-col md:flex-row items-end p-12 gap-8">
-              <motion.div {...fadeUp} className="flex-1">
-                <p className="text-sm mb-4 italic" style={{ fontFamily: "'Source Serif 4', serif" }}>
-                  "alguns filmes não terminam quando os créditos sobem."
-                </p>
-                <h2 className="text-4xl md:text-6xl font-bold"
-                  style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  {filmTypes?.heading || 'TIPOS DE FILMES QUE VOCÊ ENCONTRA'}
-                </h2>
-              </motion.div>
-              <motion.div {...fadeUp} className="flex-1">
-                <ul className="space-y-3 text-xl font-light">
-                  {(filmTypes?.bulletPoints || [
-                    '• terror psicológico e atmosférico',
-                    '• cults europeus dos anos 60, 70 e 80',
-                    '• horror asiático inquietante',
-                    '• produções independentes difíceis de localizar',
-                    '• obras restauradas e redescobertas',
-                    '• filmes estranhos demais para o circuito comercial',
-                  ]).map((bp, i) => (
-                    <li key={i}>{bp}</li>
-                  ))}
-                </ul>
-              </motion.div>
-            </div>
+      <section className="relative overflow-visible" style={{ minHeight: '520px' }}>
+        {/* Background image with gradient fade to black */}
+        <div className="absolute inset-0 z-0">
+          <img src={filmTypes?.image || '/darkflix/film-types.png'} alt=""
+            className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,1) 100%)' }} />
+        </div>
+
+        {/* Content overlay */}
+        <div className="relative z-10 max-w-7xl mx-auto px-8 md:px-16 pt-32 pb-16">
+          <div className="flex flex-col md:flex-row items-end gap-8">
+            {/* Left: quote + heading */}
+            <motion.div {...fadeUp} className="flex-1">
+              <p className="text-xs mb-4 italic text-white/60" style={{ fontFamily: "'Source Serif 4', serif" }}>
+                "alguns filmes não terminam quando os créditos sobem."
+              </p>
+              <h2 className="text-4xl md:text-[56px] font-extrabold leading-[0.95] tracking-tight">
+                <span className="text-white">TIPOS DE FILMES</span><br />
+                <span className="text-white">QUE </span>
+                <span className="text-[#E50914]">VOCÊ</span><br />
+                <span className="text-white">ENCONTRA</span>
+              </h2>
+            </motion.div>
+
+            {/* Right: bullet points */}
+            <motion.div {...fadeUp} className="flex-1">
+              <ul className="space-y-2 text-sm md:text-base font-light text-white/80">
+                {(filmTypes?.bulletPoints || [
+                  '• terror psicológico e atmosférico',
+                  '• cults europeus dos anos 60, 70 e 80',
+                  '• horror asiático inquietante',
+                  '• produções independentes difíceis de localizar',
+                  '• obras restauradas e redescobertas',
+                  '• filmes estranhos demais para o circuito comercial',
+                ]).map((bp, i) => (
+                  <li key={i}>{bp}</li>
+                ))}
+              </ul>
+            </motion.div>
           </div>
         </div>
       </section>
