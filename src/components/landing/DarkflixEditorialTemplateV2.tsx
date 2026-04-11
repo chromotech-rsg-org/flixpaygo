@@ -107,7 +107,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
             </motion.div>
 
             {/* Right: text block */}
-            <motion.div {...fadeUp} className="space-y-6">
+            <motion.div {...fadeUp} className="space-y-6 relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold leading-tight text-white">
                 {manifesto?.heading || 'você não chegou aqui por acaso.\na maioria das pessoas passa direto'}
               </h2>
