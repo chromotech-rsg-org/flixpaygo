@@ -91,8 +91,8 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
         {/* Background image */}
         {tenant.theme.section2BgImage && (
           <div className="absolute inset-0">
-            <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[rgba(5,5,5,0.75)]" />
+            <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-contain object-left opacity-60" />
+            <div className="absolute inset-0 bg-[rgba(5,5,5,0.5)]" />
           </div>
         )}
         <div className="relative max-w-7xl mx-auto px-8 md:px-16">
@@ -100,9 +100,9 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
             {/* Left: numbered movie cards */}
             <motion.div {...fadeUp}>
               {manifesto?.image ? (
-                <img src={manifesto.image} alt="" className="w-full max-w-[540px] object-contain" />
+                <img src={manifesto.image} alt="" className="w-full max-w-[800px] object-contain scale-125 origin-left" />
               ) : (
-                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-full max-w-[540px] object-contain" />
+                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-full max-w-[800px] object-contain scale-125 origin-left" />
               )}
             </motion.div>
 
