@@ -6,7 +6,7 @@ import { useTenantMeta } from '@/hooks/useTenantMeta';
 import { motion } from 'framer-motion';
 import { Check, Play, Star, MessageCircle, ChevronDown, ChevronUp, Sun, Moon, Tv, Zap, Shield, MonitorPlay } from 'lucide-react';
 import { useState } from 'react';
-import DarkflixEditorialTemplate from '@/components/landing/DarkflixEditorialTemplate';
+import DarkflixEditorialTemplateV2 from '@/components/landing/DarkflixEditorialTemplateV2';
 
 const fadeUp = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } };
 
@@ -31,7 +31,7 @@ export default function LandingPage() {
 
   // Darkflix Editorial template
   if (tenant.theme.template === 'darkflix-editorial') {
-    return <DarkflixEditorialTemplate tenant={tenant} />;
+    return <DarkflixEditorialTemplateV2 tenant={tenant} />;
   }
 
   const plan = tenant.plano as PlanType;
