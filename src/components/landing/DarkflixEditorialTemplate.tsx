@@ -73,39 +73,39 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
       </section>
 
       {/* ===== MANIFESTO / CONTENT SECTION ===== */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative overflow-hidden">
         {tenant.theme.section2BgImage && (
           <div className="absolute inset-0">
             <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[rgba(2,2,2,0.7)]" />
+            <div className="absolute inset-0 bg-[rgba(2,2,2,0.82)]" />
           </div>
         )}
-        <div className="relative max-w-7xl mx-auto px-8 md:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <motion.div {...fadeUp} className="order-2 md:order-1">
+        <div className="relative mx-auto flex min-h-[72vh] max-w-[1440px] items-center px-8 md:px-16 lg:px-24">
+          <div className="grid w-full grid-cols-1 items-end gap-14 md:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)] lg:gap-24">
+            <motion.div {...fadeUp} className="order-2 flex items-end md:order-1">
               {manifesto?.image && (
-                <div className="relative">
-                  <img src={manifesto.image} alt="" className="w-full rounded-lg" style={{ boxShadow: 'inset 0px 4px 143px 38px #000000' }} />
+                <div className="w-full max-w-[300px] md:max-w-[340px] lg:max-w-[380px]">
+                  <img src={manifesto.image} alt="" className="w-full object-contain" />
                 </div>
               )}
               {!manifesto?.image && (
-                <img src="/darkflix/posters.png" alt="" className="w-full" />
+                <img src="/darkflix/posters.png" alt="" className="w-full max-w-[300px] object-contain md:max-w-[340px] lg:max-w-[380px]" />
               )}
             </motion.div>
-            <motion.div {...fadeUp} className="order-1 md:order-2 space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold leading-tight"
+            <motion.div {...fadeUp} className="order-1 ml-auto max-w-[470px] md:order-2">
+              <h2 className="max-w-[430px] text-4xl font-bold leading-[0.98] md:text-[56px]"
                 style={{ background: 'linear-gradient(90deg, #E4E4E4 0%, #7E7E7E 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 {manifesto?.heading || 'A Darkflix não é um streaming tradicional.'}
               </h2>
-              <p className="text-lg text-[#a6a6a6cc] leading-relaxed font-light">
+              <p className="mt-8 max-w-[460px] text-lg font-light leading-[1.8] text-[#a6a6a6cc] md:text-[19px]">
                 {manifesto?.body || 'você ainda pode fechar esta página. a maioria faz isso. os outros continuam… e raramente se arrependem. raramente.'}
               </p>
               <Link to={`/${slug}/assinar`}
-                className="inline-flex items-center px-6 py-3 border text-sm uppercase tracking-[2.8px]"
+                className="mt-8 inline-flex min-h-[56px] min-w-[284px] items-center justify-center border px-8 py-4 text-sm uppercase tracking-[4px]"
                 style={{ borderColor: `${pc}4D`, color: pc }}>
                 ver o que está em exibição
               </Link>
-              <p className="text-sm font-bold" style={{ color: 'rgba(169, 0, 0, 0.8)' }}>
+              <p className="mt-6 text-sm font-bold" style={{ color: 'rgba(169, 0, 0, 0.8)' }}>
                 {manifesto?.quote || 'Aviso: este não é um lugar confortável.'}
               </p>
             </motion.div>
