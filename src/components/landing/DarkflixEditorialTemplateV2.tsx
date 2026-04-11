@@ -188,7 +188,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
             <p className="text-sm italic text-white/50" style={{ fontFamily: "'Georgia', serif" }}>
               {whyRare?.quote || '"não recomendamos assistir sozinho. nem acompanhado."'}
             </p>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[0.9] tracking-tight">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[0.9] tracking-tight my-0">
               <span className="text-white">UMA </span>
               <span style={{ color: pc }}>EXPERIÊNCIA</span>
               <br />
