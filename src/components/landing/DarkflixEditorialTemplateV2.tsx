@@ -15,7 +15,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
   const slug = tenant.dominio.slug;
   const sections = tenant.theme.editorialSections || [];
   const plans = getPlans(tenant.id).filter(p => p.active);
-  const annualPlan = plans.find(p => p.interval === 'yearly') || plans[plans.length - 1];
+  
 
   const getSection = (type: string) => sections.find(s => s.type === type);
   const manifesto = getSection('manifesto');
