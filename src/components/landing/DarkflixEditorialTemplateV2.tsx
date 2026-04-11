@@ -184,7 +184,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           </motion.div>
 
           {/* Quote + heading overlaying bottom of zombie - raised higher */}
-          <motion.div {...fadeUp} className="relative z-[70] -mt-56 md:-mt-72 text-center space-y-4 px-8">
+          <motion.div {...fadeUp} className="relative z-[70] -mt-56 text-center space-y-4 px-8 md:mt-[388px]">
             <p className="text-sm italic text-white/50" style={{ fontFamily: "'Georgia', serif" }}>
               {whyRare?.quote || '"não recomendamos assistir sozinho. nem acompanhado."'}
             </p>
