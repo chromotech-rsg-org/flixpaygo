@@ -100,9 +100,9 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
             {/* Left: numbered movie cards */}
             <motion.div {...fadeUp}>
               {manifesto?.image ? (
-                <img src={manifesto.image} alt="" className="w-full max-w-[800px] object-contain scale-125 origin-left" />
+                <img src={manifesto.image} alt="" className="w-full max-w-[900px] object-contain scale-150 origin-left" />
               ) : (
-                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-full max-w-[800px] object-contain scale-125 origin-left" />
+                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-full max-w-[900px] object-contain scale-150 origin-left" />
               )}
             </motion.div>
 
