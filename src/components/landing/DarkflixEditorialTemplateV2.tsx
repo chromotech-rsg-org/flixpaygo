@@ -167,23 +167,24 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       </section>
 
       {/* ===== SECTION 4: "UMA EXPERIÊNCIA DIFERENTE" with zombie ===== */}
-      <section className="relative py-8 overflow-visible">
-        {/* Background image - city ruins */}
-        <div className="absolute inset-0 overflow-hidden">
-          <img src={tenant.theme.section4BgImage || '/darkflix/city-ruins-bg.png'} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-[rgba(5,5,5,0.5)]" />
+      <section className="relative overflow-hidden">
+        {/* Background image - city ruins, aligned with zombie */}
+        <div className="absolute inset-0">
+          <img src={tenant.theme.section4BgImage || '/darkflix/city-ruins-bg.png'} alt="" className="w-full h-full object-cover object-top" />
+          <div className="absolute inset-0 bg-[rgba(5,5,5,0.3)]" />
+          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-8">
-          {/* Zombie / creature image - overflows top of section */}
-          <motion.div {...fadeUp} className="relative flex justify-center -mt-40 md:-mt-64">
+        <div className="relative z-10">
+          {/* Zombie image - contained within section, no overflow */}
+          <motion.div {...fadeUp} className="relative flex justify-center">
             <img src={whyRare?.image || '/darkflix/zombie-full.png'} alt=""
-              className="w-full max-w-3xl h-auto relative z-10 object-cover" />
-            <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent z-20" />
+              className="w-full max-w-4xl h-auto relative z-10 object-cover" />
+            <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent z-20" />
           </motion.div>
 
-          {/* Quote above heading - overlays the zombie image */}
-          <motion.div {...fadeUp} className="relative z-30 -mt-48 md:-mt-64 text-center space-y-4">
+          {/* Quote + heading overlaying bottom of zombie */}
+          <motion.div {...fadeUp} className="relative z-30 -mt-48 md:-mt-64 text-center space-y-4 px-8">
             <p className="text-sm italic text-white/50" style={{ fontFamily: "'Georgia', serif" }}>
               {whyRare?.quote || '"não recomendamos assistir sozinho. nem acompanhado."'}
             </p>
@@ -196,7 +197,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           </motion.div>
 
           {/* Body text */}
-          <motion.div {...fadeUp} className="text-center mt-10 space-y-6 max-w-3xl mx-auto">
+          <motion.div {...fadeUp} className="text-center mt-10 pb-16 space-y-6 max-w-3xl mx-auto px-8">
             <p className="text-base md:text-lg text-white font-semibold leading-relaxed">
               Aqui, o silêncio não é vazio. É parte da narrativa.
             </p>
