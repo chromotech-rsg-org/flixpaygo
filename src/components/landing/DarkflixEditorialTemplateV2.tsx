@@ -102,25 +102,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
               {manifesto?.image ? (
                 <img src={manifesto.image} alt="" className="w-full max-w-[540px] object-contain" />
               ) : (
-                <div className="flex gap-4 items-end">
-                  {[
-                    { num: '1', title: 'Evil Dead - Vittra', sub: 'Vittra' },
-                    { num: '2', title: 'A Beira Do Macha...', sub: 'Al Filo Del Hacha' },
-                    { num: '3', title: 'Sensação Térmica', sub: 'Wind Chill' },
-                    { num: '4', title: 'A Descendência', sub: 'Offspring' },
-                  ].map((item, i) => (
-                    <div key={i} className="relative flex-1">
-                      <span className="absolute -left-2 -bottom-2 text-[80px] font-black text-white/10 leading-none z-0">
-                        {item.num}
-                      </span>
-                      <div className="relative z-10 aspect-[3/4] bg-[#1a1a1a] rounded-lg overflow-hidden mb-2">
-                        <div className="w-full h-full bg-gradient-to-b from-[#2a1515] to-[#0a0a0a]" />
-                      </div>
-                      <p className="text-xs font-medium text-white truncate">{item.title}</p>
-                      <p className="text-[10px] text-white/40">{item.sub}</p>
-                    </div>
-                  ))}
-                </div>
+                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-full max-w-[540px] object-contain" />
               )}
             </motion.div>
 
@@ -179,15 +161,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
               {experience?.image ? (
                 <img src={experience.image} alt="" className="w-full rounded-lg" />
               ) : (
-                <div className="relative aspect-[4/5] bg-gradient-to-b from-[#2a0a0a] to-[#0a0a0a] rounded-lg overflow-hidden flex items-center justify-center">
-                  <span className="text-4xl font-black text-white/20 -rotate-12 tracking-wider">EXPRESSIONISMO</span>
-                  {/* Darkflix logo overlay */}
-                  <div className="absolute bottom-8 left-8">
-                    {(tenant.logoUrl) && (
-                      <img src={tenant.logoUrl} alt="" className="h-16 object-contain opacity-80" />
-                    )}
-                  </div>
-                </div>
+                <img src="/darkflix/dark-reaper.png" alt="" className="w-full rounded-lg" />
               )}
             </motion.div>
           </div>
@@ -196,13 +170,11 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
 
       {/* ===== SECTION 4: "UMA EXPERIÊNCIA DIFERENTE" with zombie ===== */}
       <section className="relative py-8 overflow-hidden">
-        {/* Background image */}
-        {tenant.theme.section3BgImage && (
-          <div className="absolute inset-0">
-            <img src={tenant.theme.section3BgImage} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[rgba(5,5,5,0.5)]" />
-          </div>
-        )}
+        {/* Background image - city ruins */}
+        <div className="absolute inset-0">
+          <img src={tenant.theme.section3BgImage || '/darkflix/city-ruins-bg.png'} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[rgba(5,5,5,0.5)]" />
+        </div>
 
         <div className="relative max-w-7xl mx-auto px-8">
           {/* Zombie / creature image */}
@@ -247,7 +219,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       <section className="relative overflow-hidden" style={{ minHeight: '600px' }}>
         {/* Background: movie poster grid */}
         <div className="absolute inset-0 z-0">
-          <img src={filmTypes?.image || '/darkflix/film-types.png'} alt=""
+          <img src={filmTypes?.image || '/darkflix/poster-grid-bg.png'} alt=""
             className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(5,5,5,0.3) 0%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,1) 100%)' }} />
         </div>
@@ -307,7 +279,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
               {(tenant.logoUrl) && (
                 <img src={tenant.logoUrl} alt="" className="absolute top-0 left-0 h-24 object-contain opacity-60 z-10" />
               )}
-              <img src={catalog?.image || '/darkflix/demon-clown.png'} alt=""
+              <img src={catalog?.image || '/darkflix/clown-logo.png'} alt=""
                 className="w-full max-h-[600px] object-contain" />
             </motion.div>
 
@@ -417,7 +389,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       <section className="relative py-20 overflow-hidden">
         {/* Faded background */}
         <div className="absolute inset-0">
-          <img src="/darkflix/plan-bg.png" alt="" className="w-full h-full object-cover opacity-20" />
+          <img src="/darkflix/haunted-house-bg.png" alt="" className="w-full h-full object-cover opacity-20" />
         </div>
 
         <div className="relative z-10 max-w-xl mx-auto px-8 text-center">
