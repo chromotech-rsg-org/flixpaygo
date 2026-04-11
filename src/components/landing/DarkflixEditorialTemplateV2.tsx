@@ -39,13 +39,6 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(5,5,5,0) 50%, #050505 100%)' }} />
         </div>
 
-        {/* DARKFLIX text behind character - very subtle */}
-        <div className="absolute right-[5%] top-1/2 -translate-y-1/2 z-[1] pointer-events-none select-none overflow-hidden">
-          <span className="text-[180px] md:text-[260px] font-black tracking-tight leading-none block"
-            style={{ fontFamily: "'Inter', sans-serif", color: 'rgba(255,255,255,0.03)' }}>
-            DARK<br />FLIX
-          </span>
-        </div>
 
         {/* Character image (clown) on right side - only show if tenant has custom image */}
         {(catalog?.image || whyRare?.image) && (
