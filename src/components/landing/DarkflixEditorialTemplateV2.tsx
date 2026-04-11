@@ -179,7 +179,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           {/* Zombie image - slightly above background */}
           <motion.div {...fadeUp} className="relative flex justify-center">
             <img src={whyRare?.image || '/darkflix/zombie-full.png'} alt=""
-              className="w-full max-w-4xl h-auto relative z-10 object-cover" />
+              className="w-full max-w-6xl h-auto relative z-10 object-contain" />
             <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent z-20" />
           </motion.div>
 
