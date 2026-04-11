@@ -259,14 +259,14 @@ export default function TenantFormPage() {
 
         {/* Tab 4 - API */}
         <TabsContent value="api" className="glass-card p-6 space-y-6">
-          <h2 className="text-lg font-bold">API de Streaming (Youcast / Yplay)</h2>
+          <h2 className="text-lg font-bold">API de Streaming</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="URL Base" value={tenant.streamingApi.baseUrl} onChange={(v: string) => update('streamingApi.baseUrl', v)} required placeholder="https://sms.yplay.com.br/" />
+            <InputField label="URL Base" value={tenant.streamingApi.baseUrl} onChange={(v: string) => update('streamingApi.baseUrl', v)} required placeholder="https://api.exemplo.com.br/" />
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Tipo de autenticação *</label>
               <select value={tenant.streamingApi.authType} onChange={e => update('streamingApi.authType', e.target.value)}
                 className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary">
-                <option value="youcast">Youcast (login:timestamp:SHA1)</option>
+                <option value="youcast">HMAC (login:timestamp:SHA1)</option>
                 <option value="bearer">Bearer Token</option>
                 <option value="apikey">API Key</option>
                 <option value="basic">Basic Auth</option>
