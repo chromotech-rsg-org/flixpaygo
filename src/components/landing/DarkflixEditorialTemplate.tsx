@@ -229,10 +229,11 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
           </motion.div>
         </div>
 
-        {/* Demon / Character image */}
-        <div className="max-w-7xl mx-auto px-8 mt-12 relative">
-          <motion.div {...fadeUp}>
-            <img src={catalog?.image || '/darkflix/demon-clown.png'} alt="" className="mx-auto max-h-[600px] object-contain" />
+        {/* Demon / Character image - positioned over previous section background */}
+        <div className="relative w-full px-8" style={{ marginTop: '-180px' }}>
+          <motion.div {...fadeUp} className="flex justify-center">
+            <img src={catalog?.image || '/darkflix/demon-clown.png'} alt="" 
+              className="max-h-[800px] w-auto object-contain scale-125" />
           </motion.div>
         </div>
       </section>
