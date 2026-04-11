@@ -285,7 +285,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
             <motion.div {...fadeUp} className="-mt-32">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-white/90"
                 style={{ fontStyle: 'italic' }}>
-                {catalog?.heading || 'POR QUE VOCÊ NÃO ENCONTRA ESSES FILMES FACILMENTE'}
+                <span className="text-2xl">{catalog?.heading || 'POR QUE VOCÊ NÃO ENCONTRA ESSES FILMES FACILMENTE'}</span>
               </h2>
             </motion.div>
           </div>
