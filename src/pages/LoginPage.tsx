@@ -4,8 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
-
-const DEFAULT_LOGIN_IMAGE = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&h=1600&fit=crop&q=80';
+import loginBg from '@/assets/flixpay-login-bg.jpg';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
