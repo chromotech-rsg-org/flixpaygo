@@ -128,7 +128,7 @@ export default function MinhaContaPage() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border px-6 py-4 flex items-center justify-between bg-card/50 backdrop-blur-sm sticky top-0 z-20">
         <div className="flex items-center gap-3">
-          {tenant.logoUrl ? <img src={tenant.logoUrl} alt={tenant.name} className="h-8" /> : <span className="font-black text-primary text-xl">{tenant.name}</span>}
+          {(tenant.logoSystemUrl || tenant.logoUrl) ? <img src={tenant.logoSystemUrl || tenant.logoUrl} alt={tenant.name} className="h-8" /> : <span className="font-black text-primary text-xl">{tenant.name}</span>}
         </div>
         <div className="flex items-center gap-3">
           {tenant.dominio.streamingPortalUrl && (
