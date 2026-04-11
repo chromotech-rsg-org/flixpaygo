@@ -10,11 +10,11 @@ import { UpsellLock } from '@/components/UpsellLock';
 export default function LandingEditorPage() {
   const { user } = useAuth();
   const tenant = user?.tenantId ? getTenant(user.tenantId) : null;
-  if (!tenant) return null;
-
-  const plan = tenant.plano as PlanType;
+  const plan = (tenant?.plano || 'start') as PlanType;
   const features = PLAN_FEATURES[plan];
-  const [theme, setTheme] = useState<TenantTheme>({ ...tenant.theme });
+  const [theme, setTheme] = useState<TenantTheme>({ ...(tenant?.theme || {} as TenantTheme) });
+
+  if (!tenant) return null;
 
   const update = (field: keyof TenantTheme, value: any) => {
     setTheme(prev => ({ ...prev, [field]: value }));
