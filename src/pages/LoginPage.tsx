@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
@@ -73,6 +73,10 @@ export default function LoginPage() {
               </button>
             </form>
 
+            <div className="mt-4 text-center space-y-2">
+              <Link to="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors">← Voltar para Home</Link>
+            </div>
+
             <div className="mt-6 pt-6 border-t border-border">
               <p className="text-xs text-muted-foreground text-center mb-3">Contas de demonstração:</p>
               <div className="space-y-1.5 text-xs text-muted-foreground">
@@ -84,9 +88,9 @@ export default function LoginPage() {
           </div>
 
           <div className="mt-6 flex items-center justify-center gap-3 opacity-50 hover:opacity-80 transition-opacity">
-            <img src={LOGO_RSG} alt="RSG Group" className="h-6 grayscale hover:grayscale-0 transition-all" />
+            <Link to="/"><img src={LOGO_RSG} alt="RSG Group" className="h-6 grayscale hover:grayscale-0 transition-all" /></Link>
             <span className="text-muted-foreground text-xs">×</span>
-            <img src={LOGO_CHROMOTECH} alt="Chromotech" className="h-6 grayscale hover:grayscale-0 transition-all" />
+            <Link to="/"><img src={LOGO_CHROMOTECH} alt="Chromotech" className="h-6 grayscale hover:grayscale-0 transition-all" /></Link>
           </div>
         </motion.div>
       </div>
