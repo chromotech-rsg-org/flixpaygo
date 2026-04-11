@@ -88,7 +88,14 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
 
       {/* ===== SECTION 2: NUMBERED MOVIE CARDS + TEXT ===== */}
       <section className="relative py-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8 md:px-16">
+        {/* Background image */}
+        {tenant.theme.section2BgImage && (
+          <div className="absolute inset-0">
+            <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-[rgba(5,5,5,0.75)]" />
+          </div>
+        )}
+        <div className="relative max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
             {/* Left: numbered movie cards */}
             <motion.div {...fadeUp}>
@@ -123,7 +130,14 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
 
       {/* ===== SECTION 3: MANIFESTO - "NÃO É UM STREAMING TRADICIONAL" ===== */}
       <section className="relative py-28 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8 md:px-16">
+        {/* Background image */}
+        {tenant.theme.section3BgImage && (
+          <div className="absolute inset-0">
+            <img src={tenant.theme.section3BgImage} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-[rgba(5,5,5,0.7)]" />
+          </div>
+        )}
+        <div className="relative max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             {/* Left: text block */}
             <motion.div {...fadeUp} className="space-y-6">
@@ -165,7 +179,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       <section className="relative py-8 overflow-hidden">
         {/* Background image - city ruins */}
         <div className="absolute inset-0">
-          <img src={tenant.theme.section3BgImage || '/darkflix/city-ruins-bg.png'} alt="" className="w-full h-full object-cover" />
+          <img src={tenant.theme.section4BgImage || '/darkflix/city-ruins-bg.png'} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[rgba(5,5,5,0.5)]" />
         </div>
 
