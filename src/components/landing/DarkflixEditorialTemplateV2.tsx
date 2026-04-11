@@ -15,7 +15,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
   const slug = tenant.dominio.slug;
   const sections = tenant.theme.editorialSections || [];
   const plans = getPlans(tenant.id).filter(p => p.active);
-  const annualPlan = plans.find(p => p.interval === 'yearly') || plans[plans.length - 1];
+  
 
   const getSection = (type: string) => sections.find(s => s.type === type);
   const manifesto = getSection('manifesto');
@@ -175,8 +175,8 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10">
-          {/* Zombie image - contained within section, no overflow */}
+        <div className="relative z-10 -mt-20 md:-mt-32">
+          {/* Zombie image - slightly above background */}
           <motion.div {...fadeUp} className="relative flex justify-center">
             <img src={whyRare?.image || '/darkflix/zombie-full.png'} alt=""
               className="w-full max-w-4xl h-auto relative z-10 object-cover" />
@@ -388,67 +388,75 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
         </div>
       </section>
 
-      {/* ===== SECTION 9: PLANO ANUAL ===== */}
+      {/* ===== SECTION 9: PLANOS ===== */}
       <section className="relative py-20 overflow-hidden">
         {/* Faded background */}
         <div className="absolute inset-0">
           <img src="/darkflix/haunted-house-bg.png" alt="" className="w-full h-full object-cover opacity-20" />
         </div>
 
-        <div className="relative z-10 max-w-xl mx-auto px-8 text-center">
-          <motion.h2 {...fadeUp} className="text-5xl md:text-6xl font-normal uppercase tracking-[4px] mb-14"
+        <div className="relative z-10 max-w-6xl mx-auto px-8">
+          <motion.h2 {...fadeUp} className="text-5xl md:text-6xl font-normal uppercase tracking-[4px] mb-14 text-center"
             style={{
               fontFamily: "'Georgia', serif",
               background: `linear-gradient(91deg, ${pc} 0%, #661317 72%)`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}>
-            PLANO ANUAL
+            {plans.length === 1 ? 'PLANO' : 'PLANOS'}
           </motion.h2>
 
-          {/* Pricing card */}
-          <motion.div {...fadeUp}
-            className="p-8 rounded-[20px] text-left border"
-            style={{
-              borderColor: `${pc}33`,
-              background: 'linear-gradient(180deg, rgba(11,11,11,0.7) 0%, rgba(30,5,5,0.5) 100%)'
-            }}>
-            <h3 className="text-xl text-white/60 mb-1">
-              <strong className="text-white">acesso contínuo</strong> ao<br />
-              acervo em circulação
-            </h3>
+          <div className={`grid gap-6 ${plans.length === 1 ? 'max-w-xl mx-auto' : plans.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto' : 'grid-cols-1 md:grid-cols-3'}`}>
+            {plans.map((plan, idx) => (
+              <motion.div key={plan.id} {...fadeUp}
+                className={`p-8 rounded-[20px] text-left border relative ${plan.highlight ? 'scale-105' : ''}`}
+                style={{
+                  borderColor: plan.highlight ? `${pc}66` : `${pc}33`,
+                  background: plan.highlight
+                    ? `linear-gradient(180deg, rgba(30,5,5,0.8) 0%, rgba(11,11,11,0.9) 100%)`
+                    : 'linear-gradient(180deg, rgba(11,11,11,0.7) 0%, rgba(30,5,5,0.5) 100%)'
+                }}>
+                {plan.highlight && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] uppercase tracking-[2px] font-bold"
+                    style={{ background: pc, color: '#fff' }}>
+                    Mais Popular
+                  </div>
+                )}
 
-            <div className="mt-4 mb-1">
-              <span className="text-sm text-white/40 line-through">De R$ 109,90</span>
-            </div>
-            <div className="mb-1">
-              <span className="text-xs text-white/40">por</span>
-            </div>
-            <div className="flex items-baseline gap-1 mb-6">
-              <span className="text-5xl font-light" style={{ color: pc }}>
-                R$ {annualPlan ? annualPlan.price.toFixed(2) : '99,90'}
-              </span>
-              <span className="text-sm" style={{ color: pc }}>/ ano</span>
-            </div>
+                <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-1">{plan.name}</h3>
+                {plan.description && (
+                  <p className="text-xs text-white/50 mb-4">{plan.description}</p>
+                )}
 
-            <div className="space-y-3 mb-8">
-              {(annualPlan?.features || ['acesso completo', 'títulos em rotação constante', 'raridades difíceis de encontrar', 'experiência sem anúncios']).map((f, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <Check size={16} style={{ color: `${pc}99` }} />
-                  <span className="text-sm text-white/80 font-light">{f}</span>
+                <div className="flex items-baseline gap-1 mb-6 mt-4">
+                  <span className="text-4xl font-light" style={{ color: pc }}>
+                    R$ {plan.price.toFixed(2).replace('.', ',')}
+                  </span>
+                  <span className="text-sm" style={{ color: pc }}>
+                    / {plan.interval === 'monthly' ? 'mês' : plan.interval === 'quarterly' ? 'trimestre' : 'ano'}
+                  </span>
                 </div>
-              ))}
-            </div>
 
-            <Link to={`/${slug}/assinar`}
-              className="block w-full text-center py-3.5 border text-xs uppercase tracking-[3px] font-medium transition-all hover:bg-white/5"
-              style={{ borderColor: `${pc}66`, color: pc }}>
-              ASSINAR AGORA
-            </Link>
-          </motion.div>
+                <div className="space-y-3 mb-8">
+                  {plan.features.map((f, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <Check size={16} style={{ color: `${pc}99` }} />
+                      <span className="text-sm text-white/80 font-light">{f}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <Link to={`/${slug}/assinar`}
+                  className="block w-full text-center py-3.5 border text-xs uppercase tracking-[3px] font-medium transition-all hover:bg-white/5"
+                  style={{ borderColor: `${pc}66`, color: pc }}>
+                  ASSINAR AGORA
+                </Link>
+              </motion.div>
+            ))}
+          </div>
 
           {/* Side effects */}
-          <motion.div {...fadeUp} className="mt-14 text-left">
+          <motion.div {...fadeUp} className="mt-14 text-center max-w-xl mx-auto">
             <p className="text-sm font-semibold italic mb-3" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               * efeitos colaterais relatados:
             </p>
