@@ -68,13 +68,20 @@ export interface StreamingEndpoint {
 
 export interface TenantStreamingApi {
   baseUrl: string;
-  authType: 'bearer' | 'apikey' | 'basic';
+  authType: 'bearer' | 'apikey' | 'basic' | 'youcast';
+  login: string;
+  secret: string;
   credential: string;
   endpoints: {
     createUser: StreamingEndpoint;
+    authenticateUser: StreamingEndpoint;
+    findUser: StreamingEndpoint;
+    searchUser: StreamingEndpoint;
+    updateUser: StreamingEndpoint;
     enablePlan: StreamingEndpoint;
     disablePlan: StreamingEndpoint;
     checkStatus: StreamingEndpoint;
+    listPlans: StreamingEndpoint;
   };
 }
 
