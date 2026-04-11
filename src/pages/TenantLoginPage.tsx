@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { getTenantBySlug } from '@/lib/storage';
 import { useTenantMeta } from '@/hooks/useTenantMeta';
@@ -92,11 +92,17 @@ export default function TenantLoginPage() {
                 <LogIn size={18} /> Entrar
               </button>
             </form>
+
+            <div className="mt-4 text-center space-y-2">
+              <Link to={`/${slug}/assinar`} className="text-sm font-semibold hover:underline transition-colors" style={{ color: pc }}>Cadastre-se</Link>
+              <br />
+              <Link to={`/${slug}`} className="text-xs text-muted-foreground hover:text-foreground transition-colors">← Voltar para Home</Link>
+            </div>
           </div>
 
-          <div className="mt-6 text-center opacity-40">
+          <div className="mt-6 text-center opacity-40 hover:opacity-70 transition-opacity">
             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Powered by </span>
-            <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3.5 inline ml-1" />
+            <Link to="/"><img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3.5 inline ml-1" /></Link>
           </div>
         </motion.div>
       </div>

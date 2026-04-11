@@ -134,6 +134,13 @@ export default function TenantFormPage() {
             <InputField label="Telefone" value={tenant.phone} onChange={(v: string) => update('phone', v)} />
             <InputField label="Website" value={tenant.website} onChange={(v: string) => update('website', v)} />
           </div>
+
+          <div className="flex items-center gap-3 p-4 rounded-xl border border-border bg-secondary/20">
+            <input type="checkbox" id="showOnHomepage" checked={!!tenant.showOnHomepage} onChange={e => update('showOnHomepage', e.target.checked)}
+              className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
+            <label htmlFor="showOnHomepage" className="text-sm font-semibold">Exibir na página inicial do FlixPay</label>
+            <span className="text-xs text-muted-foreground">(Logo/nome aparecerá na seção de clientes)</span>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Logo</label>

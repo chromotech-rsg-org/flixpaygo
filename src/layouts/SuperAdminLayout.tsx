@@ -60,7 +60,7 @@ function SidebarInner() {
 export default function SuperAdminLayout() {
   const { user, logout, theme, toggleTheme } = useAuth();
   const navigate = useNavigate();
-  const handleLogout = () => { logout({ type: 'superadmin' }); navigate('/login'); };
+  const handleLogout = () => { logout({ type: 'superadmin' }); navigate('/'); };
 
   return (
     <SidebarProvider>

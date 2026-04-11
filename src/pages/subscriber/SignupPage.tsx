@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getTenantBySlug, getPlans, getSubscribers, setSubscribers, getInvoices, setInvoices, getUsers, setUsers } from '@/lib/storage';
 import { useTenantMeta } from '@/hooks/useTenantMeta';
 import { Subscriber, Invoice, User } from '@/lib/types';
@@ -162,9 +162,14 @@ export default function SignupPage() {
       {/* Header */}
       <header className="border-b border-border px-6 py-4 flex items-center justify-between bg-card/50 backdrop-blur-sm">
         <div className="flex items-center gap-3">
-          {tenant.logoUrl ? <img src={tenant.logoUrl} alt={tenant.name} className="h-8" /> : <span className="font-black text-xl" style={{ color: pc }}>{tenant.name}</span>}
+          <Link to={`/${slug}`}>
+            {tenant.logoUrl ? <img src={tenant.logoUrl} alt={tenant.name} className="h-8" /> : <span className="font-black text-xl" style={{ color: pc }}>{tenant.name}</span>}
+          </Link>
         </div>
-        <a href={`/${slug}/login`} className="text-sm text-muted-foreground hover:text-foreground">Já tenho conta</a>
+        <div className="flex items-center gap-4">
+          <Link to={`/${slug}`} className="text-sm text-muted-foreground hover:text-foreground">Home</Link>
+          <Link to={`/${slug}/login`} className="text-sm text-muted-foreground hover:text-foreground">Já tenho conta</Link>
+        </div>
       </header>
 
       <div className="max-w-2xl mx-auto px-6 py-8">
@@ -376,9 +381,9 @@ export default function SignupPage() {
         </AnimatePresence>
       </div>
 
-      <footer className="border-t border-border py-4 text-center opacity-40 mt-12">
+      <footer className="border-t border-border py-4 text-center opacity-40 hover:opacity-70 transition-opacity mt-12">
         <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Powered by </span>
-        <img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3 inline" />
+        <Link to="/"><img src={LOGO_FLIXPAY} alt="FlixPay" className="h-3 inline" /></Link>
       </footer>
     </div>
   );

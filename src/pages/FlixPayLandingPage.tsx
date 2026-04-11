@@ -4,6 +4,7 @@ import { Check, BarChart3, CreditCard, Tv, Palette, Zap, Shield, MessageCircle, 
 import { LOGO_FLIXPAY, LOGO_RSG, LOGO_CHROMOTECH } from '@/lib/constants';
 import { PLAN_PRICES, PLAN_NAMES, PLAN_DESCRIPTIONS, PLAN_BADGES } from '@/lib/plan-features';
 import { PlanType } from '@/lib/types';
+import { getTenants } from '@/lib/storage';
 
 const fadeUp = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } };
 
@@ -20,7 +21,7 @@ const plans: PlanType[] = ['start', 'pro', 'ultra'];
 
 export default function FlixPayLandingPage() {
   const whatsappLink = `https://api.whatsapp.com/send?phone=5511969169869&text=${encodeURIComponent('Olá! Gostaria de conhecer mais sobre o FlixPay para minha empresa de streaming.')}`;
-
+  const visibleTenants = getTenants().filter(t => t.showOnHomepage);
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Ambient */}
@@ -133,6 +134,32 @@ export default function FlixPayLandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Clients */}
+      {visibleTenants.length > 0 && (
+        <section className="px-6 py-20 border-t border-white/5">
+          <div className="max-w-5xl mx-auto">
+            <motion.div {...fadeUp} className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight">Nossos Clientes</h2>
+              <p className="text-sm text-white/40 mt-3">Empresas que confiam no FlixPay para gerir seus streamings.</p>
+            </motion.div>
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              {visibleTenants.map((t, i) => (
+                <motion.div key={t.id} {...fadeUp} transition={{ delay: i * 0.1 }}>
+                  <Link to={`/${t.dominio.slug}`} className="flex flex-col items-center gap-3 p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-[#E50914]/20 transition-all group min-w-[160px]">
+                    {t.logoUrl ? (
+                      <img src={t.logoUrl} alt={t.name} className="h-12 object-contain grayscale group-hover:grayscale-0 transition-all" />
+                    ) : (
+                      <span className="text-xl font-black group-hover:text-[#E50914] transition-colors">{t.name}</span>
+                    )}
+                    <span className="text-xs text-white/30 group-hover:text-white/60 transition-colors">{t.name}</span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="px-6 py-20 border-t border-white/5">
