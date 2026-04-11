@@ -49,13 +49,6 @@ export default function TenantLoginPage() {
         <img src={sideImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-background/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        <div className="absolute bottom-12 left-12 z-10">
-          {tenant.logoUrl ? (
-            <img src={tenant.logoUrl} alt={tenant.name} className="h-12 mb-3 opacity-90" />
-          ) : (
-            <h2 className="text-3xl font-black mb-3" style={{ color: pc }}>{tenant.name}</h2>
-          )}
-        </div>
       </div>
 
       {/* Right — Form */}
