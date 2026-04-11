@@ -82,6 +82,7 @@ export interface TenantStreamingApi {
     disablePlan: StreamingEndpoint;
     checkStatus: StreamingEndpoint;
     listPlans: StreamingEndpoint;
+    getVendors: StreamingEndpoint;
   };
 }
 
