@@ -91,18 +91,18 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
         {/* Background image */}
         {tenant.theme.section2BgImage && (
           <div className="absolute inset-0">
-            <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-contain object-left opacity-60" />
-            <div className="absolute inset-0 bg-[rgba(5,5,5,0.5)]" />
+            <img src={tenant.theme.section2BgImage} alt="" className="h-full w-auto object-contain object-left opacity-50" />
+            <div className="absolute inset-0 bg-[rgba(5,5,5,0.4)]" />
           </div>
         )}
         <div className="relative max-w-7xl mx-auto px-8 md:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             {/* Left: numbered movie cards */}
-            <motion.div {...fadeUp}>
+            <motion.div {...fadeUp} className="md:-ml-8">
               {manifesto?.image ? (
-                <img src={manifesto.image} alt="" className="w-full object-contain" />
+                <img src={manifesto.image} alt="" className="w-[140%] max-w-none object-contain" />
               ) : (
-                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-full object-contain" />
+                <img src="/darkflix/movie-cards-numbered.png" alt="" className="w-[140%] max-w-none object-contain" />
               )}
             </motion.div>
 
