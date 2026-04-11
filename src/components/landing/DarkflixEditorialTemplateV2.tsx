@@ -129,7 +129,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       </section>
 
       {/* ===== SECTION 3: MANIFESTO - "NÃO É UM STREAMING TRADICIONAL" ===== */}
-      <section className="relative py-28 overflow-hidden bg-[#050505]">
+      <section className="relative z-10 py-28 overflow-hidden bg-[#050505]">
         <div className="relative max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             {/* Left: text block */}
