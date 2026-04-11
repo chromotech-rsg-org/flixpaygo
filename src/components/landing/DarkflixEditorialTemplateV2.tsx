@@ -47,11 +47,13 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           </span>
         </div>
 
-        {/* Character image (clown) on right side */}
-        <div className="absolute right-0 bottom-0 z-[2] h-[85%] w-[45%] flex items-end justify-end">
-          <img src={catalog?.image || whyRare?.image || '/darkflix/clown-logo.png'} alt=""
-            className="h-full w-auto object-contain object-right-bottom" />
-        </div>
+        {/* Character image (clown) on right side - only show if tenant has custom image */}
+        {(catalog?.image || whyRare?.image) && (
+          <div className="absolute right-0 bottom-0 z-[2] h-[85%] w-[45%] flex items-end justify-end">
+            <img src={catalog?.image || whyRare?.image || ''} alt=""
+              className="h-full w-auto object-contain object-right-bottom" />
+          </div>
+        )}
 
         {/* Logo */}
         <div className="absolute top-8 left-8 md:left-16 z-10">
