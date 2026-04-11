@@ -82,6 +82,7 @@ export interface TenantAsaas {
   apiKey: string;
   environment: 'sandbox' | 'production';
   webhookUrl: string;
+  webhookToken: string;
   status: string;
 }
 
