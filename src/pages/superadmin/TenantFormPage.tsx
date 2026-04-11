@@ -253,29 +253,48 @@ export default function TenantFormPage() {
 
         {/* Tab 4 - API */}
         <TabsContent value="api" className="glass-card p-6 space-y-6">
-          <h2 className="text-lg font-bold">API de Streaming</h2>
+          <h2 className="text-lg font-bold">API de Streaming (Youcast / Yplay)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="URL Base" value={tenant.streamingApi.baseUrl} onChange={(v: string) => update('streamingApi.baseUrl', v)} required placeholder="https://api.seustreaming.com.br" />
+            <InputField label="URL Base" value={tenant.streamingApi.baseUrl} onChange={(v: string) => update('streamingApi.baseUrl', v)} required placeholder="https://sms.yplay.com.br/" />
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Tipo de autenticação *</label>
               <select value={tenant.streamingApi.authType} onChange={e => update('streamingApi.authType', e.target.value)}
                 className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary">
+                <option value="youcast">Youcast (login:timestamp:SHA1)</option>
                 <option value="bearer">Bearer Token</option>
                 <option value="apikey">API Key</option>
                 <option value="basic">Basic Auth</option>
               </select>
             </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Credencial *</label>
-              <div className="relative">
-                <input type={showCred ? 'text' : 'password'} value={tenant.streamingApi.credential}
-                  onChange={e => update('streamingApi.credential', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary pr-10" />
-                <button type="button" onClick={() => setShowCred(!showCred)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  {showCred ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+            {tenant.streamingApi.authType === 'youcast' ? (
+              <>
+                <InputField label="Login da API" value={tenant.streamingApi.login} onChange={(v: string) => update('streamingApi.login', v)} required placeholder="meutenant.api" />
+                <div>
+                  <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Secret *</label>
+                  <div className="relative">
+                    <input type={showCred ? 'text' : 'password'} value={tenant.streamingApi.secret}
+                      onChange={e => update('streamingApi.secret', e.target.value)}
+                      className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary pr-10" />
+                    <button type="button" onClick={() => setShowCred(!showCred)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                      {showCred ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-1">Token gerado: login:timestamp:SHA1(timestamp+login+secret)</p>
+                </div>
+              </>
+            ) : (
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5 block">Credencial *</label>
+                <div className="relative">
+                  <input type={showCred ? 'text' : 'password'} value={tenant.streamingApi.credential}
+                    onChange={e => update('streamingApi.credential', e.target.value)}
+                    className="w-full px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm focus:outline-none focus:border-primary pr-10" />
+                  <button type="button" onClick={() => setShowCred(!showCred)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    {showCred ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <h3 className="text-sm font-bold pt-2">Endpoints</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
