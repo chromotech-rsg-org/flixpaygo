@@ -61,6 +61,7 @@ export function seedData() {
       },
       createdAt: '2024-01-15T10:00:00Z',
       updatedAt: '2024-06-01T14:32:00Z',
+      showOnHomepage: true,
     },
     {
       id: 'cinemaflix',
@@ -82,6 +83,7 @@ export function seedData() {
       theme: { template: 'gradient-flow', mode: 'dark', primaryColor: '#8B5CF6', accentColor: '#F59E0B', heroTitle: 'O melhor do cinema na sua tela', heroSubtitle: 'Blockbusters, clássicos e exclusivos.', heroImage: '', heroCtaText: 'Comece agora' },
       createdAt: '2023-08-01T08:00:00Z',
       updatedAt: '2024-05-20T11:15:00Z',
+      showOnHomepage: true,
     },
     {
       id: 'seriesplay',
@@ -103,6 +105,7 @@ export function seedData() {
       theme: { template: 'minimal-premium', mode: 'light', primaryColor: '#3B82F6', accentColor: '#06B6D4', heroTitle: 'Suas séries favoritas', heroSubtitle: 'Assista onde quiser, quando quiser.', heroImage: '', heroCtaText: 'Assinar' },
       createdAt: '2024-06-01T09:00:00Z',
       updatedAt: '2024-06-01T09:00:00Z',
+      showOnHomepage: false,
     },
   ];
   setTenants(tenants);
