@@ -156,10 +156,12 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
               </p>
             </motion.div>
 
-            {/* Right: section 3 image (customizable) */}
-            <motion.div {...fadeUp} className="relative">
-              <img src={tenant.theme.section3Image || '/darkflix/dark-reaper.png'} alt="" className="w-full rounded-lg" />
-            </motion.div>
+            {/* Right: section 3 image (customizable via editor) */}
+            {tenant.theme.section3Image && (
+              <motion.div {...fadeUp} className="relative">
+                <img src={tenant.theme.section3Image} alt="" className="w-full rounded-lg" />
+              </motion.div>
+            )}
           </div>
         </div>
       </section>
