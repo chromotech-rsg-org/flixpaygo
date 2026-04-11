@@ -167,7 +167,7 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
       </section>
 
       {/* ===== SECTION 4: "UMA EXPERIÊNCIA DIFERENTE" with zombie ===== */}
-      <section className="relative overflow-visible">
+      <section className="relative overflow-hidden">
         {/* Background image - city ruins, aligned with zombie */}
         <div className="absolute inset-0">
           <img src={tenant.theme.section4BgImage || '/darkflix/city-ruins-bg.png'} alt="" className="w-full h-full object-cover object-top" />
@@ -175,16 +175,16 @@ export default function DarkflixEditorialTemplateV2({ tenant }: Props) {
           <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
         </div>
 
-        <div className="relative z-20 -mt-20 md:-mt-32">
+        <div className="relative z-10 -mt-20 md:-mt-32">
           {/* Zombie image - slightly above background */}
-          <motion.div {...fadeUp} className="relative flex justify-center z-20">
+          <motion.div {...fadeUp} className="relative flex justify-center">
             <img src={whyRare?.image || '/darkflix/zombie-full.png'} alt=""
-              className="w-full max-w-6xl h-auto relative z-20 object-contain" />
-            <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent z-30" />
+              className="w-full max-w-6xl h-auto relative z-10 object-contain" />
+            <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent z-20" />
           </motion.div>
 
           {/* Quote + heading overlaying bottom of zombie */}
-          <motion.div {...fadeUp} className="relative z-40 -mt-72 md:-mt-96 text-center space-y-4 px-8">
+          <motion.div {...fadeUp} className="relative z-30 -mt-48 md:-mt-64 text-center space-y-4 px-8">
             <p className="text-sm italic text-white/50" style={{ fontFamily: "'Georgia', serif" }}>
               {whyRare?.quote || '"não recomendamos assistir sozinho. nem acompanhado."'}
             </p>
