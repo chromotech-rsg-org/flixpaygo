@@ -72,27 +72,33 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
         </div>
       </section>
 
-      {/* ===== SEÇÃO 2 — MANIFESTO (Texto esquerda, Imagem direita) ===== */}
+      {/* ===== MANIFESTO / CONTENT SECTION ===== */}
       <section className="relative py-20 overflow-hidden">
         {tenant.theme.section2BgImage && (
           <div className="absolute inset-0">
             <img src={tenant.theme.section2BgImage} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[rgba(2,2,2,0.75)]" />
+            <div className="absolute inset-0 bg-[rgba(2,2,2,0.7)]" />
           </div>
         )}
         <div className="relative max-w-7xl mx-auto px-8 md:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* Texto à esquerda */}
-            <motion.div {...fadeUp} className="space-y-6">
-              <p className="text-sm italic text-white/40" style={{ fontFamily: "'Source Serif 4', serif" }}>
-                "se parecer desconfortável, está funcionando."
-              </p>
-              <h2 className="text-3xl md:text-[42px] font-bold leading-[1.1]"
+            <motion.div {...fadeUp} className="order-2 md:order-1">
+              {manifesto?.image && (
+                <div className="relative">
+                  <img src={manifesto.image} alt="" className="w-full rounded-lg" style={{ boxShadow: 'inset 0px 4px 143px 38px #000000' }} />
+                </div>
+              )}
+              {!manifesto?.image && (
+                <img src="/darkflix/posters.png" alt="" className="w-full" />
+              )}
+            </motion.div>
+            <motion.div {...fadeUp} className="order-1 md:order-2 space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold leading-tight"
                 style={{ background: 'linear-gradient(90deg, #E4E4E4 0%, #7E7E7E 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 {manifesto?.heading || 'A Darkflix não é um streaming tradicional.'}
               </h2>
-              <p className="text-base text-[#a6a6a6cc] leading-relaxed font-light">
-                {manifesto?.body || 'É um espaço onde filmes fora do circuito comercial voltam a circular — obras atmosféricas, cultuadas e difíceis de encontrar.\nFilmes que não foram feitos para agradar.\nForam feitos para permanecer.'}
+              <p className="text-lg text-[#a6a6a6cc] leading-relaxed font-light">
+                {manifesto?.body || 'você ainda pode fechar esta página. a maioria faz isso. os outros continuam… e raramente se arrependem. raramente.'}
               </p>
               <Link to={`/${slug}/assinar`}
                 className="inline-flex items-center px-6 py-3 border text-sm uppercase tracking-[2.8px]"
@@ -103,190 +109,145 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
                 {manifesto?.quote || 'Aviso: este não é um lugar confortável.'}
               </p>
             </motion.div>
-            {/* Imagem à direita */}
-            <motion.div {...fadeUp}>
-              {manifesto?.image ? (
-                <img src={manifesto.image} alt="" className="w-full rounded-lg" style={{ boxShadow: '0 0 80px 20px rgba(0,0,0,0.6)' }} />
+          </div>
+        </div>
+      </section>
+
+      {/* ===== "NÃO É TRADICIONAL" BIG TEXT SECTION ===== */}
+      <section className="relative py-32 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-8 md:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <motion.div {...fadeUp} className="space-y-8">
+              <p className="text-sm italic" style={{ fontFamily: "'Source Serif 4', serif", color: '#fff' }}>
+                "se parecer desconfortável, está funcionando."
+              </p>
+              <h2 className="text-3xl md:text-[40px] font-bold leading-tight"
+                style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                {experience?.heading || 'A Darkflix não é um streaming tradicional.'}
+              </h2>
+              <p className="text-lg text-[#a6a6a6cc] font-light leading-relaxed">
+                {experience?.body || 'É um espaço onde filmes fora do circuito comercial voltam a circular — obras atmosféricas, cultuadas e difíceis de encontrar. Filmes que não foram feitos para agradar. Foram feitos para permanecer.'}
+              </p>
+            </motion.div>
+            <motion.div {...fadeUp} className="relative">
+              {experience?.image ? (
+                <img src={experience.image} alt="" className="w-full rounded-lg" />
               ) : (
-                <div className="w-full aspect-[4/5] bg-[#111] rounded-lg flex items-center justify-center text-white/20 text-sm">
-                  Imagem da seção
-                </div>
+                <img src="/darkflix/content-block.png" alt="" className="w-full" />
               )}
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ===== SEÇÃO 3 — EXPERIÊNCIA (Personagem centralizado + texto grande sobreposto) ===== */}
+      {/* ===== ZOMBIE / EXPERIENCE SECTION ===== */}
       <section className="relative py-20 overflow-hidden">
         {tenant.theme.section3BgImage && (
           <div className="absolute inset-0">
             <img src={tenant.theme.section3BgImage} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[rgba(2,2,2,0.5)]" />
+            <div className="absolute inset-0 bg-[rgba(2,2,2,0.6)]" />
           </div>
         )}
-        <div className="relative max-w-7xl mx-auto px-8">
-          {/* Personagem grande */}
-          <motion.div {...fadeUp} className="relative flex justify-center">
-            <img src={experience?.image || '/darkflix/zombie-full.png'} alt="" className="max-h-[700px] object-contain relative z-10" />
-            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#020202] to-transparent z-20" />
+        <div className="relative max-w-7xl mx-auto px-8 text-center">
+          <motion.div {...fadeUp} className="relative">
+            <img src={whyRare?.image || '/darkflix/zombie-full.png'} alt="" className="mx-auto max-h-[700px] object-contain relative z-10" />
+            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#020202] to-transparent z-20" />
           </motion.div>
-
-          {/* Título grande sobreposto */}
-          <motion.div {...fadeUp} className="relative z-30 -mt-40 text-center space-y-6">
-            <h2 className="text-5xl md:text-7xl lg:text-[100px] font-bold leading-[0.95]">
-              <span style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                UMA{' '}
-              </span>
-              <span style={{ color: pc, WebkitTextFillColor: pc }}>
-                EXPERIÊNCIA
-              </span>
-              <br />
-              <span style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                DIFERENTE
-              </span>
+          <motion.div {...fadeUp} className="relative z-30 -mt-32 space-y-6">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold"
+              style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              {whyRare?.heading || 'UMA EXPERIÊNCIA DIFERENTE'}
             </h2>
-            <p className="text-base md:text-lg text-white/80 font-light max-w-2xl mx-auto leading-relaxed">
-              {experience?.body || 'Aqui, o silêncio não é vazio. É parte da narrativa.\nSem fórmulas reconfortantes. Sem trilhas que avisam o susto.\nSem resoluções fáceis. A tensão não explode, ela se instala.\nÉ encontra.'}
+            <p className="text-lg text-white font-medium max-w-3xl mx-auto leading-relaxed">
+              {whyRare?.body || 'Aqui, o silêncio não é vazio. É parte da narrativa. Sem fórmulas reconfortantes. Sem trilhas que avisam o susto. Sem resoluções fáceis. A tensão não explode. Ela se instala.'}
             </p>
-            <p className="text-sm italic text-white/50" style={{ fontFamily: "'Source Serif 4', serif" }}>
-              {experience?.quote || '"Se você gosta de assistir para se distrair na vida,\neste lugar não foi feito para você."'}
+            <p className="text-sm italic" style={{ fontFamily: "'Source Serif 4', serif" }}>
+              {whyRare?.quote || '"não recomendamos assistir sozinho. nem acompanhado."'}
             </p>
           </motion.div>
-
-          {/* Faixa de thumbnails de filmes */}
-          <motion.div {...fadeUp} className="mt-16 flex gap-2 overflow-x-auto pb-4 scrollbar-none">
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className="shrink-0 w-[100px] h-[140px] rounded-lg overflow-hidden bg-[#1a1a1a]">
-                <div className="w-full h-full bg-gradient-to-b from-[#2a1a1a] to-[#0a0a0a]" />
-              </div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
-      {/* ===== SEÇÃO 4 — TIPOS DE FILMES (Personagem atrás, título esquerda, bullets direita) ===== */}
-      <section className="relative py-20 overflow-hidden">
-        {/* Imagem de fundo do personagem (clown/scary) */}
-        {filmTypes?.image && (
-          <div className="absolute inset-0">
-            <img src={filmTypes.image} alt="" className="w-full h-full object-cover object-top" />
-            <div className="absolute inset-0 bg-[rgba(2,2,2,0.65)]" />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(2,2,2,0.9) 0%, rgba(2,2,2,0.4) 40%, rgba(2,2,2,0.9) 100%)' }} />
-          </div>
-        )}
-        <div className="relative max-w-7xl mx-auto px-8 md:px-16">
-          <motion.p {...fadeUp} className="text-sm italic text-white/40 mb-6" style={{ fontFamily: "'Source Serif 4', serif" }}>
-            "alguns filmes não terminam quando os créditos sobem."
-          </motion.p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            {/* Título grande à esquerda */}
-            <motion.div {...fadeUp}>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05]"
-                style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                {filmTypes?.heading || 'TIPOS DE FILMES\nQUE  VOCÊ\nENCONTRA'}
-              </h2>
-            </motion.div>
-
-            {/* Bullet points à direita */}
-            <motion.div {...fadeUp}>
-              <ul className="space-y-4 text-base md:text-lg font-light text-white/90">
-                {(filmTypes?.bulletPoints || [
-                  '• Terror psicológico e atmosférico',
-                  '• Cults europeus dos anos 60, 70 e 80',
-                  '• Horror asiático ou body horror',
-                  '• Produções independentes difíceis de encontrar',
-                  '• Obras restauradas e redescobertas',
-                  '• Filmes estranhos demais para o circuito comercial',
-                ]).map((bp, i) => (
-                  <li key={i}>{bp}</li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== SEÇÃO 5 — ATMOSFERA + "POR QUE NÃO ENCONTRA" ===== */}
-      <section className="relative py-16">
-        <div className="max-w-7xl mx-auto px-8 md:px-16">
-          {/* Frase de transição */}
-          <motion.p {...fadeUp} className="text-base text-white/60 text-center mb-16">
-            Não é sobre sustos fáceis. É sobre atmosfera.
-          </motion.p>
-
-          {/* Título POR QUE NÃO ENCONTRA */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div />
-            <motion.div {...fadeUp}>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
-                style={{ background: 'linear-gradient(270deg, #DADADA 14%, #454545 104%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                {whyRare?.heading || 'POR QUE VOCÊ NÃO\nENCONTRA ESSES FILMES\nFACILMENTE'}
-              </h2>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== SEÇÃO 6 — PERSONAGEM CLOWN GRANDE ===== */}
-      <section className="relative py-8 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8 relative">
-          <motion.div {...fadeUp} className="flex justify-center">
-            <img src={whyRare?.image || catalog?.image || '/darkflix/demon-clown.png'} alt=""
-              className="max-h-[700px] object-contain" />
-          </motion.div>
-          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#020202] to-transparent" />
-        </div>
-      </section>
-
-      {/* ===== SEÇÃO 7 — DARK BANNER QUOTE ===== */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0">
-          {audience?.image && (
-            <>
-              <img src={audience.image} alt="" className="w-full h-full object-cover opacity-30" />
-              <div className="absolute inset-0 bg-[rgba(2,2,2,0.6)]" />
-            </>
-          )}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #020202 0%, rgba(2,2,2,0) 30%, rgba(2,2,2,0) 70%, #020202 100%)' }} />
-        </div>
-        <div className="relative z-10 text-center">
-          <motion.p {...fadeUp} className="text-sm italic text-white/20" style={{ fontFamily: "'Source Serif 4', serif" }}>
-            "nem todo medo precisa fazer barulho."
-          </motion.p>
-        </div>
-      </section>
-
-      {/* ===== SEÇÃO 8 — CATÁLOGO EM MOVIMENTO (Card escuro) ===== */}
+      {/* ===== FILM TYPES ===== */}
       <section className="relative py-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-8 md:px-16">
-          <div className="relative rounded-[43px] overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(10,10,10,0.95) 100%)' }}>
-            <div className="p-10 md:p-14 flex flex-col md:flex-row items-start justify-between gap-10">
-              <motion.div {...fadeUp} className="flex-1 space-y-4">
+          <div className="relative rounded-[27px] overflow-hidden">
+            <img src={filmTypes?.image || '/darkflix/film-types.png'} alt=""
+              className="w-full h-[500px] object-cover blur-[2px]" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.95) 70%)' }} />
+            <div className="absolute inset-0 flex flex-col md:flex-row items-end p-12 gap-8">
+              <motion.div {...fadeUp} className="flex-1">
+                <p className="text-sm mb-4 italic" style={{ fontFamily: "'Source Serif 4', serif" }}>
+                  "alguns filmes não terminam quando os créditos sobem."
+                </p>
+                <h2 className="text-4xl md:text-6xl font-bold"
+                  style={{ background: 'linear-gradient(90deg, #DADADA 0%, #747474 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  {filmTypes?.heading || 'TIPOS DE FILMES QUE VOCÊ ENCONTRA'}
+                </h2>
+              </motion.div>
+              <motion.div {...fadeUp} className="flex-1">
+                <ul className="space-y-3 text-xl font-light">
+                  {(filmTypes?.bulletPoints || [
+                    '• terror psicológico e atmosférico',
+                    '• cults europeus dos anos 60, 70 e 80',
+                    '• horror asiático inquietante',
+                    '• produções independentes difíceis de localizar',
+                    '• obras restauradas e redescobertas',
+                    '• filmes estranhos demais para o circuito comercial',
+                  ]).map((bp, i) => (
+                    <li key={i}>{bp}</li>
+                  ))}
+                </ul>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== ATMOSPHERE QUOTE ===== */}
+      <section className="relative py-20">
+        <div className="max-w-7xl mx-auto px-8 md:px-16 flex flex-col md:flex-row gap-12 items-center">
+          <motion.div {...fadeUp} className="flex-1">
+            <p className="text-lg font-medium text-center md:text-left">
+              Não é sobre sustos fáceis. É sobre atmosfera.
+            </p>
+          </motion.div>
+          <motion.div {...fadeUp} className="flex-1">
+            <h2 className="text-3xl md:text-4xl font-bold leading-tight"
+              style={{ background: 'linear-gradient(270deg, #DADADA 14%, #454545 104%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              {catalog?.heading || 'POR QUE VOCÊ NÃO ENCONTRA ESSES FILMES FACILMENTE'}
+            </h2>
+          </motion.div>
+        </div>
+
+        {/* Demon / Character image */}
+        <div className="max-w-7xl mx-auto px-8 mt-12 relative">
+          <motion.div {...fadeUp}>
+            <img src={catalog?.image || '/darkflix/demon-clown.png'} alt="" className="mx-auto max-h-[600px] object-contain" />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ===== MOVING CATALOG ===== */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-8 md:px-16">
+          <div className="relative rounded-[43px] overflow-hidden">
+            <img src={audience?.image || '/darkflix/catalog.png'} alt=""
+              className="w-full h-[340px] object-cover" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(5deg, rgba(0,0,0,0.85) 28%, rgba(0,0,0,0) 135%)' }} />
+            <div className="absolute inset-0 flex flex-col md:flex-row items-center justify-between p-12 gap-8">
+              <motion.div {...fadeUp}>
                 <h2 className="text-3xl md:text-4xl font-bold"
                   style={{ background: 'linear-gradient(0deg, #DADADA, #DADADA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  {catalog?.heading || 'UM CATÁLOGO EM\nMOVIMENTO'}
+                  {audience?.heading || 'UM CATÁLOGO EM MOVIMENTO'}
                 </h2>
-                <p className="text-base text-white/60 leading-relaxed">
-                  O catálogo não é estático.
+                <p className="text-2xl font-normal mt-4">
+                  O catálogo não é estático. Filmes surgem.
                 </p>
-                <Link to={`/${slug}/assinar`}
-                  className="inline-flex items-center px-6 py-2 text-sm uppercase tracking-[2px]"
-                  style={{ color: pc }}>
-                  Assine agora →
-                </Link>
               </motion.div>
-              <motion.div {...fadeUp} className="flex-1 space-y-4">
-                <p className="text-sm text-white/40">Outros saem.</p>
-                <p className="text-base font-medium" style={{ color: pc }}>
-                  Raridades retornam.
-                </p>
-                <p className="text-base text-white/80 leading-relaxed">
-                  Novas descobertas entram.
-                </p>
-                <p className="text-base text-white/80 leading-relaxed">
-                  {catalog?.body || 'Você nunca verá exatamente o mesmo catálogo duas vezes.'}
+              <motion.div {...fadeUp}>
+                <p className="text-2xl font-normal leading-relaxed">
+                  {audience?.body || 'Outros saem. Raridades retornam. Novas descobertas entram. Você nunca verá exatamente o mesmo catálogo duas vezes.'}
                 </p>
               </motion.div>
             </div>
@@ -294,7 +255,21 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
         </div>
       </section>
 
-      {/* ===== PARA QUEM FAZ SENTIDO ===== */}
+      {/* ===== DARK BANNER ===== */}
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="/darkflix/experience-bg.png" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[rgba(2,2,2,0.6)]" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #020202 0%, rgba(2,2,2,0) 30%, rgba(2,2,2,0) 70%, #020202 100%)' }} />
+        </div>
+        <div className="relative z-10 text-center">
+          <motion.p {...fadeUp} className="text-sm italic" style={{ fontFamily: "'Source Serif 4', serif" }}>
+            "nem todo medo precisa fazer barulho."
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ===== FOR WHOM + RED ACCENT ===== */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-8 md:px-16 flex flex-col md:flex-row gap-12">
           <motion.div {...fadeUp} className="flex-1 space-y-6">
@@ -320,7 +295,7 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
         </div>
       </section>
 
-      {/* ===== PLANO ANUAL ===== */}
+      {/* ===== ANNUAL PLAN ===== */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0">
           <img src="/darkflix/plan-bg.png" alt="" className="w-full h-full object-cover opacity-30" />
@@ -382,7 +357,7 @@ export default function DarkflixEditorialTemplate({ tenant }: Props) {
         </div>
       </section>
 
-      {/* ===== QUOTE FINAL ===== */}
+      {/* ===== QUOTE BLOCK ===== */}
       <section className="py-16 text-center">
         <p className="text-xs italic" style={{ fontFamily: "'JetBrains Mono', monospace", color: 'rgba(99,99,99,0.2)' }}>
           "não recomendamos assistir sozinho. nem acompanhado."
