@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php --version)",
+      "Bash(composer --version)",
+      "Bash(composer create-project:*)",
+      "Bash(composer require:*)",
+      "Bash(./node_modules/.bin/vite build:*)",
+      "Bash(node node_modules/.bin/vite build)",
+      "Bash(npx vite:*)",
+      "Bash(node --experimental-vm-modules node_modules/vite/bin/vite.js build)",
+      "Bash(node node_modules/vite/bin/vite.js build)",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(python3 -c \"import json,sys; m=json.load\\(sys.stdin\\); [print\\(k\\) for k in m if not k.startswith\\('_'\\)]\")",
+      "Bash(node -e \"const m=require\\('./c:/Projects/flixpaygo-laravel/public/build/manifest.json'\\); Object.keys\\(m\\).filter\\(k=>!k.startsWith\\('_'\\)\\).forEach\\(k=>console.log\\(k\\)\\)\")",
+      "Bash(ls -la c:/Projects/flixpaygo-laravel/resources/js/app*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/login)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/superadmin)",
+      "Bash(php artisan:*)",
+      "Bash(echo \"Laravel server PID: $!\")"
+    ]
+  }
+}
