@@ -47,7 +47,7 @@ export default function FlixPayLandingPage() {
               Plataforma SaaS Multi-Tenant
             </span>
             <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] mb-6">
-              Transforme seuxx<br />
+              Transforme seu<br />
               <span className="text-[#E50914]">Streaming</span> em<br />
               Negócio Recorrente
             </h1>
